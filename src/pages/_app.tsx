@@ -6,24 +6,13 @@ import localFont from 'next/font/local';
 import { theme } from '@/utils/theme';
 import BottomNavigation from '@/Layout/BottomNav';
 import Footer from '@/Layout/Footer';
+import { Provider } from 'jotai';
+import { myFont } from '@/utils/fontStyles';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Navbar from '@/Layout/Navbar';
 
-const myFont = localFont({ src: [
-  {
-    path: '../assets/fonts/Graphik-Regular.woff2',
-    weight: '400',
-    style: 'normal',
-  },
-  {
-    path: '../assets/fonts/Graphik-Medium.woff2',
-    weight: '400',
-    style: 'italic',
-  },
-  {
-    path: '../assets/fonts/Graphik-Semibold.woff2',
-    weight: '700',
-    style: 'normal',
-  }
-] });
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -35,13 +24,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
       `}
     </style>
-
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+    <Provider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
+          <Navbar />
+          <Component {...pageProps} />
+          
+          <BottomNavigation />
+          <Footer />
+        </ChakraProvider>
+      </QueryClientProvider>
       
-      <BottomNavigation />
-      <Footer />
-    </ChakraProvider>
+    </Provider>
+    
     </>
     
   )

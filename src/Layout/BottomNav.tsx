@@ -1,9 +1,12 @@
 import { Box, Flex, IconButton, Text, useBreakpointValue, VStack, Badge } from '@chakra-ui/react';
 import { FiHome, FiGrid, FiShoppingCart, FiUser } from 'react-icons/fi';
 import { useRouter } from 'next/router';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, useAuthenticationStore } from '@/lib/store';
+import { FaUser } from 'react-icons/fa';
 
 const BottomNavigation = () => {
+    const { isAuthenticated, userDetails } = useAuthenticationStore()
+
     const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
     const {cart } = useAppStore()
@@ -80,17 +83,39 @@ const BottomNavigation = () => {
                 <Text fontSize="md">Cart</Text>
             </VStack>
             
-            <VStack>
-                <IconButton
-                    icon={<FiUser size={24} />}
-                    aria-label="Login"
-                    onClick={() => handleNavigation('/login')}
-                    isActive={router.pathname === '/login'}
-                    variant="ghost"
-                    colorScheme={router.pathname === '/login' ? 'purple' : 'gray'}
-                    />
-                <Text fontSize="md">Login</Text>
-            </VStack>
+            {
+                !isAuthenticated && (
+                    <VStack>
+                    <IconButton
+                        icon={<FiUser size={24} />}
+                        aria-label="Login"
+                        onClick={() => handleNavigation('/login')}
+                        isActive={router.pathname === '/login'}
+                        variant="ghost"
+                        colorScheme={router.pathname === '/login' ? 'purple' : 'gray'}
+                        />
+                    <Text fontSize="md">Login</Text>
+                </VStack>
+                )
+            }
+        
+            {
+                isAuthenticated && (
+                    <>
+                        <VStack>
+                            <IconButton
+                                icon={<FaUser size={24} />}
+                                aria-label="profile"
+                                onClick={() => handleNavigation('/profile')}
+                                isActive={router.pathname === '/profile'}
+                                variant="ghost"
+                                    colorScheme={router.pathname === '/profile' ? 'purple' : 'gray'}
+                                    />
+                            <Text fontSize="md">Profile</Text>
+                        </VStack>
+                    </>
+                )
+            }
             
         </Flex>
         </Box>

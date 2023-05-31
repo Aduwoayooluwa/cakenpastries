@@ -1,13 +1,14 @@
 import { Box, Flex, HStack, VStack, IconButton, Input, Text, useBreakpointValue, Badge } from '@chakra-ui/react';
 import { FiMenu, FiInfo, FiLayers, FiUser, FiLogIn, FiSearch, FiShoppingCart } from 'react-icons/fi';
 import React from 'react';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+    const { isAuthenticated, userDetails } = useAuthenticationStore()
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { cart } = useAppStore()
     const router = useRouter()
@@ -88,26 +89,60 @@ const Navbar = (props: Props) => {
                 />
                 <Text fontSize="lg">Categories</Text>
                 </HStack>
-                <HStack spacing={1}>
-                <IconButton
-                    aria-label="Login"
-                    icon={<FiUser />}
-                    size="lg"
-                    variant="ghost"
-                    colorScheme="gray.800"
-                />
-                <Text fontSize="lg">Login</Text>
-                </HStack>
-                <HStack spacing={1}>
-                <IconButton
-                    aria-label="Register"
-                    icon={<FiLogIn />}
-                    size="lg"
-                    variant="ghost"
-                    colorScheme="gray.800"
-                />
-                <Text fontSize="lg">Register</Text>
-                </HStack>
+                {/* start not auth */}
+                {
+                    !isAuthenticated && (
+                        <>
+                        <Link href="/login">
+                            <HStack spacing={1}>
+                            <IconButton
+                                aria-label="Login"
+                                icon={<FiUser />}
+                                size="lg"
+                                variant="ghost"
+                                colorScheme="gray.800"
+                            />
+                            
+                            <Text fontSize="lg">Login</Text>
+                            </HStack>
+                            </Link>
+                            <Link href="/register">
+                            <HStack spacing={1}>
+                            <IconButton
+                            aria-label="Register"
+                            icon={<FiLogIn />}
+                            size="lg"
+                            variant="ghost"
+                            colorScheme="gray.800"
+                        />
+                        <Text fontSize="lg">Register</Text>
+                        </HStack>
+                        </Link>
+                        
+                        </>
+                    )
+                }
+                {
+                    isAuthenticated && (
+                        <>
+                        <Link href={"/"}>
+                            <HStack spacing={1}>
+                            <IconButton
+                                aria-label="Profile"
+                                icon={<FiUser />}
+                                size="lg"
+                                variant="ghost"
+                                colorScheme="gray.800"
+                            />
+                            <Text fontSize="lg">{userDetails?.name}</Text>
+                            </HStack>
+                        </Link>
+                        
+                        </>
+                    )
+                }
+                
+                {/* end not auth */}
                 <HStack  spacing={1}>
                 <HStack position={"relative"} spacing={1}>
                 <Box position="relative">

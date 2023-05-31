@@ -15,7 +15,7 @@ const ProductCard = ({item}: Props) => {
 
     return (
         <Box
-        minW="320px"
+        minW={{base: "150px", md:"320px"}}
         w="full"
         p="4"
         borderWidth="1px"
@@ -26,7 +26,7 @@ const ProductCard = ({item}: Props) => {
         >
             <Center width={"full"} alignItems={"center"}>
                 <Flex align={"center"} direction="column" width="full">
-                    <Box position="relative" w="full" h="150px">
+                    <Box position="relative" w="full" h={{base:"100px", md:"150px"}}>
                     <Image
                         src={item?.image}
                         alt="Product Image"
@@ -51,7 +51,7 @@ const ProductCard = ({item}: Props) => {
                     </HStack>
                 </Flex>
             </Center>
-       
+    
         </Box>
     );
 };
