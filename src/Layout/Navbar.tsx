@@ -31,7 +31,8 @@ const Navbar = (props: Props) => {
         zIndex={20}
         >
         <Text fontSize="lg" fontWeight="bold">
-            Cakes & Pastries
+            <Link href="/">Cakes & Pastries</Link>
+            
         </Text>
 
         {isMobile ? (
