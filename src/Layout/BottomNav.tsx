@@ -87,7 +87,7 @@ const BottomNavigation = () => {
                     onClick={() => handleNavigation('/login')}
                     isActive={router.pathname === '/login'}
                     variant="ghost"
-                    colorScheme={router.pathname === '/login' ? 'teal' : 'gray'}
+                    colorScheme={router.pathname === '/login' ? 'purple' : 'gray'}
                     />
                 <Text fontSize="md">Login</Text>
             </VStack>

@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import localFont from 'next/font/local';
 import { theme } from '@/utils/theme';
 import BottomNavigation from '@/Layout/BottomNav';
+import Footer from '@/Layout/Footer';
 
 const myFont = localFont({ src: [
   {
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />
+      <Footer />
       <BottomNavigation />
     </ChakraProvider>
     </>
