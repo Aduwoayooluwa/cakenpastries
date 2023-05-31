@@ -88,12 +88,12 @@ const CartPage = ({ cartItems }: any) => {
                     >
                     -
                     </Button>
-                    <Text>{item.quantity}</Text>
+                    <Text>{item.quantity }</Text>
                     <Button size="sm" onClick={() => handleIncrement(item)}>
                     +
                     </Button>
                 </HStack>
-                <Text mt={2}>Price: NGN {item.price}</Text>
+                <Text mt={2}>Price: NGN {item.price*item.quantity}</Text>
                 </Box>
             </motion.div>
             ))}
