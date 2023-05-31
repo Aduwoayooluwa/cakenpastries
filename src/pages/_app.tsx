@@ -38,8 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />
-      <Footer />
+      
       <BottomNavigation />
+      <Footer />
     </ChakraProvider>
     </>
     
