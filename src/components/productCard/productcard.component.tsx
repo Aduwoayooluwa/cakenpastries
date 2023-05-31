@@ -26,7 +26,7 @@ const ProductCard = ({item}: Props) => {
         >
             <Center width={"full"} alignItems={"center"}>
                 <Flex align={"center"} direction="column" width="full">
-                    <Box position="relative" w="full" h="320px">
+                    <Box position="relative" w="full" h="150px">
                     <Image
                         src={item?.image}
                         alt="Product Image"
@@ -35,10 +35,10 @@ const ProductCard = ({item}: Props) => {
                     />
                     </Box>
                     <VStack align="start" spacing="2" mt="4" flex="1">
-                    <Text fontWeight="semibold" fontSize="xl" lineHeight="none">
+                    <Text fontWeight="semibold" fontSize="lg" lineHeight="none">
                         NGN {parseInt(item?.price)}
                     </Text>
-                    <Text fontSize="lg" fontWeight="semibold">
+                    <Text fontSize="sm" fontWeight="medium">
                         {item?.name}
                     </Text>
                 
