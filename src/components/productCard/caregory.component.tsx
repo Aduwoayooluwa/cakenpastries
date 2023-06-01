@@ -35,10 +35,10 @@ const CategoryCard = ({ category }: Props) => {
                     </Box>
                     <Link href={``}>
                         <VStack align="start" spacing="2" mt="4" flex="1">
-                            <Text fontSize={{baee:"sm", md:"lg" }}fontWeight="medium">
+                            <Text textColor={"black"} fontSize={{baee:"sm", md:"lg" }}fontWeight="medium">
                                 {category?.name}
                             </Text>
-                            <Text fontSize="xs" fontWeight="normal">
+                            <Text fontSize="xs" textColor={"black"} fontWeight="normal">
                                 {category?.menu_items?.length} items
                             </Text>
                         

@@ -16,6 +16,9 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => ({
         }
 
         set({ cart })
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('cartItems', JSON.stringify(cart))
+        }
         console.log(cart)
 
     },

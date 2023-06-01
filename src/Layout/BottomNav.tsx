@@ -3,6 +3,7 @@ import { FiHome, FiGrid, FiShoppingCart, FiUser } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import { FaUser } from 'react-icons/fa';
+import { useState, useEffect } from 'react'
 
 const BottomNavigation = () => {
     const { isAuthenticated, userDetails } = useAuthenticationStore()
@@ -10,6 +11,19 @@ const BottomNavigation = () => {
     const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
     const {cart } = useAppStore()
+
+    const [userDetail, setUserDetail] = useState<any>()
+    const [isAuth, setIsAuth] = useState<string>()
+    const [cartItems, setCartItems] = useState<any>()
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+        setUserDetail(localStorage.getItem('userDetails')!)
+        setIsAuth(localStorage.getItem('isAuth')!)
+        setCartItems(localStorage.getItem('cartItems')!)
+        }
+    }, [])
+
     const itemCount = cart.length;
 
     const handleNavigation = (route: string) => {
@@ -84,7 +98,7 @@ const BottomNavigation = () => {
             </VStack>
             
             {
-                !isAuthenticated && (
+                !isAuthenticated || !isAuth && (
                     <VStack>
                     <IconButton
                         icon={<FiUser size={24} />}
@@ -100,7 +114,7 @@ const BottomNavigation = () => {
             }
         
             {
-                isAuthenticated && (
+                isAuthenticated || isAuth && (
                     <>
                         <VStack>
                             <IconButton

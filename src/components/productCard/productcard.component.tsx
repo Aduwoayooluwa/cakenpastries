@@ -35,10 +35,10 @@ const ProductCard = ({item}: Props) => {
                     />
                     </Box>
                     <VStack align="start" spacing="2" mt="4" flex="1">
-                    <Text fontWeight="semibold" fontSize="lg" lineHeight="none">
+                    <Text fontWeight="semibold" fontSize="lg" textColor={"black"} lineHeight="none">
                         NGN {parseInt(item?.price)}
                     </Text>
-                    <Text fontSize="sm" fontWeight="medium">
+                    <Text textColor="black" fontSize="sm" fontWeight="medium">
                         {item?.name}
                     </Text>
                 

@@ -11,10 +11,13 @@ const Navbar = (props: Props) => {
     const { isAuthenticated, userDetails } = useAuthenticationStore()
     const [userDetail, setUserDetail] = useState<any>()
     const [isAuth, setIsAuth] = useState<string>()
+    const [cartItems, setCartItems] = useState<any>()
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
         setUserDetail(localStorage.getItem('userDetails')!)
         setIsAuth(localStorage.getItem('isAuth')!)
+        setCartItems(localStorage.getItem('cartItems')!)
         }
     }, [])
     
@@ -89,6 +92,7 @@ const Navbar = (props: Props) => {
                 />
                 <Text fontSize="lg">Info</Text>
                 </HStack>
+                <Link href="/categories">
                 <HStack spacing={1}>
                 <IconButton
                     aria-label="Categories"
@@ -99,6 +103,7 @@ const Navbar = (props: Props) => {
                 />
                 <Text fontSize="lg">Categories</Text>
                 </HStack>
+                </Link>
                 {/* start not auth */}
                 {
                     !isAuthenticated || !isAuth && (
@@ -116,6 +121,7 @@ const Navbar = (props: Props) => {
                             <Text fontSize="lg">Login</Text>
                             </HStack>
                             </Link>
+
                             <Link href="/register">
                             <HStack spacing={1}>
                             <IconButton
@@ -168,21 +174,21 @@ const Navbar = (props: Props) => {
                     position="absolute"
                     top="-0.5"
                     right="-0.5"
-                    bg={itemCount > 0 ? 'red.500' : 'transparent'}
+                    bg={JSON.parse(cartItems)?.length > 0 ? 'red.500' : 'transparent'}
                     color="white"
                     fontSize="xs"
                     fontWeight="bold"
                     borderRadius="full"
                     px={2}
                     py={1}
-                    opacity={itemCount > 0 ? 1 : 0}
-                    animation={itemCount > 0 ? 'blinking 1s infinite' : 'none'}
+                    opacity={JSON.parse(cartItems)?.length > 0 ? 1 : 0}
+                    animation={JSON.parse(cartItems)?.length > 0 ? 'blinking 1s infinite' : 'none'}
                 >
-                    {itemCount > 0 ? itemCount : ''}
+                    {JSON.parse(cartItems)?.length > 0 ? JSON.parse(cartItems)?.length : ''}
                 </Badge>
                 </Box>
                     <VStack direction={"column"} top={"-10px"} right={0} position={"absolute"} bg="red" align={"center"} justify="center" width={"30px"} height="30px" borderRadius={"100%"}>
-                        <Text textAlign="center" size="sm" textColor={"white"}>{cart?.length}</Text>
+                        <Text textAlign="center" size="sm" textColor={"white"}>{JSON.parse(cartItems)?.length}</Text>
                     </VStack>
                 </HStack>
                 

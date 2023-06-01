@@ -40,7 +40,6 @@ const useRegister = () => {
             localStorage.setItem("isAuth", 'true')
             setUserDetails(data?.user)
             setIsAuthenticated(true)
-            console.log(data)
             router.push("/")
         
         },
