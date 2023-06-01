@@ -98,7 +98,7 @@ const BottomNavigation = () => {
             </VStack>
             
             {
-                !isAuthenticated || !isAuth && (
+                !isAuth && (
                     <VStack>
                     <IconButton
                         icon={<FiUser size={24} />}
@@ -114,7 +114,7 @@ const BottomNavigation = () => {
             }
         
             {
-                isAuthenticated || isAuth && (
+                isAuth == "true" && (
                     <>
                         <VStack>
                             <IconButton

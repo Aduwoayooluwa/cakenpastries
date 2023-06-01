@@ -106,7 +106,7 @@ const Navbar = (props: Props) => {
                 </Link>
                 {/* start not auth */}
                 {
-                    !isAuthenticated || !isAuth && (
+                    !isAuth && (
                         <>
                         <Link href="/login">
                             <HStack spacing={1}>
@@ -139,7 +139,7 @@ const Navbar = (props: Props) => {
                     )
                 }
                 {
-                    isAuthenticated || isAuth  && (
+                    isAuth === "true"  && (
                         <>
                         <Link href={"/"}>
                             <HStack spacing={1}>
