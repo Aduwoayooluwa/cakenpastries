@@ -50,7 +50,7 @@ const CartPage = ({ cartItems }: any) => {
     if (typeof window !== 'undefined') {
         //const carts: any = Cookies.get(cartItems)
         //console.log(carts)
-        isAuth = JSON.parse(Cookies.get('isAuth')!)
+        isAuth = Cookies.get('isAuth') && JSON.parse(Cookies.get('isAuth')!)
         userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!)
     }
 

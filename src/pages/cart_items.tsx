@@ -13,7 +13,7 @@ const CartItems = (props: Props) => {
 
     if (typeof window !== 'undefined') {
         //const carts: any = Cookies.get(cartItems)
-        cartItems = JSON.parse(Cookies.get('cartItems')!)
+        cartItems = Cookies.get('cartItems') && JSON.parse(Cookies.get('cartItems')!)
     }
 
     console.log(cartItems)
