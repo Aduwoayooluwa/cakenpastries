@@ -10,6 +10,7 @@ import { Provider } from 'jotai';
 import { myFont } from '@/utils/fontStyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Navbar from '@/Layout/Navbar';
+import { Toaster } from 'react-hot-toast';
 
 
 const queryClient = new QueryClient()
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           
           <BottomNavigation />
           <Footer />
+          <Toaster />
         </ChakraProvider>
       </QueryClientProvider>
       

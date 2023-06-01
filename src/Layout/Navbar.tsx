@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, VStack, IconButton, Input, Text, useBreakpointValue, Badge } from '@chakra-ui/react';
 import { FiMenu, FiInfo, FiLayers, FiUser, FiLogIn, FiSearch, FiShoppingCart } from 'react-icons/fi';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +9,16 @@ type Props = {};
 
 const Navbar = (props: Props) => {
     const { isAuthenticated, userDetails } = useAuthenticationStore()
+    const [userDetail, setUserDetail] = useState<any>()
+    const [isAuth, setIsAuth] = useState<string>()
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+        setUserDetail(localStorage.getItem('userDetails')!)
+        setIsAuth(localStorage.getItem('isAuth')!)
+        }
+    }, [])
+    
+    //console.log(JSON.parse(userDetail).name)
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { cart } = useAppStore()
     const router = useRouter()
@@ -91,7 +101,7 @@ const Navbar = (props: Props) => {
                 </HStack>
                 {/* start not auth */}
                 {
-                    !isAuthenticated && (
+                    !isAuthenticated || !isAuth && (
                         <>
                         <Link href="/login">
                             <HStack spacing={1}>
@@ -123,7 +133,7 @@ const Navbar = (props: Props) => {
                     )
                 }
                 {
-                    isAuthenticated && (
+                    isAuthenticated || isAuth  && (
                         <>
                         <Link href={"/"}>
                             <HStack spacing={1}>
@@ -134,7 +144,7 @@ const Navbar = (props: Props) => {
                                 variant="ghost"
                                 colorScheme="gray.800"
                             />
-                            <Text fontSize="lg">{userDetails?.name}</Text>
+                            <Text fontSize="lg">{JSON.parse(userDetail).name}</Text>
                             </HStack>
                         </Link>
                         
