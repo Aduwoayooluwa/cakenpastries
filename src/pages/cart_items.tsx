@@ -4,14 +4,18 @@ import CartPage from '@/views/Products/Cart'
 import { useAppStore } from '@/lib/store'
 import Navbar from '@/Layout/Navbar'
 import {useState, useEffect } from 'react'
+import Cookies from 'js-cookie';
+
 type Props = {}
 
 const CartItems = (props: Props) => {
-    const [cartItems, setCartItems] = useState()
+    let cartItems;
 
-    useEffect(() => {
-        setCartItems(JSON.parse(localStorage.getItem('cartItems')!))
-    }, [])
+    if (typeof window !== 'undefined') {
+        //const carts: any = Cookies.get(cartItems)
+        cartItems = JSON.parse(Cookies.get('cartItems')!)
+    }
+
     console.log(cartItems)
     return (
         <Box minH={"100vh"}>

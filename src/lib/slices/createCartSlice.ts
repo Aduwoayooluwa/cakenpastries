@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand"
 import { cartSlice } from "@/interfaces/createCartSlice.interface"
 import { Products } from "@/interfaces/crateProductSlice.interface"
+import Cookie from "js-cookie"
 
 export const createCartSlice: StateCreator<cartSlice> = (set, get) => ({
     cart: [],
@@ -16,12 +17,10 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => ({
         }
 
         set({ cart })
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('cartItems', JSON.stringify(cart))
-        }
-        console.log(cart)
+        Cookie.set('cartItems', JSON.stringify(cart))
 
-    },
+},
+
     removeFromCart: (productId: string) => {
         set({cart: get().cart.filter(product => product.id === productId)})
     },
