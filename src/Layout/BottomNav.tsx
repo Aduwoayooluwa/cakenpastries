@@ -114,7 +114,7 @@ const BottomNavigation = () => {
             }
         
             {
-                isAuth == "true" && (
+                isAuth === "true" && (
                     <>
                         <VStack>
                             <IconButton
