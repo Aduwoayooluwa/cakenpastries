@@ -4,27 +4,25 @@ import { useRouter } from 'next/router';
 import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import { FaUser } from 'react-icons/fa';
 import { useState, useEffect } from 'react'
+import Cookies from 'js-cookie';
 
 const BottomNavigation = () => {
-    const { isAuthenticated, userDetails } = useAuthenticationStore()
 
     const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const {cart } = useAppStore()
 
-    const [userDetail, setUserDetail] = useState<any>()
-    const [isAuth, setIsAuth] = useState<string>()
-    const [cartItems, setCartItems] = useState<any>()
+    let isAuth: any;
+    let cartItems;
+    let userInfo;
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-        setUserDetail(localStorage.getItem('userDetails')!)
-        setIsAuth(localStorage.getItem('isAuth')!)
-        setCartItems(localStorage.getItem('cartItems')!)
-        }
-    }, [])
-
-    const itemCount = cart.length;
+    if (typeof window !== 'undefined') {
+        //const carts: any = Cookies.get(cartItems)
+        //console.log(carts)
+        isAuth = Cookies.get('isAuth') === "true"
+        userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
+        cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
+    }
+    console.log(isAuth)
 
     const handleNavigation = (route: string) => {
         router.push(route);
@@ -81,17 +79,17 @@ const BottomNavigation = () => {
                     position="absolute"
                     top="-0.5"
                     right="-0.5"
-                    bg={itemCount > 0 ? 'red.500' : 'transparent'}
+                    bg={cartItems?.length > 0 ? 'red.500' : 'transparent'}
                     color="white"
                     fontSize="xs"
                     fontWeight="bold"
                     borderRadius="full"
                     px={2}
                     py={1}
-                    opacity={itemCount > 0 ? 1 : 0}
-                    animation={itemCount > 0 ? 'blinking 1s infinite' : 'none'}
+                    opacity={cartItems?.length > 0 ? 1 : 0}
+                    animation={cartItems?.length > 0 ? 'blinking 1s infinite' : 'none'}
                 >
-                    {itemCount > 0 ? itemCount : ''}
+                    {cartItems?.length > 0 ? cartItems?.length : ''}
                 </Badge>
                 </Box>
                 <Text fontSize="md">Cart</Text>
@@ -114,7 +112,7 @@ const BottomNavigation = () => {
             }
         
             {
-                isAuth === "true" && (
+                isAuth && (
                     <>
                         <VStack>
                             <IconButton

@@ -4,28 +4,29 @@ import React, { useState, useEffect } from 'react';
 import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 type Props = {};
 
 const Navbar = (props: Props) => {
-    const { isAuthenticated, userDetails } = useAuthenticationStore()
-    const [userDetail, setUserDetail] = useState<any>()
-    const [isAuth, setIsAuth] = useState<string>()
-    const [cartItems, setCartItems] = useState<any>()
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-        setUserDetail(localStorage.getItem('userDetails')!)
-        setIsAuth(localStorage.getItem('isAuth')!)
-        setCartItems(localStorage.getItem('cartItems')!)
-        }
-    }, [])
-    
-    //console.log(JSON.parse(userDetail).name)
-    const isMobile = useBreakpointValue({ base: true, md: false });
     const { cart } = useAppStore()
+
+    let isAuth: any;
+    let cartItems;
+    let userInfo;
+
+    if (typeof window !== 'undefined') {
+        //const carts: any = Cookies.get(cartItems)
+        //console.log(carts)
+        isAuth = Cookies.get('isAuth') === "true"
+        userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
+        cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
+    }
+    console.log(isAuth)
+
+    
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const router = useRouter()
-    const itemCount = cart.length
     
     const handleNavigation = (route: string) => {
         router.push(route);
@@ -139,7 +140,7 @@ const Navbar = (props: Props) => {
                     )
                 }
                 {
-                    isAuth === "true"  && (
+                    isAuth && (
                         <>
                         <Link href={"/"}>
                             <HStack spacing={1}>
@@ -150,7 +151,7 @@ const Navbar = (props: Props) => {
                                 variant="ghost"
                                 colorScheme="gray.800"
                             />
-                            <Text fontSize="lg">{JSON.parse(userDetail).name}</Text>
+                            <Text fontSize="lg">{userInfo?.name}</Text>
                             </HStack>
                         </Link>
                         
@@ -174,22 +175,19 @@ const Navbar = (props: Props) => {
                     position="absolute"
                     top="-0.5"
                     right="-0.5"
-                    bg={JSON.parse(cartItems)?.length > 0 ? 'red.500' : 'transparent'}
+                    bg={cartItems?.length > 0 ? 'red.500' : 'transparent'}
                     color="white"
                     fontSize="xs"
                     fontWeight="bold"
                     borderRadius="full"
                     px={2}
                     py={1}
-                    opacity={JSON.parse(cartItems)?.length > 0 ? 1 : 0}
-                    animation={JSON.parse(cartItems)?.length > 0 ? 'blinking 1s infinite' : 'none'}
+                    opacity={cartItems?.length > 0 ? 1 : 0}
+                    animation={cartItems?.length > 0 ? 'blinking 1s infinite' : 'none'}
                 >
-                    {JSON.parse(cartItems)?.length > 0 ? JSON.parse(cartItems)?.length : ''}
+                    {cartItems?.length > 0 ? cartItems?.length : ''}
                 </Badge>
                 </Box>
-                    <VStack direction={"column"} top={"-10px"} right={0} position={"absolute"} bg="red" align={"center"} justify="center" width={"30px"} height="30px" borderRadius={"100%"}>
-                        <Text textAlign="center" size="sm" textColor={"white"}>{JSON.parse(cartItems)?.length}</Text>
-                    </VStack>
                 </HStack>
                 
                 
