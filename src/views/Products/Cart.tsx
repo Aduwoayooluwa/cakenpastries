@@ -39,6 +39,11 @@ const CartPage = ({ cartItems }: any) => {
     // Mounting the application
     const router = useRouter();
 
+    // payment refrence 
+    const date = new Date()
+    console.log(date.getTime())
+    
+
     // Authentication
     let isAuth: any;
     let userInfo;
@@ -48,6 +53,8 @@ const CartPage = ({ cartItems }: any) => {
         userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!);
     }
 
+    const payment_ref = `${userInfo.id}${date.getTime()} `
+    console.log(payment_ref)
     console.log(isAuth);
 
     const user_id = userInfo?.id;
@@ -111,7 +118,7 @@ const CartPage = ({ cartItems }: any) => {
         address,
         user_id,
         items: cartItems,
-        payment_ref: "",
+        payment_ref,
         amount: calculateTotalPrice()
         };
 

@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
@@ -8,10 +9,10 @@ type payloadTypes = {
     amount: number
     items: any
 }
-const ORDER_URL = ``
+const ORDER_URL = `${BASE_URL}/create-order`
 
-const successNotification = () => toast('Order Successful')
-const errorNotification = () => toast('Error')
+const successNotification = () => toast('Proceeding to payment...')
+const errorNotification = (error: string) => toast(error)
 
 const useOrder = () => {
     return useMutation((payload: payloadTypes) => {
@@ -20,8 +21,9 @@ const useOrder = () => {
         onSuccess: () => {
             successNotification()
         },
-        onError: () => {
-            errorNotification()
+        onError: (error: any) => {
+            errorNotification('error')
+            errorNotification(error?.response.data?.message)
         }
     })
 
