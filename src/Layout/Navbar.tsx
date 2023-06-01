@@ -18,10 +18,12 @@ const Navbar = (props: Props) => {
     if (typeof window !== 'undefined') {
         //const carts: any = Cookies.get(cartItems)
         //console.log(carts)
-        isAuth = Cookies.get(isAuth)! && JSON.parse(Cookies.get('isAuth')!)
-        userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!)
-        cartItems = Cookies.get('cartItems') && JSON.parse(Cookies.get('cartItems')!)
+        isAuth = Cookies.get('isAuth') === "true"
+        userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
+        cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
     }
+    console.log(isAuth)
+
     
     const isMobile = useBreakpointValue({ base: true, md: false });
     const router = useRouter()

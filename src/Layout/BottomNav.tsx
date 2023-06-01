@@ -18,11 +18,11 @@ const BottomNavigation = () => {
     if (typeof window !== 'undefined') {
         //const carts: any = Cookies.get(cartItems)
         //console.log(carts)
-        isAuth = Cookies.get(isAuth)! && JSON.parse(Cookies.get('isAuth')!)
-        userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!)
-        cartItems = Cookies.get('cartItems') && JSON.parse(Cookies.get('cartItems')!)
+        isAuth = Cookies.get('isAuth') === "true"
+        userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
+        cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
     }
-    
+    console.log(isAuth)
 
     const handleNavigation = (route: string) => {
         router.push(route);
@@ -112,7 +112,7 @@ const BottomNavigation = () => {
             }
         
             {
-                isAuth === "true" && (
+                isAuth && (
                     <>
                         <VStack>
                             <IconButton
