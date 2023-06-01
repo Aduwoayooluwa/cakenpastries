@@ -24,7 +24,6 @@ const CategoryPage = (props: Props) => {
 
     return (
         <>
-            <Navbar />
             <Flex width="full" minH={"100vh"} py="100px" bg="whiteAlpha.800" align="center" justify="center">
             <Box maxW="1200px" width="full" p="4">
                 <Text fontWeight={"bold"} fontSize={{base: "2xl", md:"4xl"}} my="10px" textAlign={"center"}>Categories</Text>

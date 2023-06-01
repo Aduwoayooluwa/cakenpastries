@@ -19,7 +19,6 @@ const ProductsPage = (props: Props) => {
     }, []);
     return (
         <>
-            <Navbar />
             <Flex width="full" py="100px" bg="whiteAlpha.800" align="center" minHeight="100vh" justify="center">
             <Box maxW="1200px" width="full" p="4">
                 <SimpleGrid columns={[2, null, 3]} spacing="4" justifyItems="center">
