@@ -53,7 +53,7 @@ const CartPage = ({ cartItems }: any) => {
         userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!);
     }
 
-    const payment_ref = `${userInfo.id}${date.getTime()} `
+    const payment_ref = `${date.getTime()} `
     console.log(payment_ref)
     console.log(isAuth);
 
