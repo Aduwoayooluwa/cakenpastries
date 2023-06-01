@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import {
-  Box,
-  Heading,
-  VStack,
-  HStack,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  Divider,
-  Stack,
-  Center,
-  Skeleton
+    Box,
+    Heading,
+    VStack,
+    HStack,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    Text,
+    Divider,
+    Stack,
+    Center,
+    Skeleton
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import useOrder from '@/hooks/useOrder';
@@ -21,10 +21,10 @@ import { useRouter } from 'next/router'
 import { useAppStore } from '@/lib/store';
 
 interface CartItem {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
 }
 
 const CartPage = ({ cartItems }: any) => {
@@ -102,8 +102,8 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.setItem('address', address);
     };
 
-    const handleRemoveFromCart = (itemId: number) => {
-        setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    const handleRemoveFromCart = (itemId: string) => {
+        setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
         removeFromCart(itemId.toString());
     };
     
