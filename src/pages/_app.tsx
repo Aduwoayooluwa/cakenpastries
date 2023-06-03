@@ -11,9 +11,10 @@ import { myFont } from '@/utils/fontStyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Navbar from '@/Layout/Navbar';
 import { Toaster } from 'react-hot-toast';
-
+import { Inter } from "next/font/google"
 
 const queryClient = new QueryClient()
+const inter = Inter({ subsets: ['latin'] });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <style jsx global>
       {`
         :root {
-          --font-rubik: ${myFont.style.fontFamily};
+          --font-rubik: ${inter.style.fontFamily};
         }
       `}
     </style>

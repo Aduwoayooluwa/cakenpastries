@@ -5,7 +5,7 @@ const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
         <ChakraButton
         bg="#EAEAFF"
         color="#000093"
-        _hover={{ bg: "#000093", color: "#EAEAFF" }}
+        _hover={{ bg: "#CCCCFF", color: "#000093" }}
         {...rest}
         >
         {children}

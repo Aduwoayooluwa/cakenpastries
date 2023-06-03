@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import ProductsPage from '@/views/Products/ProductsPage'
-
-
+import { Divider, Heading } from '@chakra-ui/react'
+import HBar from '@/Layout/HBar'
+import { Box } from '@chakra-ui/react'
 export default function Home() {
   return (
     <>
@@ -12,7 +13,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ProductsPage />
+              <Box>
+                <HBar />
+              </Box>
+              <Divider orientation='horizontal'/>
+              <ProductsPage />
       </main>
     </>
   )

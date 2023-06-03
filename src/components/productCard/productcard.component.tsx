@@ -1,21 +1,51 @@
-import { Box, Flex, HStack, VStack, Text, Center } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack, Text, Center, Divider } from "@chakra-ui/react";
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../buttons/button.component";
 import { useAppStore } from "@/lib/store";
-
+import { handleDecrement, handleIncrement } from "@/controller/cartItems.controller";
 
 type Props = {
-    item: any
-}
+    item: any;
+    subtotal: any
+    items: any
+    setSubtotal: any
+    setItems: any
+};
 
+const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) => {
+    const { addToCart } = useAppStore();
+    const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
+    const [quantity, setQuantity] = useState(1);
 
-const ProductCard = ({item}: Props) => {
-    const { addToCart } = useAppStore()
+    useEffect(() => {
+        const isItemAddedToCart = localStorage.getItem(item?.id);
+        setIsAddToCartBtnClicked(!!isItemAddedToCart);
+    }, [item?.id]);
+
+    const handleAddToCart = () => {
+        addToCart(item);
+        setIsAddToCartBtnClicked(true);
+        localStorage.setItem(item?.id, "true");
+    };
+
+    const handleIncrementQuantity = () => {
+        setQuantity((prevQuantity) => prevQuantity + 1);
+        handleIncrement(item);
+    };
+
+    const handleDecrementQuantity = () => {
+        if (quantity > 1) {
+        setQuantity((prevQuantity) => prevQuantity - 1);
+        handleDecrement(item);
+        }
+    };
+
 
     return (
         <Box
-        minW={{base: "150px", md:"320px"}}
+        minW={{ base: "160px", md: "500px" }}
+        height={{ base: "300px", md: "full" }}
         w="full"
         p="4"
         borderWidth="1px"
@@ -24,34 +54,59 @@ const ProductCard = ({item}: Props) => {
         bg="white"
         shadow="md"
         >
-            <Center width={"full"} alignItems={"center"}>
-                <Flex align={"center"} direction="column" width="full">
-                    <Box position="relative" w="full" h={{base:"100px", md:"150px"}}>
-                    <Image
-                        src={item?.image}
-                        alt="Product Image"
-                        layout="fill"
-                        objectFit="cover"
-                    />
-                    </Box>
-                    <VStack align="start" spacing="2" mt="4" flex="1">
-                    <Text fontWeight="semibold" fontSize="lg" textColor={"black"} lineHeight="none">
-                        NGN {parseInt(item?.price)}
-                    </Text>
-                    <Text textColor="black" fontSize="sm" fontWeight="medium">
-                        {item?.name}
-                    </Text>
-                
-                    </VStack>
-                    <HStack justify="center" width="full" mt="4">
-                    <Button onClick={() => {
-                        addToCart(item)
-                    }}>Add to Cart</Button>
+        <Center width={"full"} alignItems={"center"}>
+            <Flex align={"center"} direction="column" width="full">
+            <Box
+                borderRadius="10px"
+                position="relative"
+                border="1px solid gray.300"
+                p="2"
+                w={{ base: "full", md: "350px" }}
+                h={{ base: "150px", md: "350px" }}
+            >
+                <Image
+                src={item?.image}
+                alt="Product Image"
+                layout="fill"
+                objectFit="cover"
+                style={{ borderRadius: "10px" }}
+                />
+            </Box>
+            <VStack mt={{ base: "5px", md: "0px" }} align={"start"} justify={"start"}>
+                <Text textColor="black" textAlign={"start"} fontSize="16px" fontWeight="medium">
+                {item?.name}
+                </Text>
+            </VStack>
 
+            <Box width="full" pt={{ base: "0px", md: "50px" }}>
+                <Divider orientation="horizontal" />
+            </Box>
+
+            <VStack align="start" justify="start" width="full" mt="4">
+                <Text textColor={"black"} fontSize={{ base: "8px", md: "sm" }}>
+                Starting from
+                </Text>
+                <Text fontWeight="extrabold" fontSize={{ base: "14px", md: "lg" }} textColor={"black"} lineHeight="none">
+                NGN {parseInt(item?.price)}
+                </Text>
+                {!isAddToCartBtnClicked ? (
+                <Button onClick={handleAddToCart}>Add to Cart</Button>
+                ) : (
+                <>
+                    <HStack mt={2}>
+                    <Button size="sm" onClick={handleDecrementQuantity} disabled={quantity === 1}>
+                        -
+                    </Button>
+                    <Text textColor="black">{quantity}</Text>
+                    <Button size="sm" onClick={handleIncrementQuantity}>
+                        +
+                    </Button>
                     </HStack>
-                </Flex>
-            </Center>
-    
+                </>
+                )}
+            </VStack>
+            </Flex>
+        </Center>
         </Box>
     );
 };

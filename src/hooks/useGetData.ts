@@ -1,19 +1,27 @@
-import React from 'react'
-import useSWR from "swr"
-import axios from "axios"
-type Props = {
-    url: string
-}
+import { useState, useEffect } from 'react';
 
+const useGetData = (url: string) => {
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-const fetcher = (url:string) => axios.get(url).then(res => res.data)
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const response = await fetch(url);
+            const responseData = await response.json();
+            setData(responseData.data);
+            setLoading(false);
+        } catch (err: any) {
+            setError(err);
+            setLoading(false);
+        }
+        };
 
-const useGetData = ( url : string) => {
+        fetchData();
+    }, [url]);
 
-    const { data, error, isLoading } = useSWR(url, fetcher)
+    return { data: data || [], loading, error };
+};
 
-
-    return { data, error, isLoading}
-}
-
-export default useGetData
+export default useGetData;
