@@ -148,15 +148,7 @@ const CartPage = ({ cartItems }: any) => {
 
     return (
         <>
-        {loading ? (
-            <Center width={"full"}>
-            <Box p={4}>
-                <Skeleton height="20px" width="100%" my={2} />
-                <Skeleton height="20px" width="100%" my={2} />
-                <Skeleton height="20px" width="100%" my={2} />
-            </Box>
-            </Center>
-        ) : (
+            
             <Center width={"full"}>
             <Box p={4}>
                 <Heading mb={4}>Cart</Heading>
@@ -176,7 +168,19 @@ const CartPage = ({ cartItems }: any) => {
                         width={{ base: "300px", md: "500px" }}
                         textColor={"black"}
                     >
+                        <Skeleton
+                        isLoaded={!loading}
+                        bg='white.500'
+                        color='white'
+                        >
                         <Heading size="md">{item?.name}</Heading>
+                        </Skeleton>
+
+                        <Skeleton
+                        isLoaded={!loading}
+                        bg='white.500'
+                        color='white'
+                        >
                         <HStack mt={2}>
                         <Button
                             size="sm"
@@ -190,8 +194,21 @@ const CartPage = ({ cartItems }: any) => {
                             +
                         </Button>
                         </HStack>
-                        <Text mt={2}>Price: NGN {item?.price * item?.quantity}</Text>
+                        </Skeleton>
 
+                        <Skeleton
+                            isLoaded={!loading}
+                            bg='white.500'
+                            color='white'
+                            >
+                        <Text mt={2}>Price: NGN {item?.price * item?.quantity}</Text>
+                        </Skeleton>
+
+                        <Skeleton
+                            isLoaded={!loading}
+                            bg='white.500'
+                            color='white'
+                            >
                         <Button
                         mt={4}
                         onClick={() => handleRemoveFromCart(item?.id)}
@@ -202,12 +219,18 @@ const CartPage = ({ cartItems }: any) => {
                         >
                         Remove
                         </Button>
+                        </Skeleton>
                     </Box>
                     </motion.div>
                 ))}
                 </VStack>
                 <Divider my={4} />
                 <Stack direction="column" spacing={4} align="start">
+                <Skeleton
+                isLoaded={!loading}
+                bg='white.500'
+                color='white'
+                >
                 <FormControl>
                     <FormLabel>Address</FormLabel>
                     <Input
@@ -216,6 +239,13 @@ const CartPage = ({ cartItems }: any) => {
                     onChange={handleAddressChange}
                     />
                 </FormControl>
+                </Skeleton>
+
+                <Skeleton
+                isLoaded={!loading}
+                bg='white.500'
+                color='white'
+                >
                 <Button
                     bg="#EAEAFF"
                     color="#000093"
@@ -224,24 +254,39 @@ const CartPage = ({ cartItems }: any) => {
                 >
                     Save Address
                 </Button>
+                </Skeleton>
                 </Stack>
+
                 <Divider my={4} />
                 <Box>
-                <Text fontWeight="bold">Subtotal: NGN {calculateTotalPrice()}</Text>
-                <Button
+
+                <Skeleton
+                isLoaded={!loading}
+                bg='white.500'
+                color='white'>
+                    <Text fontWeight="bold">Subtotal: NGN {calculateTotalPrice()}</Text>
+                </Skeleton>
+                
+                <Skeleton
+                isLoaded={!loading}
+                bg='white.500'
+                color='white'>
+                    <Button
                     mt={4}
                     onClick={handleProceedToPayment}
                     disabled={address.trim() === ''}
                     bg="#EAEAFF"
                     color="#000093"
                     _hover={{ bg: "#000093", color: "#EAEAFF" }}
-                >
-                    Proceed to Payment
-                </Button>
+                    >
+                        Proceed to Payment
+                    </Button>
+                </Skeleton>
+
                 </Box>
             </Box>
             </Center>
-        )}
+    
         </>
     );
 };
