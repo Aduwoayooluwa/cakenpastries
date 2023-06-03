@@ -184,9 +184,35 @@ const Navbar = (props: Props) => {
                     py={1}
                     opacity={cartItems?.length > 0 ? 1 : 0}
                     animation={cartItems?.length > 0 ? 'blinking 1s infinite' : 'none'}
+                    css={{
+                        '@keyframes blinking': {
+                            '0%': {
+                                opacity: 0,
+                            },
+                            '50%': {
+                                opacity: 1,
+                            },
+                            '100%': {
+                                opacity: 0,
+                            },
+                        },
+                        '@keyframes glow': {
+                            '0%': {
+                                boxShadow: '0 0 0 0 rgba(255, 0, 0, 0.7)',
+                            },
+                            '50%': {
+                                boxShadow: '0 0 0 10px rgba(255, 0, 0, 0.7)',
+                            },
+                            '100%': {
+                                boxShadow: '0 0 0 0 rgba(255, 0, 0, 0.7)',
+                            },
+                        },
+                        animation: cartItems?.length > 0 ? 'blinking 1s infinite, glow 1s infinite' : 'none',
+                    }}
                 >
                     {cartItems?.length > 0 ? cartItems?.length : ''}
                 </Badge>
+
                 </Box>
                 </HStack>
                 

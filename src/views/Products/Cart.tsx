@@ -31,6 +31,9 @@ const CartPage = ({ cartItems }: any) => {
     const [address, setAddress] = useState('');
     const [subtotal, setSubtotal] = useState(0);
 
+    // add to cart button clicked
+    
+
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
 
@@ -84,10 +87,21 @@ const CartPage = ({ cartItems }: any) => {
 
     const handleDecrement = (item: CartItem) => {
         if (item.quantity > 1) {
-        item.quantity -= 1;
-        setSubtotal((prevSubtotal) => prevSubtotal - item?.price);
+            const updatedItems = items.map((i) => {
+                if (i.id === item.id) {
+                    return {
+                        ...i,
+                        quantity: i.quantity - 1
+                    };
+                }
+                return i;
+            });
+    
+            setItems(updatedItems);
+            setSubtotal((prevSubtotal) => prevSubtotal - item.price);
         }
     };
+    
 
     const calculateTotalPrice = () => {
         return items?.reduce((total, item) => total + item?.price * item?.quantity, 0);
