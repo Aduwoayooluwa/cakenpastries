@@ -1,6 +1,7 @@
 import useLogin from '@/hooks/useLogin';
 import { Box, Button, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Login = () => {
@@ -47,6 +48,7 @@ const Login = () => {
                 Login
             </Button>
             </motion.div>
+            <Text>Don&apos;t have an account? Click <Link style={{color: "purple"}} href="/register">here</Link> to Register</Text>
         </form>
         </Box>
     );
