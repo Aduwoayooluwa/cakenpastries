@@ -13,7 +13,7 @@ const Category = (props: Props) => {
     const currentCategory = router.query.category
 
     console.log(router.query.category)
-    const { data } = useGetData("https://backend.cakesandpastries.ng/api/menu/all")
+    const { data, isLoading, error } = useGetData("https://backend.cakesandpastries.ng/api/menu/all")
     const [cat, setCat] = useState("")
 
     data.data.forEach((item: any)=> {
@@ -33,6 +33,14 @@ const Category = (props: Props) => {
     
         return () => clearTimeout(timer);
     }, []);
+    if (isLoading) {
+        return <div>Loading...</div>; // Show a loading indicator while data is being fetched
+      }
+    
+      if (error) {
+        return <div>Error: {error.message}</div>; // Show an error message if there's an error during data fetching
+      }
+    
 
         if (!data) {
             // Data is not yet available, show loading state or return null
