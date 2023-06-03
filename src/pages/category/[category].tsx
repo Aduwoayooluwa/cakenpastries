@@ -21,6 +21,9 @@ const Category = (props: Props) => {
     
     })
 
+    const [subtotal, setSubtotal] = useState<any>(0);
+    const [items, setItems] = useState([]);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -51,7 +54,13 @@ const Category = (props: Props) => {
                                             color='white'
                                             key={item.id}>
                                             <Box >
-                                            <ProductCard item={item} />
+                                            <ProductCard 
+                                            
+                                            item={item}
+                                            subtotal={subtotal}
+                                            setSubtotal={setSubtotal}
+                                            items={items}
+                                            setItems={setItems} />
                                             </Box>
                                         </Skeleton>
                                     )
