@@ -80,7 +80,7 @@ const Category = (props: Props) => {
                 <Box maxW="full" width="full" p="4">
                 <SimpleGrid columns={[2, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
                     {
-                        data?.data?.map((item: any) => {
+                        data?.data !== "undefined" && data?.data?.map((item: any) => {
                             return (<>
                                 {
                                     item?.category?.name === currentCategory && (
