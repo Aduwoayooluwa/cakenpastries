@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, VStack, Text, Center, Divider } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack, Text, Center, Divider, Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Button from "../buttons/button.component";
@@ -17,7 +17,15 @@ type Props = {
 
 const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) => {
     
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 3000);
+    
+        return () => clearTimeout(timer);
+    }, []);
 
     const { addToCart } = useAppStore();
     const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
@@ -64,7 +72,13 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
         >
         <Center width={"full"} alignItems={"center"}>
             <Flex align={"center"} direction="column" width="full">
-            <Box
+                <Skeleton
+                    bg='white.500'
+                    color='white'
+                    minW={"200px"}
+                    isLoaded={!loading}
+                >
+                <Box
                 borderRadius="10px"
                 position="relative"
                 border="1px solid gray.300"
@@ -80,10 +94,18 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
                 style={{ borderRadius: "10px" }}
                 />
             </Box>
+                </Skeleton>
+            
             <VStack mt={{ base: "5px", md: "0px" }} align={"start"} justify={"start"}>
+                <Skeleton
+                 bg='white.500'
+                 color='white'
+                 isLoaded={!loading}
+                >
                 <Text textColor="black" textAlign={"start"} fontSize="16px" fontWeight="medium">
                 {item?.name}
                 </Text>
+                </Skeleton>
             </VStack>
 
             <Box width="full" pt={{ base: "0px", md: "50px" }}>
@@ -91,18 +113,39 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
             </Box>
 
             <VStack align="start" justify="start" width="full" mt="4">
+                <Skeleton
+                 bg='white.500'
+                 color='white'
+                 isLoaded={!loading}
+                >
                 <Text textColor={"black"} fontSize={{ base: "8px", md: "sm" }}>
                 Starting from
                 </Text>
-                <Text fontWeight="extrabold" fontSize={{ base: "14px", md: "lg" }} textColor={"black"} lineHeight="none">
-                NGN {parseInt(item?.price)}
-                </Text>
+                </Skeleton>
+
+                <Skeleton
+                 bg='white.500'
+                 color='white'
+                 isLoaded={!loading}
+                >
+                    <Text fontWeight="extrabold" fontSize={{ base: "14px", md: "lg" }} textColor={"black"} lineHeight="none">
+                        NGN {parseInt(item?.price)}
+                        </Text>
+                </Skeleton>
+                
                 {!isAddToCartBtnClicked ? (
+                    <Skeleton
+                    bg='white.500'
+                    color='white'
+                    isLoaded={!loading}
+                   >
                 <Button onClick={() => {
                     setIsProteinVisible(true)
                 }}>Add to Cart</Button>
+                </Skeleton>
                 ) : (
                 <>
+
                     <Button disabled={true} onClick={() => {
                     
                 }}>Added</Button>

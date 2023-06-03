@@ -32,12 +32,8 @@ const ProductsPage = (props: Props) => {
                     {
                         data?.map((item: any) => {
                             return (
-                                <Skeleton 
-                                    isLoaded={!loading}
-                                    bg='white.500'
-                                    color='white'
-                                    key={item.id}>
-                                    <Box >
+
+                                    <Box key={item?.id}>
                                     <ProductCard item={item} 
                                     subtotal={subtotal}
                                     setSubtotal={setSubtotal}
@@ -45,7 +41,6 @@ const ProductsPage = (props: Props) => {
                                     setItems={setItems}
                                     />
                                     </Box>
-                                </Skeleton>
                                 
                             )
                         })
