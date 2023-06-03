@@ -29,7 +29,7 @@ const CategoryPage = (props: Props) => {
                 <Text fontWeight={"bold"} fontSize={{base: "2xl", md:"4xl"}} my="10px" textAlign={"center"}>Categories</Text>
                 <SimpleGrid columns={[2, null, 3]} spacing="4" justifyItems="center">
                     {
-                        data?.data.map((category: any) => {
+                        data?.map((category: any) => {
                             return (
                                 <Skeleton 
                                 isLoaded={!loading}

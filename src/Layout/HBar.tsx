@@ -7,7 +7,7 @@ type Props = {}
 
 const HBar = (props: Props) => {
     const { data } = useGetData("https://backend.cakesandpastries.ng/api/categories/all")
-    
+    console.log(data)
     const [loading, setLoading] = useState(true);
     const router = useRouter()
     console.log(router)
@@ -20,10 +20,11 @@ const HBar = (props: Props) => {
         return () => clearTimeout(timer);
     }, []);
     
-    return (
+
+        return (
         <Flex pt="100px">
                 {
-                        data?.data.map((category: any) => {
+                        data?.map((category: any) => {
                             return (
                                 <Skeleton 
                                 isLoaded={!loading}
@@ -43,6 +44,7 @@ const HBar = (props: Props) => {
                     }
         </Flex>
     )
+    
 }
 
 export default HBar

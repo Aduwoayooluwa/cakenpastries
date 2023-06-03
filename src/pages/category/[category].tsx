@@ -16,7 +16,7 @@ const Category = (props: Props) => {
     const { data, error } = useGetData("https://backend.cakesandpastries.ng/api/menu/all")
     const [cat, setCat] = useState("")
 
-    data.data.forEach((item: any)=> {
+    data.forEach((item: any)=> {
         console.log(item.category.name)
     
     })
@@ -53,7 +53,7 @@ const Category = (props: Props) => {
                 <Box maxW="full" width="full" p="4">
                 <SimpleGrid columns={[2, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
                     {
-                        data?.data !== "undefined" && data?.data?.map((item: any) => {
+                        data !== "undefined" && data?.map((item: any) => {
                             return (<>
                                 {
                                     item?.category?.name === currentCategory && (
