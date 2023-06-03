@@ -33,6 +33,34 @@ const Category = (props: Props) => {
     
         return () => clearTimeout(timer);
     }, []);
+
+        if (!data) {
+            // Data is not yet available, show loading state or return null
+            return (
+            <>
+                <HBar />
+                <Divider orientation="horizontal" />
+                <VStack minHeight="100vh">
+                <Heading>{currentCategory}</Heading>
+                <Flex width="full" bg="whiteAlpha.800" align="start" justify="start">
+                    <Box maxW="full" width="full" p="4">
+                    <SimpleGrid columns={[2, 3, 4]} spacing={{ base: "0", md: "4" }} width="full">
+                        {/* Render loading state */}
+                        {loading ? (
+                        <>
+                            <Skeleton height="300px" />
+                            <Skeleton height="300px" />
+                            <Skeleton height="300px" />
+                            {/* Add more skeleton placeholders as needed */}
+                        </>
+                        ) : null}
+                    </SimpleGrid>
+                    </Box>
+                </Flex>
+                </VStack>
+            </>
+            );
+        }
     return (
         <>
             <HBar />
