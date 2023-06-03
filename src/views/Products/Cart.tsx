@@ -30,8 +30,13 @@ interface CartItem {
 const CartPage = ({ cartItems }: any) => {
     const [address, setAddress] = useState('');
     const [subtotal, setSubtotal] = useState(0);
-
+    console.log(cartItems)
+    //const getItemId = localStorage.getItem('')
     // add to cart button clicked
+
+    const removeItemId = (itemId:string) => {
+        localStorage.removeItem(itemId)
+    }
     
 
     const [items, setItems] = useState<CartItem[]>(cartItems);
@@ -119,6 +124,7 @@ const CartPage = ({ cartItems }: any) => {
     const handleRemoveFromCart = (itemId: string) => {
         setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
         removeFromCart(itemId.toString());
+        removeItemId(itemId)
     };
     
 

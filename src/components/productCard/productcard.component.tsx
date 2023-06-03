@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Button from "../buttons/button.component";
 import { useAppStore } from "@/lib/store";
 import { handleDecrement, handleIncrement } from "@/controller/cartItems.controller";
+import useGetData from "@/hooks/useGetData";
+import ProteinBottomUp from "@/views/Products/Protein";
 
 type Props = {
     item: any;
@@ -14,6 +16,9 @@ type Props = {
 };
 
 const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) => {
+    
+
+
     const { addToCart } = useAppStore();
     const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
     const [quantity, setQuantity] = useState(1);
@@ -22,6 +27,9 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
         const isItemAddedToCart = localStorage.getItem(item?.id);
         setIsAddToCartBtnClicked(!!isItemAddedToCart);
     }, [item?.id]);
+
+    // toggle protin bar
+    const [isProteinVisible, setIsProteinVisible] = useState(false)
 
     const handleAddToCart = () => {
         addToCart(item);
@@ -90,22 +98,24 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
                 NGN {parseInt(item?.price)}
                 </Text>
                 {!isAddToCartBtnClicked ? (
-                <Button onClick={handleAddToCart}>Add to Cart</Button>
+                <Button onClick={() => {
+                    setIsProteinVisible(true)
+                }}>Add to Cart</Button>
                 ) : (
                 <>
-                    <HStack mt={2}>
-                    <Button size="sm" onClick={handleDecrementQuantity} disabled={quantity === 1}>
-                        -
-                    </Button>
-                    <Text textColor="black">{quantity}</Text>
-                    <Button size="sm" onClick={handleIncrementQuantity}>
-                        +
-                    </Button>
-                    </HStack>
+                    <Button disabled={true} onClick={() => {
+                    
+                }}>Added</Button>
                 </>
                 )}
             </VStack>
             </Flex>
+
+            {
+                isProteinVisible && (<>
+                    <ProteinBottomUp items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
+                </>)
+            }
         </Center>
         </Box>
     );
