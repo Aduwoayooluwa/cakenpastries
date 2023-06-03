@@ -22,7 +22,12 @@ const HBar = (props: Props) => {
     
 
         return (
-        <Flex pt="100px">
+        <Flex align="center" px="5px" pt="80px">
+            <Link href="/">
+                <Text fontWeight="medium" textColor={router.asPath === `/` ? "#000093" : "black"}>
+                                        All Items
+                                        </Text>
+                                    </Link>
                 {
                         data?.map((category: any) => {
                             return (
@@ -32,6 +37,7 @@ const HBar = (props: Props) => {
                                 fadeDuration={1}
                                 key={category.id}>
                                     <Box p="4">
+                                    
                                     <Link  href={`/category/${category?.name}`}>
                                         <Text fontWeight="medium" textColor={router.asPath === `/category/${category?.name}` ? "#000093" : "black"}>{category?.name}</Text>
                                     </Link>

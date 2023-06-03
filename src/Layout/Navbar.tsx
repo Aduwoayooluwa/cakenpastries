@@ -60,11 +60,32 @@ const Navbar = (props: Props) => {
                 bg="white"
                 color="gray.800"
                 borderRadius="md"
+                display={{base: "none", md:"inherit"}}
                 px={4}
                 py={2}
                 _placeholder={{ color: 'gray.400' }}
                 _focus={{ outline: 'none', boxShadow: 'outline' }}
             />
+            <HStack>
+                <IconButton
+                        aria-label="Info"
+                        icon={<FiSearch />}
+                        size="lg"
+                        display={{base: "inherit", md:"none"}}
+                        variant="ghost"
+                        colorScheme="gray.800"
+                    />
+
+                <IconButton
+                        aria-label="Info"
+                        icon={<FiInfo />}
+                        size="lg"
+                        display={{base: "inherit", md:"none"}}
+                        variant="ghost"
+                />
+            </HStack>
+            
+
             </Box>
         ) : (
             <HStack spacing={4}>
@@ -76,11 +97,11 @@ const Navbar = (props: Props) => {
                 color="gray.800"
                 borderRadius="md"
                 px={4}
+                
                 py={2}
                 _placeholder={{ color: 'gray.400' }}
                 _focus={{ outline: 'none', boxShadow: 'outline' }}
             />
-
             {/* Menu items */}
             <HStack spacing={2}>
                 <HStack spacing={1}>
