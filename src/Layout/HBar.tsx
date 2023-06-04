@@ -15,7 +15,7 @@ const HBar = (props: Props) => {
     // Simulating an API request delay
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 3000);
+        }, 1500);
     
         return () => clearTimeout(timer);
     }, []);
@@ -23,11 +23,18 @@ const HBar = (props: Props) => {
 
         return (
         <Flex align="center" px="5px" pt="80px">
+            <Skeleton
+            isLoaded={!loading}
+            color='white'
+            fadeDuration={1}
+            >
             <Link href="/">
-                <Text fontWeight="medium" textColor={router.asPath === `/` ? "#000093" : "black"}>
-                                        All Items
-                                        </Text>
-                                    </Link>
+            <Text fontWeight="medium" textColor={router.asPath === `/` ? "#000093" : "black"}>
+                        All Items
+                        </Text>
+                    </Link>
+            </Skeleton> 
+                      
                 {
                         data?.map((category: any) => {
                             return (
