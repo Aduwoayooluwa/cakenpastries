@@ -18,7 +18,7 @@ const Signin = (props: Props) => {
     
     return (
         <>
-            <VStack px={{base:"10px", md:"0px"}} minH={"100vh"} align={"center"} justify={"center"}>
+            <VStack bg="whiteAlpha.700" px={{base:"10px", md:"0px"}} minH={"100vh"} align={"center"} justify={"center"}>
                 <Login />
             </VStack>
         </>
