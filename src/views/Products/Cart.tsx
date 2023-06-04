@@ -74,7 +74,7 @@ const CartPage = ({ cartItems }: any) => {
         // Simulating an API request delay
         const timer = setTimeout(() => {
         setLoading(false);
-        }, 3000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -142,7 +142,6 @@ const CartPage = ({ cartItems }: any) => {
         amount: calculateTotalPrice()
         };
 
-        console.log(payload);
         order.mutate(payload);
     };
 
@@ -150,7 +149,7 @@ const CartPage = ({ cartItems }: any) => {
         <>
             
             <Center width={"full"}>
-            <Box p={4}>
+            <Box textColor="black" p={4}>
                 <Heading mb={4}>Cart</Heading>
                 <VStack spacing={4} align="start">
                 {items?.map((item: CartItem) => (
@@ -173,7 +172,7 @@ const CartPage = ({ cartItems }: any) => {
                         bg='white.500'
                         color='white'
                         >
-                        <Heading size="md">{item?.name}</Heading>
+                        <Heading textColor={"black"} size="md">{item?.name}</Heading>
                         </Skeleton>
 
                         <Skeleton
@@ -181,7 +180,7 @@ const CartPage = ({ cartItems }: any) => {
                         bg='white.500'
                         color='white'
                         >
-                        <HStack mt={2}>
+                        <HStack textColor={"purple.500"} mt={2}>
                         <Button
                             size="sm"
                             onClick={() => handleDecrement(item)}
@@ -200,6 +199,7 @@ const CartPage = ({ cartItems }: any) => {
                             isLoaded={!loading}
                             bg='white.500'
                             color='white'
+                            textColor={"black"}
                             >
                         <Text mt={2}>Price: NGN {item?.price * item?.quantity}</Text>
                         </Skeleton>

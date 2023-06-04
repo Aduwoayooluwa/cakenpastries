@@ -17,7 +17,7 @@ const CategoryPage = (props: Props) => {
       // Simulating an API request delay
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 3000);
+        }, 1500);
     
         return () => clearTimeout(timer);
     }, []);

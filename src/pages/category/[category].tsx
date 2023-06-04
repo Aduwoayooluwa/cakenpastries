@@ -29,7 +29,7 @@ const Category = (props: Props) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 3000);
+        }, 1500);
     
         return () => clearTimeout(timer);
     }, []);
