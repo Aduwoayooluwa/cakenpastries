@@ -13,6 +13,7 @@ const ProductsPage = (props: Props) => {
     
     const [subtotal, setSubtotal] = useState<any>(0);
     const [items, setItems] = useState([]);
+    const [proteinBarUp, setProteinBarUp] = useState(false)
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -23,22 +24,27 @@ const ProductsPage = (props: Props) => {
     }, []);
     return (
         <>
-            <VStack py="" minHeight="100vh">
+            <VStack 
+            // style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }}
+            bg={proteinBarUp ? "rgba(0, 0, 0, 0.6)" : "white"}
+            py="" minHeight="100vh">
                 <Heading>All Items</Heading>
                 <Flex  width="full"  bg="whiteAlpha.800" align="start"  justify="start">
             
                 <Box maxW="full" width="full" p="4">
-                <SimpleGrid columns={[2, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
+                <SimpleGrid columns={[2, 2, 2, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
                     {
                         data?.map((item: any) => {
                             return (
 
-                                    <Box key={item?.id}>
+                                    <Box  key={item?.id}>
                                     <ProductCard item={item} 
                                     subtotal={subtotal}
                                     setSubtotal={setSubtotal}
                                     items={items}
                                     setItems={setItems}
+                                    setProteinBarUp={setProteinBarUp}
+                                    proteinBarUp={proteinBarUp}
                                     />
                                     </Box>
                                 

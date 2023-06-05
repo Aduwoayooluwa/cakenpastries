@@ -13,9 +13,11 @@ type Props = {
     items: any
     setSubtotal: any
     setItems: any
+    setProteinBarUp: any
+    proteinBarUp: boolean
 };
 
-const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) => {
+const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
     
     const [loading, setLoading] = useState(true);
 
@@ -61,27 +63,29 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
     return (
         <Box
         minW={{ base: "160px", md: "500px" }}
-        height={{ base: "300px", md: "full" }}
-        w="full"
-        p="4"
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius="md"
-        bg="white"
-        shadow="md"
+    height={{ base: "300px", md: "full" }}
+    w="full"
+    p="4"
+    borderWidth="1px"
+    borderColor="gray.200"
+    borderRadius="md"
+    shadow="md"
         >
         <Center width={"full"} alignItems={"center"}>
-            <Flex align={"center"} direction="column" width="full">
+            <Flex style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }} align={"start"} direction="column" width="full">
                 <Skeleton
                     bg='white.500'
                     color='white'
                     minW={"200px"}
                     isLoaded={!loading}
                 >
-                <Box
+                <VStack
                 borderRadius="10px"
                 position="relative"
                 border="1px solid gray.300"
+                maxWidth={{base:"160px", md:"full"}}
+                align={"center"}
+                justify={"center"}
                 p="2"
                 w={{ base: "full", md: "350px" }}
                 h={{ base: "150px", md: "350px" }}
@@ -91,16 +95,16 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
                 alt="Product Image"
                 layout="fill"
                 objectFit="cover"
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px", marginLeft:"0px" }}
                 />
-            </Box>
+            </VStack>
                 </Skeleton>
             
             <VStack mt={{ base: "5px", md: "0px" }} align={"start"} justify={"start"}>
                 <Skeleton
-                 bg='white.500'
-                 color='white'
-                 isLoaded={!loading}
+                    bg='white.500'
+                    color='white'
+                    isLoaded={!loading}
                 >
                 <Text textColor="black" textAlign={"start"} fontSize="16px" fontWeight="medium">
                 {item?.name}
@@ -141,6 +145,7 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
                    >
                 <Button onClick={() => {
                     setIsProteinVisible(true)
+                    setProteinBarUp(true)
                 }}>Add to Cart</Button>
                 </Skeleton>
                 ) : (
@@ -156,7 +161,7 @@ const ProductCard = ({ item, items, subtotal, setSubtotal, setItems }: Props) =>
 
             {
                 isProteinVisible && (<>
-                    <ProteinBottomUp items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
+                    <ProteinBottomUp setProteinBarUp={setProteinBarUp} items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
                 </>)
             }
         </Center>
