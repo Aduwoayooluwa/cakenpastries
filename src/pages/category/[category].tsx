@@ -64,12 +64,12 @@ const Category = (props: Props) => {
                                             key={item.id}>
                                             <Box >
                                             <ProductCard 
-                                            
                                             item={item}
                                             subtotal={subtotal}
                                             setSubtotal={setSubtotal}
                                             items={items}
-                                            setItems={setItems} />
+                                            setItems={setItems}
+                                             />
                                             </Box>
                                         </Skeleton>
                                     )

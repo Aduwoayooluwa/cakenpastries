@@ -13,8 +13,8 @@ type Props = {
     items: any
     setSubtotal: any
     setItems: any
-    setProteinBarUp: any
-    proteinBarUp: boolean
+    setProteinBarUp?: any
+    proteinBarUp?: boolean
 };
 
 const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {

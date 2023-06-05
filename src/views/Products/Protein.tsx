@@ -125,7 +125,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 placeholder="Select an option"
               >
                 {data?.map((item: any) => (
-                  <option key={item?.id}>{item.name}</option>
+                  <option key={item?.id}>{item?.name}</option>
                 ))}
               </Select>
             </FormControl>
