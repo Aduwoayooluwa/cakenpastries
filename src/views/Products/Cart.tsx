@@ -86,9 +86,27 @@ const CartPage = ({ cartItems }: any) => {
     const order = useOrder();
 
     const handleIncrement = (item: CartItem) => {
-        item.quantity += 1;
-        setSubtotal((prevSubtotal) => prevSubtotal + item?.price);
-    };
+        const updatedQuantity = item.quantity + 1;
+      
+        // Update the quantity in the items array
+        const updatedItems = items.map((i) => {
+          if (i.id === item.id) {
+            return {
+              ...i,
+              quantity: updatedQuantity
+            };
+          }
+          return i;
+        });
+      
+        // Update the quantity in localStorage
+        localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
+      
+        // Update the state variables
+        setItems(updatedItems);
+        setSubtotal((prevSubtotal) => prevSubtotal + parseInt(getItemPrice(item?.name)!));
+      };
+      
 
     const handleDecrement = (item: CartItem) => {
         if (item.quantity > 1) {
@@ -145,6 +163,15 @@ const CartPage = ({ cartItems }: any) => {
         order.mutate(payload);
     };
 
+    // function to handle getting quantuty
+    const getItemQuantity = (itemName: any) => {
+        return localStorage.getItem(itemName)
+    }
+
+    const getItemPrice = (itemName: any) => {
+        return localStorage.getItem(itemName)
+    }
+
     return (
         <>
             
@@ -188,7 +215,7 @@ const CartPage = ({ cartItems }: any) => {
                         >
                             -
                         </Button>
-                        <Text>{item?.quantity}</Text>
+                        <Text>{parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text>
                         <Button size="sm" onClick={() => handleIncrement(item)}>
                             +
                         </Button>
@@ -264,7 +291,7 @@ const CartPage = ({ cartItems }: any) => {
                 isLoaded={!loading}
                 bg='white.500'
                 color='white'>
-                    <Text fontWeight="bold">Subtotal: NGN {calculateTotalPrice()}</Text>
+                    <Text textColor="black" fontWeight="bold">Subtotal: NGN {calculateTotalPrice()}</Text>
                 </Skeleton>
                 
                 <Skeleton
