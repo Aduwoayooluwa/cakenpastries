@@ -109,17 +109,19 @@ const CartPage = ({ cartItems }: any) => {
       
 
     const handleDecrement = (item: CartItem) => {
+        const updatedQuantity = item.quantity - 1;
         if (item.quantity > 1) {
             const updatedItems = items.map((i) => {
                 if (i.id === item.id) {
                     return {
                         ...i,
-                        quantity: i.quantity - 1
+                        quantity: updatedQuantity
                     };
                 }
                 return i;
             });
-    
+            localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
+            
             setItems(updatedItems);
             setSubtotal((prevSubtotal) => prevSubtotal - item.price);
         }
