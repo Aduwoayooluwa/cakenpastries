@@ -141,10 +141,12 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.setItem('address', address);
     };
 
-    const handleRemoveFromCart = (itemId: string) => {
+    const handleRemoveFromCart = (itemId: string, itemName?:string) => {
         setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
         removeFromCart(itemId.toString());
         removeItemId(itemId)
+        localStorage.removeItem(`${itemName}_quantity`)
+        localStorage.removeItem(`${itemName}_price`)
     };
     
 
@@ -240,7 +242,7 @@ const CartPage = ({ cartItems }: any) => {
                             >
                         <Button
                         mt={4}
-                        onClick={() => handleRemoveFromCart(item?.id)}
+                        onClick={() => handleRemoveFromCart(item?.id, item?.name)}
                         disabled={address.trim() === ''}
                         bg="red.600"
                         color="#EAEAFF"
