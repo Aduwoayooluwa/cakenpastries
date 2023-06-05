@@ -13,7 +13,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const { data } = useGetData("https://backend.cakesandpastries.ng/api/menu/protein");
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
-  const [cartQuantity, setCartQuantity] = useState(1);
+  const [cartQuantity, setCartQuantity] = useState(0);
 
   // number of plates
   const [plates, setPlates] = useState(parseInt(itemPrice)*cartQuantity)
