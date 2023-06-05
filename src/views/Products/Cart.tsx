@@ -109,17 +109,19 @@ const CartPage = ({ cartItems }: any) => {
       
 
     const handleDecrement = (item: CartItem) => {
+        const updatedQuantity = item.quantity - 1;
         if (item.quantity > 1) {
             const updatedItems = items.map((i) => {
                 if (i.id === item.id) {
                     return {
                         ...i,
-                        quantity: i.quantity - 1
+                        quantity: updatedQuantity
                     };
                 }
                 return i;
             });
-    
+            localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
+            
             setItems(updatedItems);
             setSubtotal((prevSubtotal) => prevSubtotal - item.price);
         }
@@ -139,10 +141,12 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.setItem('address', address);
     };
 
-    const handleRemoveFromCart = (itemId: string) => {
+    const handleRemoveFromCart = (itemId: string, itemName?:string) => {
         setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
         removeFromCart(itemId.toString());
         removeItemId(itemId)
+        localStorage.removeItem(`${itemName}_quantity`)
+        localStorage.removeItem(`${itemName}_price`)
     };
     
 
@@ -238,7 +242,7 @@ const CartPage = ({ cartItems }: any) => {
                             >
                         <Button
                         mt={4}
-                        onClick={() => handleRemoveFromCart(item?.id)}
+                        onClick={() => handleRemoveFromCart(item?.id, item?.name)}
                         disabled={address.trim() === ''}
                         bg="red.600"
                         color="#EAEAFF"
