@@ -160,7 +160,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               localStorage.setItem(`${itemName}_price`, (plates + scoopPrice).toString())
             }} width={"30%"} colorScheme="green">
               <Link href="/cart_items">
-                Go to Cart {cartQuantity > 0 ? cartQuantity : ''}
+                Go to Cart
               </Link>
             </Button>
           </HStack>
