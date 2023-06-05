@@ -228,7 +228,7 @@ const CartPage = ({ cartItems }: any) => {
                             color='white'
                             textColor={"black"}
                             >
-                        <Text mt={2}>Price: NGN {item?.price * item?.quantity}</Text>
+                        <Text mt={2}>Price: NGN {item?.quantity * parseInt(getItemPrice(`${item?.name}_price`)!)}</Text>
                         </Skeleton>
 
                         <Skeleton
@@ -264,6 +264,7 @@ const CartPage = ({ cartItems }: any) => {
                     type="text"
                     value={address || savedAddress}
                     onChange={handleAddressChange}
+                    textColor={"black"}
                     />
                 </FormControl>
                 </Skeleton>
