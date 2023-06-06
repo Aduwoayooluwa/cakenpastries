@@ -8,7 +8,8 @@ import React, { useState, useEffect } from 'react';
 type Props = {};
 
 const ProductsPage = (props: Props) => {
-    const { data } =  useGetData("https://backend.cakesandpastries.ng/api/menu/all")
+    const { data } =  useGetData(`${process.env.NEXT_PUBLIC_API_BASE_URI}/menu/all`)
+    
     const [loading, setLoading] = useState(true);
     
     const [subtotal, setSubtotal] = useState<any>(0);

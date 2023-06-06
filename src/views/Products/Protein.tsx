@@ -4,19 +4,21 @@ import Image from 'next/image';
 import useGetData from '@/hooks/useGetData';
 import Link from "next/link"
 import { useAppStore } from '@/lib/store';
-import { handleScoopDecrementQuantity, handleScoopIncrementQuantity } from '@/controller/protein.controller';
+import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
 
 
-// ...
-// ...
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp }: any) => {
-  const { data } = useGetData("https://backend.cakesandpastries.ng/api/menu/protein");
+  const { data } = useGetData(`${process.env.NEXT_PUBLIC_API_BASE_URI}/menu/protein`);
+
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
   const [cartQuantity, setCartQuantity] = useState(0);
 
   // number of plates
   const [plates, setPlates] = useState(parseInt(itemPrice)*cartQuantity)
+
+  // cart
+  const [cartItemsList, setCartItemsList] = useState<Map<string, number>>(new Map())
 
   // handling scooping
   const [scoopQuan, setScoopQuantity] = useState(1)
@@ -31,24 +33,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     setIsAddToCartBtnClicked(!!isItemAddedToCart);
   }, [itemId]);
 
-  const handleSelectChange = (event: any) => {
-    const selectedOption = event.target.value;
-    const selectedItem = data.find((item: any) => item.name === selectedOption);
-
-    if (selectedItem) {
-      setPlates(parseInt(itemPrice) + parseInt(selectedItem.price) || parseInt(itemPrice));
-    } else {
-      setPlates(parseInt(itemPrice) || 0);
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      const parsedCartItems = JSON.parse(storedCartItems);
+      setCartItemsList(new Map(parsedCartItems));
     }
-    setSelectedOption(selectedOption);
-  };
+  }, []);
+  
 
-  const handleAddToCart = () => {
-    addToCart(items);
-    setIsAddToCartBtnClicked(true);
-    localStorage.setItem(itemId, "true");
-    setCartQuantity((prevQuantity) => prevQuantity + 1);
-  };
 
   const handleIncrement = () => {
     setCartQuantity((prevQuantity) => prevQuantity + 1);
@@ -64,6 +57,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     }
     return;
   };
+
 
   return (
     <Box zIndex={1000} position="absolute" width="full" bottom="0" textColor="black" bg="white" p={4}>
@@ -121,7 +115,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               <FormLabel>Add Protein</FormLabel>
               <Select
                 value={selectedOption}
-                onChange={handleSelectChange}
+                onChange={(event: React.FormEvent<HTMLSelectElement>) => {
+                  handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption)
+                }}
                 placeholder="Select an option"
               >
                 {data?.map((item: any) => (
@@ -140,7 +136,18 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <Divider orientation="horizontal" width="full" my="20px" />
           <HStack width={"full"} justifyContent={"space-between"}>
             {!isAddToCartBtnClicked ? (
-              <Button colorScheme="blue" width={"30%"} onClick={handleAddToCart}>
+              <Button colorScheme="blue" width={"30%"} onClick={() => {
+                  handleAddToCart(
+                    items,
+                    addToCart,
+                    setIsAddToCartBtnClicked,
+                    itemId,
+                    setCartQuantity,
+                    cartItemsList,
+                    setCartItemsList
+                );
+                console.log(cartItemsList)
+              }}>
                 Add To Cart
               </Button>
             ) : (
@@ -160,7 +167,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               localStorage.setItem(`${itemName}_price`, (plates + scoopPrice).toString())
             }} width={"30%"} colorScheme="green">
               <Link href="/cart_items">
-                Go to Cart {cartQuantity > 0 ? cartQuantity : ''}
+                Go to Cart
               </Link>
             </Button>
           </HStack>
