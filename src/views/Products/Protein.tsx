@@ -8,7 +8,7 @@ import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelec
 
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp }: any) => {
-  const { data } = useGetData(`${process.env.NEXT_PUBLIC_API_BASE_URI}/menu/protein`);
+  const { data } = useGetData(`https://backend.cakesandpastries.ng/api/menu/protein`);
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');

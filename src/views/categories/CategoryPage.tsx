@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 type Props = {};
 
 const CategoryPage = (props: Props) => {
-    const { data } =  useGetData(`${process.env.NEXT_PUBLIC_URL}/categories/all`)
+    const { data } =  useGetData(`https://backend.cakesandpastries.ng/api/categories/all`)
 
     const [loading, setLoading] = useState(true);
 
