@@ -31,8 +31,6 @@ const CartPage = ({ cartItems }: any) => {
     const [address, setAddress] = useState('');
     const [subtotal, setSubtotal] = useState(0);
     console.log(cartItems)
-    //const getItemId = localStorage.getItem('')
-    // add to cart button clicked
 
     const removeItemId = (itemId:string) => {
         localStorage.removeItem(itemId)
@@ -87,26 +85,25 @@ const CartPage = ({ cartItems }: any) => {
 
     const handleIncrement = (item: CartItem) => {
         const updatedQuantity = item.quantity + 1;
-      
+        
         // Update the quantity in the items array
         const updatedItems = items.map((i) => {
-          if (i.id === item.id) {
+        if (i.id === item.id) {
             return {
-              ...i,
-              quantity: updatedQuantity
+            ...i,
+            quantity: updatedQuantity
             };
-          }
-          return i;
+        }
+        return i;
         });
-      
+    
         // Update the quantity in localStorage
         localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
-      
+    
         // Update the state variables
         setItems(updatedItems);
         setSubtotal((prevSubtotal) => prevSubtotal + parseInt(getItemPrice(item?.name)!));
-      };
-      
+    };
 
     const handleDecrement = (item: CartItem) => {
         const updatedQuantity = item.quantity - 1;
@@ -123,7 +120,7 @@ const CartPage = ({ cartItems }: any) => {
             localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
             
             setItems(updatedItems);
-            setSubtotal((prevSubtotal) => prevSubtotal - item.price);
+            setSubtotal((prevSubtotal) => prevSubtotal - parseInt(getItemPrice(item?.name)!));
         }
     };
     
