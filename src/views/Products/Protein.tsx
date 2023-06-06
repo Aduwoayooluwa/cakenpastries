@@ -18,7 +18,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const [plates, setPlates] = useState(parseInt(itemPrice)*cartQuantity)
 
   // cart
-  const [cartItemsList, setCardItemsList] = useState<any>(new Map())
+  const [cartItemsList, setCardItemsList] = useState<string | number>(new Map())
 
   // handling scooping
   const [scoopQuan, setScoopQuantity] = useState(1)
