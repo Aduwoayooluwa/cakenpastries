@@ -14,7 +14,9 @@ export const handleScoopDecrementQuantity = (
         setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
     }
 }
-export  const handleSelectChange = (event: any, itemPrice: string, data: any, setPlates: any, setSelectedOption: any) => {
+export  const handleSelectChange = (event: any, itemPrice: string, 
+    data: any, setPlates: any, setSelectedOption: any
+    ) => {
         const selectedOption = event.target.value;
         const selectedItem = data.find((item: any) => item.name === selectedOption);
 
@@ -26,10 +28,21 @@ export  const handleSelectChange = (event: any, itemPrice: string, data: any, se
         setSelectedOption(selectedOption);
     };
 
-export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClicked: any, itemId:string, setCartQuantity: any) => {
+export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClicked: any, itemId:string, setCartQuantity: any,
+    cartItemsMap: Map<string, number>, setCartItemsMap: any
+    ) => {
         addToCart(items);
         setIsAddToCartBtnClicked(true);
         localStorage.setItem(itemId, "true");
         setCartQuantity((prevQuantity: any) => prevQuantity + 1);
+        
+        // Add the quantity to the cartItemsMap
+        const updatedCartItemsMap = new Map(cartItemsMap);
+        const quantity = updatedCartItemsMap.get(itemId) || 0;
+        updatedCartItemsMap.set(itemId, quantity + 1);
+        setCartItemsMap(updatedCartItemsMap);
+    
+        // Save the cartItemsMap in local storage
+        localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
 };

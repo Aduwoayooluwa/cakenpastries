@@ -18,7 +18,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const [plates, setPlates] = useState(parseInt(itemPrice)*cartQuantity)
 
   // cart
-  const [cartItemsList, setCardItemsList] = useState<string | number>(new Map())
+  const [cartItemsList, setCartItemsList] = useState<Map<string, number>>(new Map())
 
   // handling scooping
   const [scoopQuan, setScoopQuantity] = useState(1)
@@ -32,6 +32,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     const isItemAddedToCart = localStorage.getItem(itemId);
     setIsAddToCartBtnClicked(!!isItemAddedToCart);
   }, [itemId]);
+
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      const parsedCartItems = JSON.parse(storedCartItems);
+      setCartItemsList(new Map(parsedCartItems));
+    }
+  }, []);
+  
 
 
   const handleIncrement = () => {
@@ -128,8 +137,16 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <HStack width={"full"} justifyContent={"space-between"}>
             {!isAddToCartBtnClicked ? (
               <Button colorScheme="blue" width={"30%"} onClick={() => {
-                handleAddToCart(items, addToCart, setIsAddToCartBtnClicked, itemId, setCartQuantity)
-                setCardItemsList((plates + scoopPrice))
+                  handleAddToCart(
+                    items,
+                    addToCart,
+                    setIsAddToCartBtnClicked,
+                    itemId,
+                    setCartQuantity,
+                    cartItemsList,
+                    setCartItemsList
+                );
+                console.log(cartItemsList)
               }}>
                 Add To Cart
               </Button>
