@@ -127,9 +127,22 @@ const CartPage = ({ cartItems }: any) => {
     };
     
 
+    // const calculateTotalPrice = () => {
+    //     return items?.reduce((total, item) => total + item?.price * item?.quantity, 0);
+    // };
+
     const calculateTotalPrice = () => {
-        return items?.reduce((total, item) => total + item?.price * item?.quantity, 0);
-    };
+        return items.reduce((total, item) => {
+          const itemPrice = item.quantity * parseInt(getItemPrice(`${item.name}_price`)!);
+          return total + itemPrice;
+        }, 0);
+      };
+      
+
+      useEffect(() => {
+        const total = calculateTotalPrice();
+        setSubtotal(total);
+      }, [items]);
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddress(e.target.value);
@@ -174,15 +187,6 @@ const CartPage = ({ cartItems }: any) => {
     const getItemPrice = (itemName: any) => {
         return localStorage.getItem(itemName)
     }
-
-    const _subtotal = Object.values(_cartItems).reduce((total: number, item: any) => {
-        const itemSubtotal = (item.quantity)* item.price;
-        console.log(item.quantity)
-        console.log(itemSubtotal)
-        return total + itemSubtotal;
-      }, 0);
-
-      console.log('tota', _subtotal)
 
     return (
         <>
@@ -306,7 +310,7 @@ const CartPage = ({ cartItems }: any) => {
                 isLoaded={!loading}
                 bg='white.500'
                 color='white'>
-                    <Text textColor="black" fontWeight="bold">Subtotal: NGN {calculateTotalPrice()}</Text>
+                    <Text textColor="black" fontWeight="bold">Subtotal: NGN {subtotal}</Text>
                 </Skeleton>
                 
                 <Skeleton
