@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Box, Button, Slide, Text, VStack, FormControl, FormLabel, Select, Flex, Divider, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import useGetData from '@/hooks/useGetData';
 import Link from "next/link"
 import { useAppStore } from '@/lib/store';
 import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
+import { CartContext } from '@/context/CartContext';
 
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp }: any) => {
@@ -27,6 +28,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const { addToCart } = useAppStore();
   const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
+
+  // context 
+  const { _cartItems, setCartItems }: any = useContext(CartContext)
 
   useEffect(() => {
     const isItemAddedToCart = localStorage.getItem(itemId);
@@ -58,6 +62,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     return;
   };
 
+  const [a, setA]: any = useState<any[]>([])
+  useEffect(() => {
+    console.log('a', a)
+  }, [])
 
   return (
     <Box zIndex={1000} position="absolute" width="full" bottom="0" textColor="black" bg="white" p={4}>
@@ -147,6 +155,19 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                     setCartItemsList
                 );
                 console.log(cartItemsList)
+                const newItem = {
+                  id: itemId,
+                  name: itemName,
+                  price: plates + scoopPrice,
+                  quantity: cartQuantity + 1
+                };
+            
+                setCartItems((prevItems: any) => ({
+                  ...prevItems,
+                  [itemId]: newItem
+                }));
+                setA([...a, (plates + scoopPrice)])
+                console.log('a', a)
               }}>
                 Add To Cart
               </Button>

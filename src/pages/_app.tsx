@@ -14,6 +14,7 @@ import Navbar from '@/Layout/Navbar';
 import { Toaster } from 'react-hot-toast';
 import { Inter } from "next/font/google"
 import { useRouter } from 'next/router';
+import { CartProvider } from '@/context/CartContext';
 
 const queryClient = new QueryClient()
 const inter = Inter({ subsets: ['latin'] });
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}
     </style>
     <Provider>
+      <CartProvider>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
           <Navbar />
@@ -53,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Toaster />
         </ChakraProvider>
       </QueryClientProvider>
+      </CartProvider>
       
     </Provider>
     

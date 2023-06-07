@@ -10,9 +10,21 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         cart: existingCartItems ? JSON.parse(existingCartItems) : [],
         showCart: false,
     };
+    const calculateSubtotal = () => {
+        const cart = get().cart;
+        let subtotal = 0;
+    
+        cart.forEach((product) => {
+          subtotal += product.price * product.quantity;
+        });
+    
+        return subtotal;
+    };
 
     return {
         ...initialState,
+    
+        
         addToCart: (product: Products) => {
         const cart = get().cart;
         const findProduct = cart.find((p) => p.id === product.id);
@@ -48,8 +60,10 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
 
         set({ cart });
         },
+    
         toggleCart: () => {
         set({ showCart: !get().showCart });
         },
+        calculateSubtotal,
     };
 };

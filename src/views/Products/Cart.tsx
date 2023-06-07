@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
     Box,
     Heading,
@@ -19,6 +19,7 @@ import useOrder from '@/hooks/useOrder';
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useAppStore } from '@/lib/store';
+import { CartContext } from '@/context/CartContext';
 
 interface CartItem {
     id: string;
@@ -36,11 +37,12 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(itemId)
     }
     
-
+    const { _cartItems }: any = useContext(CartContext)
+    console.log(_cartItems)
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
 
-    const { removeFromCart } = useAppStore()
+    const { removeFromCart, calculateSubtotal } = useAppStore()
 
     // Mounting the application
     const router = useRouter();
@@ -84,7 +86,7 @@ const CartPage = ({ cartItems }: any) => {
     const order = useOrder();
 
     const handleIncrement = (item: CartItem) => {
-        const updatedQuantity = item.quantity + 1;
+        const updatedQuantity = item?.quantity + 1;
         
         // Update the quantity in the items array
         const updatedItems = items.map((i) => {
@@ -173,6 +175,15 @@ const CartPage = ({ cartItems }: any) => {
         return localStorage.getItem(itemName)
     }
 
+    const _subtotal = Object.values(_cartItems).reduce((total: number, item: any) => {
+        const itemSubtotal = (item.quantity)* item.price;
+        console.log(item.quantity)
+        console.log(itemSubtotal)
+        return total + itemSubtotal;
+      }, 0);
+
+      console.log('tota', _subtotal)
+
     return (
         <>
             
@@ -217,7 +228,9 @@ const CartPage = ({ cartItems }: any) => {
                             -
                         </Button>
                         <Text>{parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text>
-                        <Button size="sm" onClick={() => handleIncrement(item)}>
+                        <Button size="sm" onClick={() => {handleIncrement(item)
+                            
+                        }}>
                             +
                         </Button>
                         </HStack>
