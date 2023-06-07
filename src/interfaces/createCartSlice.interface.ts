@@ -6,6 +6,7 @@ export interface cartSlice {
     removeFromCart: (productId:string) => void
     updateQuantity: (productId: string, action: 'increase' | 'decrease') => void
     showCart: boolean, 
-    toggleCart: () => void
+    toggleCart: () => void,
+    calculateSubtotal?: any
 
 }

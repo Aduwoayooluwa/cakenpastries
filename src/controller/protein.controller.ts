@@ -41,7 +41,8 @@ export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClic
         const quantity = updatedCartItemsMap.get(itemId) || 0;
         updatedCartItemsMap.set(itemId, quantity + 1);
         setCartItemsMap(updatedCartItemsMap);
-    
+        
+        
         // Save the cartItemsMap in local storage
         localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
