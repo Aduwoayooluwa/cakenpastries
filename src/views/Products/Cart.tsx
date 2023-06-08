@@ -12,7 +12,8 @@ import {
     Divider,
     Stack,
     Center,
-    Skeleton
+    Skeleton,
+    Select
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import useOrder from '@/hooks/useOrder';
@@ -20,6 +21,8 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useAppStore } from '@/lib/store';
 import { CartContext } from '@/context/CartContext';
+import useGetData from '@/hooks/useGetData';
+import { handleSelectLocationChange } from '@/controller/cartItems.controller';
 
 interface CartItem {
     id: string;
@@ -29,6 +32,10 @@ interface CartItem {
 }
 
 const CartPage = ({ cartItems }: any) => {
+    //  location of delivery
+    const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
+    
+    //address
     const [address, setAddress] = useState('');
     const [subtotal, setSubtotal] = useState(0);
     console.log(cartItems)
@@ -43,6 +50,9 @@ const CartPage = ({ cartItems }: any) => {
     const [savedAddress, setSavedAddress] = useState('');
 
     const { removeFromCart, calculateSubtotal } = useAppStore()
+
+    //selected location
+    const [selectedLocation, setSelectedLocation] = useState('');
 
     // Mounting the application
     const router = useRouter();
@@ -307,10 +317,39 @@ const CartPage = ({ cartItems }: any) => {
                 <Box>
 
                 <Skeleton
+                    isLoaded={!loading}
+                    bg='white.500'
+                    color='white'
+                >
+                <VStack mt="20px" spacing={2} textColor={"black"} width="full" align="start">
+                    <FormControl>
+                        <FormLabel>Add Protein</FormLabel>
+                        <Select
+                        value={selectedLocation}
+                        onChange={(event) =>
+                            handleSelectLocationChange(
+                            event,
+                            subtotal,
+                            setSubtotal,
+                            data,
+                            setSelectedLocation,
+                            )
+                        }
+                        placeholder="Select your location"
+                        >
+                        {data?.map((item: any) => (
+                            <option key={item?.id}>{item?.name}</option>
+                        ))}
+                        </Select>
+                    </FormControl>
+                </VStack>
+                </Skeleton>
+
+                <Skeleton
                 isLoaded={!loading}
                 bg='white.500'
                 color='white'>
-                    <Text textColor="black" fontWeight="bold">Subtotal: NGN {subtotal}</Text>
+                    <Text textColor="black" mt="20px" fontWeight="bold">Subtotal: NGN {subtotal}</Text>
                 </Skeleton>
                 
                 <Skeleton

@@ -139,7 +139,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           ))}
         </Select>
       </FormControl>
-    </VStack>
+          </VStack>
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
