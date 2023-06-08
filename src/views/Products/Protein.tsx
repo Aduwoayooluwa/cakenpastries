@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import { Box, Button, Slide, Text, VStack, FormControl, FormLabel, Select, Flex, Divider, HStack } from '@chakra-ui/react';
+import { Box,  Slide, Text, VStack, FormControl, FormLabel, Select, Flex, Divider, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import useGetData from '@/hooks/useGetData';
 import Link from "next/link"
+import Button from '@/components/buttons/button.component';
 import { useAppStore } from '@/lib/store';
 import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
 import { CartContext } from '@/context/CartContext';
@@ -149,7 +150,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <Divider orientation="horizontal" width="full" my="20px" />
           <HStack width="full" justifyContent="space-between">
             {!isAddToCartBtnClicked ? (
-              <Button colorScheme="blue" width="30%" onClick={() => {
+              <Button  width="30%" onClick={() => {
                 handleAddToCart(
                   items,
                   addToCart,
@@ -171,7 +172,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 <Button colorScheme="blue" onClick={handleIncrement}>
                   +
                 </Button> */}
-                <Button colorScheme="blue" disabled={true} width="30%">Added</Button>
+                <Button  disabled={true} width="full" p={"3px"}>Added</Button>
               </Flex>
             )}
 
