@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 export const handleScoopIncrementQuantity = (setScoopQuantity: any,
     setScoopPrice: any, itemPrice: number
 ) => {
@@ -14,19 +16,45 @@ export const handleScoopDecrementQuantity = (
         setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
     }
 }
-export  const handleSelectChange = (event: any, itemPrice: string, 
-    data: any, setPlates: any, setSelectedOption: any
+// export  const handleSelectChange = (event: any, itemPrice: string, 
+//     data: any, setPlates: any, setSelectedOption: any
+//     ) => {
+//         const selectedOption = event.target.value;
+//         const selectedItem = data.find((item: any) => item.name === selectedOption);
+
+//         if (selectedItem) {
+//         setPlates(parseInt(itemPrice) + parseInt(selectedItem.price) || parseInt(itemPrice));
+//         } else {
+//         setPlates(parseInt(itemPrice) || 0);
+//         }
+//         setSelectedOption(selectedOption);
+//     };
+
+export const handleSelectChange = (
+        event: ChangeEvent<HTMLSelectElement>,
+        itemPrice: string,
+        data: any[],
+        setPlates: React.Dispatch<React.SetStateAction<number>>,
+        setSelectedOption: React.Dispatch<React.SetStateAction<string>>,
+        setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
     ) => {
         const selectedOption = event.target.value;
-        const selectedItem = data.find((item: any) => item.name === selectedOption);
-
-        if (selectedItem) {
-        setPlates(parseInt(itemPrice) + parseInt(selectedItem.price) || parseInt(itemPrice));
-        } else {
-        setPlates(parseInt(itemPrice) || 0);
-        }
         setSelectedOption(selectedOption);
-    };
+    
+        // Find the selected option from the data
+        const selectedItem = data.find(item => item.name === selectedOption);
+    
+        if (selectedItem) {
+        // Calculate the new scoop price
+        const newScoopPrice = parseInt(itemPrice) + parseInt(selectedItem.price);
+        setScoopPrice(newScoopPrice);
+    
+        // Update the plates (if needed)
+        const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price);
+        setPlates(newPlates);
+        }
+};
+
 
 export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClicked: any, itemId:string, setCartQuantity: any,
     cartItemsMap: Map<string, number>, setCartItemsMap: any
