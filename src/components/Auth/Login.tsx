@@ -45,7 +45,7 @@ const Login = () => {
                 whileHover={{ x: isFormValid ? 10 : -10, y: isFormValid ? -10 : 10 }}
                 >
             <Button my="20px" type="submit" disabled={!isFormValid || isLoading }>
-                Login
+                {isLoading ? 'loading...' : 'Login'}
             </Button>
             </motion.div>
             <Text>Don&apos;t have an account? Click <Link style={{color: "purple"}} href="/register">here</Link> to Register</Text>
