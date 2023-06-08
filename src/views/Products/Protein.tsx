@@ -116,25 +116,33 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             </Flex>
             <Text textColor="black">{scoopPrice}</Text>
           </VStack>
-
           <VStack spacing={2} width="full" align="start">
-            <FormControl>
-              <FormLabel>Add Protein</FormLabel>
-              <Select
-                value={selectedOption}
-                onChange={(event) => handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption)}
-                placeholder="Select an option"
-              >
-                {data?.map((item: any) => (
-                  <option key={item?.id}>{item?.name}</option>
-                ))}
-              </Select>
-            </FormControl>
-          </VStack>
+      <FormControl>
+        <FormLabel>Add Protein</FormLabel>
+        <Select
+          value={selectedOption}
+          onChange={(event) =>
+            handleSelectChange(
+              event,
+              itemPrice,
+              data,
+              setPlates,
+              setSelectedOption,
+              setScoopPrice // Pass setScoopPrice as a prop
+            )
+          }
+          placeholder="Select an option"
+        >
+          {data?.map((item: any) => (
+            <option key={item?.id}>{item?.name}</option>
+          ))}
+        </Select>
+      </FormControl>
+    </VStack>
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
-              NGN {price}
+              NGN {scoopPrice}
             </Text>
           </Box>
 
@@ -156,13 +164,14 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               </Button>
             ) : (
               <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                <Button disabled={cartQuantity === 1} colorScheme="blue" onClick={handleDecrement}>
+                {/* <Button disabled={cartQuantity === 1} colorScheme="blue" onClick={handleDecrement}>
                   -
                 </Button>
                 <Text>{cartQuantity}</Text>
                 <Button colorScheme="blue" onClick={handleIncrement}>
                   +
-                </Button>
+                </Button> */}
+                <Button colorScheme="blue" disabled={true} width="30%">Added</Button>
               </Flex>
             )}
 
