@@ -107,7 +107,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <VStack align="left" my="20px">
             <Text textColor="black">Number of Scoop/Wrap</Text>
             <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-              <Button colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+              <Button  disabled={scoopQuan === 1} colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
                 -
               </Button>
               <Text>{scoopQuan}</Text>
@@ -139,7 +139,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           ))}
         </Select>
       </FormControl>
-    </VStack>
+          </VStack>
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
@@ -160,6 +160,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   cartItemsMap,
                   setCartItemsMap
                 );
+
+                localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+                localStorage.setItem(`${itemName}_price`, price.toString());
               }}>
                 Add To Cart
               </Button>
