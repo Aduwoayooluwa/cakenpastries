@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const BASE_URL = ``
+export const BASE_URL = `https://backend.cakesandpastries.ng/api`
 
 const api = axios.create({
     baseURL: BASE_URL

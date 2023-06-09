@@ -19,7 +19,6 @@ const Payment = (props: Props) => {
     return (
         <Box textColor={"black"} pt={"100px"} minH={"100vh"}>
             <PaymentPage  amount={amountToBePayed} public_key={publickey} />
-            doings
         </Box>
     )
 }
