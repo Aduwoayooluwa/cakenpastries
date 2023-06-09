@@ -280,7 +280,7 @@ const CartPage = ({ cartItems }: any) => {
                 ))}
                 </VStack>
                 <Divider my={4} />
-                <Stack direction="column" spacing={4} align="start">
+                {/* <Stack direction="column" spacing={4} align="start">
                 <Skeleton
                 isLoaded={!loading}
                 bg='white.500'
@@ -311,7 +311,7 @@ const CartPage = ({ cartItems }: any) => {
                     Save Address
                 </Button>
                 </Skeleton>
-                </Stack>
+                </Stack> */}
 
                 <Divider my={4} />
                 <Box>
