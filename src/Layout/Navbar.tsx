@@ -5,6 +5,7 @@ import { useAppStore, useAuthenticationStore } from '@/lib/store';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import Button from '@/components/buttons/button.component';
 
 type Props = {};
 
@@ -175,6 +176,13 @@ const Navbar = (props: Props) => {
                             <Text fontSize="lg">{userInfo?.name}</Text>
                             </HStack>
                         </Link>
+
+                            <Button onClick={() => {
+                                Cookies.remove("userDetails")
+                                Cookies.remove("isAuth")
+                                Cookies.remove("token")
+                                router.reload()
+                            }}>Logout</Button>
                         
                         </>
                     )
