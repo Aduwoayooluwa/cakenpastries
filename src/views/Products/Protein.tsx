@@ -107,7 +107,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <VStack align="left" my="20px">
             <Text textColor="black">Number of Scoop/Wrap</Text>
             <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-              <Button colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+              <Button  disabled={scoopQuan === 1} colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
                 -
               </Button>
               <Text>{scoopQuan}</Text>
