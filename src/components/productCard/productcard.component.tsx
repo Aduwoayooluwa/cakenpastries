@@ -72,7 +72,9 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
     shadow="md"
         >
         <Center width={"full"} alignItems={"center"}>
-            <Flex style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }} align={"start"} direction="column" width="full">
+            <Flex opacity={ proteinBarUp? 0.2 : 1 } 
+            // style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }} 
+            align={"start"} direction="column" width="full">
                 <Skeleton
                     bg='white.500'
                     color='white'
@@ -142,7 +144,7 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
                     bg='white.500'
                     color='white'
                     isLoaded={!loading}
-                   >
+                >
                 <Button onClick={() => {
                     setIsProteinVisible(true)
                     setProteinBarUp(true)
@@ -159,7 +161,7 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
             </VStack>
             </Flex>
                 
-            <Box bg="white" h="full">
+            <Box opacity={1} bg="white" h="full">
                 {
                 isProteinVisible && (<>
                     <ProteinBottomUp setProteinBarUp={setProteinBarUp} items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
