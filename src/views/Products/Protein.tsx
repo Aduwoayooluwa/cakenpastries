@@ -16,7 +16,8 @@ import {
   Flex,
   Divider,
   HStack,
-  useMediaQuery
+  useMediaQuery,
+
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import useGetData from '@/hooks/useGetData';
@@ -25,6 +26,7 @@ import Button from '@/components/buttons/button.component';
 import { useAppStore } from '@/lib/store';
 import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
 import { CartContext } from '@/context/CartContext';
+import useProtein from '@/hooks/useProtein';
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp }: any) => {
   const { data } = useGetData(`https://backend.cakesandpastries.ng/api/menu/protein`);
@@ -62,19 +64,19 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     }
   }, []);
 
-  // const handleIncrement = () => {
-  //   setCartQuantity((prevQuantity) => prevQuantity + 1);
-  //   setPrice((prevPrice) => prevPrice + parseInt(itemPrice));
-  //   setPlates((prevPlates) => prevPlates + parseInt(itemPrice));
-  // };
+  const handleIncrement = () => {
+    setCartQuantity((prevQuantity) => prevQuantity + 1);
+    setPrice((prevPrice) => prevPrice + parseInt(itemPrice));
+    setPlates((prevPlates) => prevPlates + parseInt(itemPrice));
+  };
 
-  // const handleDecrement = () => {
-  //   if (cartQuantity > 0) {
-  //     setCartQuantity((prevQuantity) => prevQuantity - 1);
-  //     setPrice((prevPrice) => prevPrice - parseInt(itemPrice));
-  //     setPlates((prevPlates) => prevPlates - parseInt(itemPrice));
-  //   }
-  // };
+  const handleDecrement = () => {
+    if (cartQuantity > 0) {
+      setCartQuantity((prevQuantity) => prevQuantity - 1);
+      setPrice((prevPrice) => prevPrice - parseInt(itemPrice));
+      setPlates((prevPlates) => prevPlates - parseInt(itemPrice));
+    }
+  };
 
   useEffect(() => {
     const totalPrice = cartQuantity === 1 ? scoopPrice : plates + scoopPrice;
@@ -87,6 +89,23 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   }, [cartItemsMap]);
 
   const [isMediumDevice] = useMediaQuery("(min-width: 768px)");
+
+  const ProteinItemsArgument= {
+    itemPrice,
+    itemId,
+  }
+
+  // const { 
+  //   price, setPrice,
+  //   selectedOption, setSelectedOption,
+  //     cartQuantity, setCartQuantity,
+  //     plates, setPlates,
+  //     cartItemsMap, setCartItemsMap,
+  //     scoopQuan, setScoopQuantity,
+  //     scoopPrice, setScoopPrice,
+  //     addToCart,
+  //     isAddToCartBtnClicked, setIsAddToCartBtnClicked
+  // }  = useProtein(ProteinItemsArgument)
 
   if (isMediumDevice) {
     return (
@@ -208,7 +227,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   }
 
   return (
-    <Box zIndex={1000} position="absolute" width="full" bottom="0" textColor="black" bg="white" p={4}>
+    <Box zIndex={1000} opacity={1} position="absolute" width="full" bottom="0" textColor="black" bg="white" p={4}>
       <Slide
         in={isProteinVisible}
         direction="bottom"
