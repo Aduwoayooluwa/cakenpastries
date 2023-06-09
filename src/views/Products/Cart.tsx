@@ -178,15 +178,18 @@ const CartPage = ({ cartItems }: any) => {
         return;
         }
 
-        const payload = {
-        address,
-        user_id,
-        items: cartItems,
-        payment_ref,
-        amount: calculateTotalPrice()
-        };
+        // const payload = {
+        // address,
+        // user_id,
+        // items: cartItems,
+        // payment_ref,
+        // amount: calculateTotalPrice()
+        // };
 
-        order.mutate(payload);
+        // order.mutate(payload);
+        sessionStorage.setItem('subtotal', JSON.stringify(subtotal));
+
+        router.push('/payment');
     };
 
     // function to handle getting quantuty
