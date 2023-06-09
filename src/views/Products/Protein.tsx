@@ -13,7 +13,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
-  const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartQuantity, setCartQuantity] = useState(1);
 
   // number of plates
   const [plates, setPlates] = useState(parseInt(itemPrice) || 0);
@@ -107,7 +107,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <VStack align="left" my="20px">
             <Text textColor="black">Number of Scoop/Wrap</Text>
             <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-              <Button  disabled={scoopQuan === 1} colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+              <Button  disabled={cartQuantity  === 1} colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
                 -
               </Button>
               <Text>{scoopQuan}</Text>
