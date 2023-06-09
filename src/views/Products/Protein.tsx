@@ -160,6 +160,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   cartItemsMap,
                   setCartItemsMap
                 );
+
+                localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+                localStorage.setItem(`${itemName}_price`, price.toString());
               }}>
                 Add To Cart
               </Button>
