@@ -27,7 +27,8 @@ const ProductsPage = (props: Props) => {
         <>
             <VStack 
             // style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }}
-            bg={proteinBarUp ? "rgba(0, 0, 0, 0.6)" : "white"}
+            opacity={ proteinBarUp? 0.2 : 1 }
+            bg={"white"}
             py="" minHeight="100vh">
                 <Heading>All Items</Heading>
                 <Flex  width="full"  bg="whiteAlpha.800" align="start"  justify="start">
