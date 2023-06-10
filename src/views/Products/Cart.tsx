@@ -26,6 +26,7 @@ import { handleSelectLocationChange } from '@/controller/cartItems.controller';
 import PaymentModal from './dialogs/PaymentModal';
 import { toast } from 'react-hot-toast';
 import usePayment from '@/hooks/usePayment';
+import { useRedirectAfterAuth } from './helper';
 
 interface CartItem {
     id: string;
@@ -44,6 +45,8 @@ const CartPage = ({ cartItems }: any) => {
 
     const [subtotal, setSubtotal] = useState(0);
     
+    // custom hook to redirect
+    const { setOriginalUrl } = useRedirectAfterAuth()
 
     const removeItemId = (itemId:string) => {
         localStorage.removeItem(itemId)
@@ -200,7 +203,7 @@ const CartPage = ({ cartItems }: any) => {
         }
         else {
             if (!isAuth) {
-                router.push('/login');
+                router.push('/login')
                 return;
             }
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));

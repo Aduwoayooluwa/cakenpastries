@@ -15,8 +15,6 @@ const CartItems = (props: Props) => {
         cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
     }
 
-    cartItems = cartItems.filter((item: any) => item !== item?.category)
-    console.log(cartItems);
 
     return (
         <Box minH={"100vh"}>
