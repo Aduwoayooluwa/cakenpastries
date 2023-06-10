@@ -10,13 +10,7 @@ type Props = {}
 
 const Signin = (props: Props) => {
     const router = useRouter()
-    const { isAuthenticated } = useAuthenticationStore()
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            router.push('/')
-        }
-    }, [router, isAuthenticated])
 
         // gsap animation
     useEffect(() => {

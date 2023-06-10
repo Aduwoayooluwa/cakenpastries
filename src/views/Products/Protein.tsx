@@ -17,6 +17,7 @@ import {
   Divider,
   HStack,
   useMediaQuery,
+  Button as Btn
 
 } from '@chakra-ui/react';
 import Image from 'next/image';
@@ -28,7 +29,7 @@ import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelec
 import { CartContext } from '@/context/CartContext';
 import useProtein from '@/hooks/useProtein';
 
-const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp }: any) => {
+const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp, itemMeasure }: any) => {
   const { data } = useGetData(`https://backend.cakesandpastries.ng/api/menu/protein`);
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
@@ -42,7 +43,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const [cartItemsMap, setCartItemsMap] = useState(new Map());
 
   // handling scooping
-  const [scoopQuan, setScoopQuantity] = useState(1);
+  let [scoopQuan, setScoopQuantity] = useState(1);
   const [scoopPrice, setScoopPrice] = useState(parseInt(itemPrice) || 0);
 
   const { addToCart } = useAppStore();
@@ -106,6 +107,16 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   //     addToCart,
   //     isAddToCartBtnClicked, setIsAddToCartBtnClicked
   // }  = useProtein(ProteinItemsArgument)
+  
+  function cartCount() {
+    
+    if (scoopQuan <= 1) {
+      scoopQuan = 1;
+      console.log(scoopQuan, "scoopQuan");
+    }
+    console.log("clicked")
+  }
+  console.log(items)
 
   if (isMediumDevice) {
     return (
@@ -166,7 +177,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 <Select
                   value={selectedOption}
                   onChange={(event) =>
-                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice) // Pass setScoopPrice as a prop
+                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items) // Pass setScoopPrice as a prop
                   }
                   placeholder="Select an option"
                 >
@@ -185,41 +196,43 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
             <Divider orientation="horizontal" width="full" my="20px" />
             <HStack width="full" justifyContent="space-between">
-              {!isAddToCartBtnClicked ? (
-                <Button
-                  width="30%"
-                  onClick={() => {
-                    handleAddToCart(
-                      items,
-                      addToCart,
-                      setIsAddToCartBtnClicked,
-                      itemId,
-                      setCartQuantity,
-                      cartItemsMap,
-                      setCartItemsMap
-                    );
+            <Button onClick={() => {
+              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+              localStorage.setItem(`${itemName}_price`, price.toString());
+            }} width="30%" colorScheme="green">
+              <Link href="/cart_items">Go to Cart</Link>
+            </Button>
 
-                    localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-                    localStorage.setItem(`${itemName}_price`, price.toString());
-                  }}
-                >
-                  Add To Cart
-                </Button>
-              ) : (
-                <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                  <Button disabled={true} width="full" p={'3px'}>
-                    Added
-                  </Button>
-                </Flex>
-              )}
+            {!isAddToCartBtnClicked ? (
+              <Btn _hover={{background: "#EAEAFF", textColor:"blue"}} width="30%" bg="blue" textColor="white" onClick={() => {
+                handleAddToCart(  
+                  items,
+                  addToCart,
+                  setIsAddToCartBtnClicked,
+                  itemId,
+                  setCartQuantity,
+                  cartItemsMap,
+                  setCartItemsMap
+                );
 
-              <Button onClick={() => {
                 localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
                 localStorage.setItem(`${itemName}_price`, price.toString());
-              }} width="30%" colorScheme="green">
-                <Link href="/cart_items">Go to Cart</Link>
-              </Button>
-            </HStack>
+              }}>
+                Add To Cart
+              </Btn>
+            ) : (
+              <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
+                {/* <Button disabled={cartQuantity === 1} colorScheme="blue" onClick={handleDecrement}>
+                  -
+                </Button>
+                <Text>{cartQuantity}</Text>
+                <Button colorScheme="blue" onClick={handleIncrement}>
+                  +
+                </Button> */}
+                
+              </Flex>
+            )}
+          </HStack>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -263,11 +276,18 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           {/* number of scoops */}
           <VStack align="left" my="20px">
-            <Text textColor="black">Number of Scoop/Wrap</Text>
+            <Text textColor="black">How many of {itemMeasure}?</Text>
             <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-              <Button  disabled={cartQuantity  === 1} colorScheme="blue" onClick={() => handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+                <Btn
+                  size="sm"
+                  onClick={() => {
+                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))
+                    
+                    }}
+                  disabled={true}
+                >
                 -
-              </Button>
+              </Btn>
               <Text>{scoopQuan}</Text>
               <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
                 +
@@ -287,7 +307,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               data,
               setPlates,
               setSelectedOption,
-              setScoopPrice // Pass setScoopPrice as a prop
+              setScoopPrice, // Pass setScoopPrice as a prop,
+              items
             )
           }
           placeholder="Select an option"
@@ -307,8 +328,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           <Divider orientation="horizontal" width="full" my="20px" />
           <HStack width="full" justifyContent="space-between">
+            <Button onClick={() => {
+              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+              localStorage.setItem(`${itemName}_price`, price.toString());
+            }} width="30%" colorScheme="green">
+              <Link href="/cart_items">Go to Cart</Link>
+            </Button>
+
             {!isAddToCartBtnClicked ? (
-              <Button  width="30%" onClick={() => {
+              <Btn  width="30%" bg="blue" textColor="white" onClick={() => {
                 handleAddToCart(
                   items,
                   addToCart,
@@ -321,9 +349,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
                 localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
                 localStorage.setItem(`${itemName}_price`, price.toString());
+                
               }}>
                 Add To Cart
-              </Button>
+              </Btn>
             ) : (
               <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
                 {/* <Button disabled={cartQuantity === 1} colorScheme="blue" onClick={handleDecrement}>
@@ -333,16 +362,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 <Button colorScheme="blue" onClick={handleIncrement}>
                   +
                 </Button> */}
-                <Button  disabled={true} width="full" p={"3px"}>Added</Button>
+                {/* <Button  disabled={true} width="full" p={"3px"}>Added</Button> */}
               </Flex>
             )}
-
-            <Button onClick={() => {
-              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, price.toString());
-            }} width="30%" colorScheme="green">
-              <Link href="/cart_items">Go to Cart</Link>
-            </Button>
           </HStack>
         </Box>
       </Slide>

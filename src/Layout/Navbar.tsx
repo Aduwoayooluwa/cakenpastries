@@ -105,16 +105,6 @@ const Navbar = (props: Props) => {
             />
             {/* Menu items */}
             <HStack spacing={2}>
-                <HStack spacing={1}>
-                <IconButton
-                    aria-label="Info"
-                    icon={<FiInfo />}
-                    size="lg"
-                    variant="ghost"
-                    colorScheme="gray.800"
-                />
-                <Text fontSize="lg">Info</Text>
-                </HStack>
                 <Link href="/categories">
                 <HStack spacing={1}>
                 <IconButton
@@ -177,12 +167,6 @@ const Navbar = (props: Props) => {
                             </HStack>
                         </Link>
 
-                            <Button onClick={() => {
-                                Cookies.remove("userDetails")
-                                Cookies.remove("isAuth")
-                                Cookies.remove("token")
-                                router.reload()
-                            }}>Logout</Button>
                         
                         </>
                     )
@@ -248,9 +232,20 @@ const Navbar = (props: Props) => {
                 
                 <Text fontSize="lg"><Link href="/cart_items">Cart</Link></Text>
                 </HStack>
+                
             </HStack>
             </HStack>
         )}
+        {
+                    isAuth && (
+                        <Button onClick={() => {
+                            Cookies.remove("userDetails")
+                            Cookies.remove("isAuth")
+                            Cookies.remove("token")
+                            router.reload()
+                        }}>Logout</Button>
+                    )
+                }
         </Flex>
     );
 };

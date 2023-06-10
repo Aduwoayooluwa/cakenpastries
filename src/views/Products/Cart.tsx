@@ -23,36 +23,43 @@ import { useAppStore } from '@/lib/store';
 import { CartContext } from '@/context/CartContext';
 import useGetData from '@/hooks/useGetData';
 import { handleSelectLocationChange } from '@/controller/cartItems.controller';
+import PaymentModal from './dialogs/PaymentModal';
+import { toast } from 'react-hot-toast';
+import usePayment from '@/hooks/usePayment';
 
 interface CartItem {
     id: string;
     name: string;
     quantity: number;
     price: number;
+    protein?: string
+    category?: any
 }
 
 const CartPage = ({ cartItems }: any) => {
     //  location of delivery
     const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
-    
-    //address
-    const [address, setAddress] = useState('');
+    // payment with flutterwave hook
+    const { closePaymentModal, handleFlutterPayment } = usePayment()
+
     const [subtotal, setSubtotal] = useState(0);
-    console.log(cartItems)
+    
 
     const removeItemId = (itemId:string) => {
         localStorage.removeItem(itemId)
     }
     
     const { _cartItems }: any = useContext(CartContext)
-    console.log(_cartItems)
+
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
+
 
     const { removeFromCart, calculateSubtotal } = useAppStore()
 
     //selected location
     const [selectedLocation, setSelectedLocation] = useState('');
+
 
     // Mounting the application
     const router = useRouter();
@@ -64,7 +71,7 @@ const CartPage = ({ cartItems }: any) => {
 
     // Authentication
     let isAuth: any;
-    let userInfo;
+    let userInfo: any;
 
     if (typeof window !== 'undefined') {
         isAuth = Cookies.get('isAuth') && JSON.parse(Cookies.get('isAuth')!);
@@ -93,7 +100,12 @@ const CartPage = ({ cartItems }: any) => {
         setSavedAddress(localStorage.getItem('address')!);
     }, []);
 
+    // hook to call order
+
     const order = useOrder();
+
+    // takeaway
+    const takeaway = 200;
 
     const handleIncrement = (item: CartItem) => {
         const updatedQuantity = item?.quantity + 1;
@@ -118,6 +130,7 @@ const CartPage = ({ cartItems }: any) => {
     };
 
     const handleDecrement = (item: CartItem) => {
+
         const updatedQuantity = item.quantity - 1;
         if (item.quantity > 1) {
             const updatedItems = items.map((i) => {
@@ -146,22 +159,20 @@ const CartPage = ({ cartItems }: any) => {
             const itemPrice = item.quantity * parseInt(getItemPrice(`${item.name}_price`)!);
             return total + itemPrice;
             }, 0);
-        };
+    };
         
 
-        useEffect(() => {
-            const total = calculateTotalPrice();
-            setSubtotal(total);
-        }, [items]);
+
+    useEffect(() => {
+        const total = calculateTotalPrice();
+        setSubtotal(total);
+    }, [items]);
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddress(e.target.value);
     };
 
-    const handleSaveAddress = () => {
-        console.log('Address saved:', address);
-        localStorage.setItem('address', address);
-    };
+
 
     const handleRemoveFromCart = (itemId: string, itemName?:string) => {
         setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
@@ -173,23 +184,55 @@ const CartPage = ({ cartItems }: any) => {
     
 
     const handleProceedToPayment = () => {
-        if (!isAuth) {
-        router.push('/login');
-        return;
+        const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
+        console.log(itemsWithoutCategory)
+        if (address==="" || phoneNumber==="") {
+            setIsPaymentDialogVisible(true)
+            return;
         }
+        else if (selectedLocation==="") {
+            toast("Please Select location", {
+                style: {
+                    color: "red"
+                }
+            })
+            return;
+        }
+        else {
+            if (!isAuth) {
+                router.push('/login');
+                return;
+            }
+            sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
+            console.log(itemsWithoutCategory)
+            handleFlutterPayment({
+                            callback: (response) => {
+                                console.log(response);
+                                setTimeout(() => {
+                                    if (response?.status === 'successful') {
+                                        const payload = {
+                                        address,
+                                        user_id,
+                                        items: itemsWithoutCategory,
+                                        payment_ref: response.tx_ref,
+                                        amount: response.amount,
+                                        name: userInfo?.name,
+                                        phoneNumber,
+                                        location: selectedLocation,
+                                        };
 
-        // const payload = {
-        // address,
-        // user_id,
-        // items: cartItems,
-        // payment_ref,
-        // amount: calculateTotalPrice()
-        // };
-
-        // order.mutate(payload);
-        sessionStorage.setItem('subtotal', JSON.stringify(subtotal));
-
-        router.push('/payment');
+                                        order.mutate(payload);
+                                    }
+                                }, 3000)
+                                closePaymentModal()
+                                
+                            },
+                            onClose: () => {
+                                console.log("Closed")
+                            }
+                        })
+            return;
+        }
     };
 
     // function to handle getting quantuty
@@ -200,6 +243,16 @@ const CartPage = ({ cartItems }: any) => {
     const getItemPrice = (itemName: any) => {
         return localStorage.getItem(itemName)
     }
+
+    // delivery fee
+    let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
+    // address
+    const [address, setAddress] = useState('')
+
+    // dialog open and close
+    const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
+    // phone number
+    const [phoneNumber, setPhoneNumber] = useState('')
 
     return (
         <>
@@ -326,7 +379,7 @@ const CartPage = ({ cartItems }: any) => {
                 >
                 <VStack mt="20px" spacing={2} textColor={"black"} width="full" align="start">
                     <FormControl>
-                        <FormLabel>Add Protein</FormLabel>
+                        <FormLabel>Choose Location</FormLabel>
                         <Select
                         value={selectedLocation}
                         onChange={(event) =>
@@ -336,6 +389,7 @@ const CartPage = ({ cartItems }: any) => {
                             setSubtotal,
                             data,
                             setSelectedLocation,
+                            setDeliveryFeeAmount
                             )
                         }
                         placeholder="Select your location"
@@ -352,7 +406,11 @@ const CartPage = ({ cartItems }: any) => {
                 isLoaded={!loading}
                 bg='white.500'
                 color='white'>
-                    <Text textColor="black" mt="20px" fontWeight="bold">Subtotal: NGN {subtotal}</Text>
+                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Takeaway: NGN 200</Text>
+
+                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Delivery: NGN {deliveryFeeAmount}</Text>
+                    
+                    <Text textColor="black" mt="20px" fontWeight="bold">Subtotal: NGN {subtotal + takeaway + deliveryFeeAmount}</Text>
                 </Skeleton>
                 
                 <Skeleton
@@ -361,20 +419,30 @@ const CartPage = ({ cartItems }: any) => {
                 color='white'>
                     <Button
                     mt={4}
-                    onClick={handleProceedToPayment}
-                    disabled={address.trim() === ''}
+                    onClick={() => {
+                        
+                        handleProceedToPayment()
+                    }}
+                    disabled={selectedLocation.trim() === ""}
                     bg="#EAEAFF"
                     color="#000093"
                     _hover={{ bg: "#000093", color: "#EAEAFF" }}
                     >
-                        Proceed to Payment
+                        {address && phoneNumber ? "Proceed to Payment" : "Add Address"}
                     </Button>
                 </Skeleton>
 
                 </Box>
             </Box>
             </Center>
-    
+            
+            {
+                isDialogVisible && (
+                    <Box mx="20px">
+                        <PaymentModal phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} setAddress={setAddress} address={address} setIsPaymentDialogVisible={setIsPaymentDialogVisible} 
+                        isDialogVisible={isDialogVisible}/>
+                    </Box>
+                )            }
         </>
     );
 };

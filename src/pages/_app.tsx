@@ -15,6 +15,7 @@ import { Toaster } from 'react-hot-toast';
 import { Inter } from "next/font/google"
 import { useRouter } from 'next/router';
 import { CartProvider } from '@/context/CartContext';
+import Cookies from 'js-cookie';
 
 const queryClient = new QueryClient()
 const inter = Inter({ subsets: ['latin'] });
@@ -23,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   useEffect(() => {
-    const isAuth = localStorage.getItem('isAuth')
+    const isAuth = Cookies.get('token')
 
     if (isAuth && router.asPath === "/login") {
       router.push('/')
