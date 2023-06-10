@@ -15,15 +15,13 @@ const CartItems = (props: Props) => {
         cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
     }
 
-    console.log(cartItems)
 
-    console.log(cartItems)
     return (
         <Box minH={"100vh"}>
             <Box pt="20px" >
 
             </Box>
-            <CartPage cartItems={cartItems }/>
+            <CartPage cartItems={cartItems}/>
         </Box>
     )
 }

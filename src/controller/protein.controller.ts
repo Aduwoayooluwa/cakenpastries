@@ -11,7 +11,7 @@ export const handleScoopDecrementQuantity = (
     scoopQuan: number, setScoopQuantity: any, setScoopPrice: any,
     itemPrice: number
 ) => {
-    if (scoopQuan > 0) {
+    if (scoopQuan > 1) {
         setScoopQuantity((prevQuantity: number) => prevQuantity - 1);
         setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
     }
@@ -37,21 +37,29 @@ export const handleSelectChange = (
         setPlates: React.Dispatch<React.SetStateAction<number>>,
         setSelectedOption: React.Dispatch<React.SetStateAction<string>>,
         setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
+        items: any,
     ) => {
         const selectedOption = event.target.value;
         setSelectedOption(selectedOption);
+        items.protein = selectedOption
     
         // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
     
         if (selectedItem) {
         // Calculate the new scoop price
-        const newScoopPrice = parseInt(itemPrice) + parseInt(selectedItem.price);
+        let newScoopPrice = parseInt(itemPrice) + (selectedItem ? parseInt(selectedItem.price) : 0) ;
         setScoopPrice(newScoopPrice);
+        
+
+        //const a = parseInt(itemPrice) + 
     
         // Update the plates (if needed)
-        const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price);
+        const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price) || 0;
         setPlates(newPlates);
+        }
+        else {
+            setScoopPrice(parseInt(itemPrice));
         }
 };
 

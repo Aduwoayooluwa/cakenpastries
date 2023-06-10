@@ -7,14 +7,14 @@ type Props = {
     public_key: string
 }
 
-const PaymentPage = ({ amount, public_key }: Props) => {
-    const { userInfo, handleFlutterPayment, closePaymentModal }  = usePayment(public_key, amount);
+const PaymentPage = () => {
+    const {  handleFlutterPayment, closePaymentModal }  = usePayment();
 
 
     return (
         <Box>
             <Box>
-                <Text>Hello {userInfo?.name}</Text>
+                
             </Box>
 
             <VStack>
@@ -30,7 +30,7 @@ const PaymentPage = ({ amount, public_key }: Props) => {
                             }
                         })
                     }}>
-                            Pay
+                            Proceed To Payment
                     </Button>
                 </Box>
             </VStack>

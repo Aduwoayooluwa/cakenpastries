@@ -1,25 +1,42 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import Cookies from 'js-cookie';
 
 
-const usePayment = (public_key: string, amount: number, phoneNumber?: string) => {
+const usePayment = () => {
     let userInfo;
+    const publickey = "FLWPUBK_TEST-25a1368444a5e8a0519d88b11589f3dd-X"
+
+    const [amountToBePaid, setAmountToBePaid] = useState(0)
+    const [address, setAddress] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+
+
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setAmountToBePaid(JSON.parse(window.sessionStorage.getItem('subtotal')!))
+            setAddress(window.localStorage.getItem('address')!)
+            setPhoneNumber((window.localStorage.getItem('phoneNumber')!))
+        }
+    }, [])
 
     if (typeof window !== 'undefined') {
         userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
+    
     }
 
 
     const config = {
-        public_key,
+        public_key: publickey,
         tx_ref: Date.now().toString(),
-        amount,
+        amount:amountToBePaid,
+        address,
         currency: 'NGN',
         payment_options: 'card,mobilemoney,ussd',
         customer: {
             email: userInfo?.email,
-            phone_number: phoneNumber || '070********',
+            phone_number: phoneNumber,
             name: userInfo?.name,
         },
     
@@ -32,7 +49,7 @@ const usePayment = (public_key: string, amount: number, phoneNumber?: string) =>
 
     const handleFlutterPayment = useFlutterwave(config)
 
-    return { config, closePaymentModal, handleFlutterPayment, userInfo }
+    return { closePaymentModal, handleFlutterPayment }
 }
 
 export default usePayment

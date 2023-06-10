@@ -62,24 +62,26 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
 
     return (
         <Box
-        minW={{ base: "160px", md: "500px" }}
-    height={{ base: "300px", md: "full" }}
-    w="full"
-    p="4"
-    borderWidth="1px"
-    borderColor="gray.200"
-    borderRadius="md"
-    shadow="md"
+        minW={{ base: "160px", md: "400px" }}
+        height={{ base: "320px", md: "full" }}
+        w="full"
+        p="4"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        shadow="md"
         >
-        <Center width={"full"} alignItems={"center"}>
+        <Center width={"full"} justifyContent={"center"} alignItems={"center"}>
             <Flex opacity={ proteinBarUp? 0.2 : 1 } 
             // style={{ backdropFilter: proteinBarUp ? "blur(10px)" : "none" }} 
-            align={"start"} direction="column" width="full">
+            align={{base: "start", md:"center"}}
+             direction="column" width="full">
                 <Skeleton
                     bg='white.500'
                     color='white'
                     minW={"200px"}
                     isLoaded={!loading}
+                    
                 >
                 <VStack
                 borderRadius="10px"
@@ -88,7 +90,8 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
                 maxWidth={{base:"160px", md:"full"}}
                 align={"center"}
                 justify={"center"}
-                p="2"
+                
+                
                 w={{ base: "full", md: "350px" }}
                 h={{ base: "150px", md: "350px" }}
             >
@@ -102,18 +105,17 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
             </VStack>
                 </Skeleton>
             
-            <VStack mt={{ base: "5px", md: "0px" }} align={"start"} justify={"start"}>
+            <VStack mt={{ base: "5px", md: "10px" }}align="start" justify="start" width="full">
                 <Skeleton
                     bg='white.500'
                     color='white'
                     isLoaded={!loading}
                 >
-                <Text textColor="black" textAlign={"start"} fontSize="16px" fontWeight="medium">
+                <Text textColor="black" textAlign={"start"} fontSize="16px" mt={{base: "4px", md: "10px"}} fontWeight="medium">
                 {item?.name}
                 </Text>
                 </Skeleton>
             </VStack>
-
             <Box width="full" pt={{ base: "0px", md: "50px" }}>
                 <Divider orientation="horizontal" />
             </Box>
@@ -164,7 +166,7 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
             <Box opacity={1} bg="white" h="full">
                 {
                 isProteinVisible && (<>
-                    <ProteinBottomUp setProteinBarUp={setProteinBarUp} items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
+                    <ProteinBottomUp itemMeasure={item?.measure} setProteinBarUp={setProteinBarUp} items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
                 </>)
                 }
             </Box>

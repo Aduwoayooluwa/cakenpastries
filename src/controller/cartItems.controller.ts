@@ -33,7 +33,8 @@ export const handleSelectLocationChange = (
         subtotal: number,
         setSubtotal: React.Dispatch<React.SetStateAction<number>>,
         data: any[],
-        setSelectedLocation: React.Dispatch<React.SetStateAction<string>>
+        setSelectedLocation: React.Dispatch<React.SetStateAction<string>>,
+        setDeliveryFeeAmount: React.Dispatch<React.SetStateAction<number>>
         ): void => {
             event.preventDefault();
         
@@ -50,6 +51,12 @@ export const handleSelectLocationChange = (
             if (selectedPlace) {
                 // Calculate the new subtotal by adding the price of the selected location to the previous subtotal
                 const newSubTotal = subtotal + parseInt(selectedPlace.price);
-                setSubtotal(newSubTotal);
+                setDeliveryFeeAmount(parseInt(selectedPlace.price));
+                //setSubtotal(newSubTotal);
             }
+}
+
+// proceed to payment habdke function
+export const handleProceedToPayment = () => {
+   
 }
