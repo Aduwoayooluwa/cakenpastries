@@ -8,7 +8,7 @@ type Props = {
 }
 
 const PaymentPage = () => {
-    const {  handleFlutterPayment, closePaymentModal }  = usePayment();
+    const {  handleFlutterPayment, closePaymentModal }  = usePayment(0);
 
 
     return (
