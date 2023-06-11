@@ -8,7 +8,7 @@ type payloadTypes = {
 }
 
 
-const successNotification = () => toast('Proceeding to payment...')
+const successNotification = () => toast('You have successfully ordered...')
 const errorNotification = (error: string) => toast(error)
 
 const useOrder = (address: string, items: any, 
