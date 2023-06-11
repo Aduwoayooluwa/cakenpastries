@@ -27,6 +27,7 @@ import PaymentModal from './dialogs/PaymentModal';
 import { toast } from 'react-hot-toast';
 import usePayment from '@/hooks/usePayment';
 import { useRedirectAfterAuth } from './helper';
+import SuccessModal from './dialogs/SuccessModal';
 
 interface CartItem {
     id: string;
@@ -40,8 +41,6 @@ interface CartItem {
 const CartPage = ({ cartItems }: any) => {
     //  location of delivery
     const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
-    // payment with flutterwave hook
-    const { closePaymentModal, handleFlutterPayment } = usePayment()
 
     const [subtotal, setSubtotal] = useState(0);
     
@@ -62,7 +61,17 @@ const CartPage = ({ cartItems }: any) => {
 
     //selected location
     const [selectedLocation, setSelectedLocation] = useState('');
+        // address
+    const [address, setAddress] = useState('')
 
+    // dialog open and close
+    const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
+    // phone number
+    const [phoneNumber, setPhoneNumber] = useState('')
+    // success modal 
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+    // order success notification
+    const [orderSuccess, setOrderSuccess] = useState(false)
 
     // Mounting the application
     const router = useRouter();
@@ -103,10 +112,7 @@ const CartPage = ({ cartItems }: any) => {
         setSavedAddress(localStorage.getItem('address')!);
     }, []);
 
-    // hook to call order
-
-    const order = useOrder();
-
+   
     // takeaway
     const takeaway = 200;
 
@@ -185,6 +191,15 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_price`)
     };
     
+    // delivery fee
+    let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
+
+     // hook to call order
+
+    const order = useOrder(address, items, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, setOrderSuccess)
+
+    // payment with flutterwave hook
+    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
 
     const handleProceedToPayment = () => {
         const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
@@ -209,31 +224,23 @@ const CartPage = ({ cartItems }: any) => {
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
             console.log(itemsWithoutCategory)
             handleFlutterPayment({
-                            callback: (response) => {
-                                console.log(response);
-                                setTimeout(() => {
-                                    if (response?.status === 'successful') {
-                                        const payload = {
-                                        address,
-                                        user_id,
-                                        items: itemsWithoutCategory,
-                                        payment_ref: response.tx_ref,
-                                        amount: response.amount,
-                                        name: userInfo?.name,
-                                        phoneNumber,
-                                        location: selectedLocation,
-                                        };
-
-                                        order.mutate(payload);
-                                    }
-                                }, 3000)
-                                closePaymentModal()
+                    callback: (response) => {
+                        console.log(response);
+                        setTimeout(() => {
+                            if (response?.status === 'successful') {
                                 
-                            },
-                            onClose: () => {
-                                console.log("Closed")
+                                order.mutate();
+                                setIsSuccessModalOpen(true)
+                                Cookies.remove('cartItems')
                             }
-                        })
+                        }, 3000)
+                        closePaymentModal()
+                        
+                    },
+                    onClose: () => {
+                        console.log("Closed")
+                    }
+                })
             return;
         }
     };
@@ -247,15 +254,9 @@ const CartPage = ({ cartItems }: any) => {
         return localStorage.getItem(itemName)
     }
 
-    // delivery fee
-    let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
-    // address
-    const [address, setAddress] = useState('')
 
-    // dialog open and close
-    const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
-    // phone number
-    const [phoneNumber, setPhoneNumber] = useState('')
+
+    
 
     return (
         <>
@@ -446,6 +447,16 @@ const CartPage = ({ cartItems }: any) => {
                         isDialogVisible={isDialogVisible}/>
                     </Box>
                 )            }
+
+                {
+                    isSuccessModalOpen && (
+                        <Box mx="20px">
+                            <SuccessModal isOpen={isSuccessModalOpen} onClose={() => {
+                                setIsSuccessModalOpen(false)
+                            }}/>
+                        </Box>
+                    )
+                }
         </>
     );
 };

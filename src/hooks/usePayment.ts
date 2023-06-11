@@ -3,7 +3,7 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import Cookies from 'js-cookie';
 
 
-const usePayment = () => {
+const usePayment = (amount: number) => {
     let userInfo;
     const publickey = "FLWPUBK_TEST-25a1368444a5e8a0519d88b11589f3dd-X"
 
@@ -30,7 +30,7 @@ const usePayment = () => {
     const config = {
         public_key: publickey,
         tx_ref: Date.now().toString(),
-        amount:amountToBePaid,
+        amount:amount,
         address,
         currency: 'NGN',
         payment_options: 'card,mobilemoney,ussd',
