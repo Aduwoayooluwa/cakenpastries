@@ -40,8 +40,6 @@ interface CartItem {
 const CartPage = ({ cartItems }: any) => {
     //  location of delivery
     const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
-    // payment with flutterwave hook
-    const { closePaymentModal, handleFlutterPayment } = usePayment()
 
     const [subtotal, setSubtotal] = useState(0);
     
@@ -185,6 +183,11 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_price`)
     };
     
+    // delivery fee
+    let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
+    
+    // payment with flutterwave hook
+    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
 
     const handleProceedToPayment = () => {
         const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
@@ -209,31 +212,31 @@ const CartPage = ({ cartItems }: any) => {
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
             console.log(itemsWithoutCategory)
             handleFlutterPayment({
-                            callback: (response) => {
-                                console.log(response);
-                                setTimeout(() => {
-                                    if (response?.status === 'successful') {
-                                        const payload = {
-                                        address,
-                                        user_id,
-                                        items: itemsWithoutCategory,
-                                        payment_ref: response.tx_ref,
-                                        amount: response.amount,
-                                        name: userInfo?.name,
-                                        phoneNumber,
-                                        location: selectedLocation,
-                                        };
+                    callback: (response) => {
+                        console.log(response);
+                        setTimeout(() => {
+                            if (response?.status === 'successful') {
+                                const payload = {
+                                address,
+                                user_id,
+                                items: itemsWithoutCategory,
+                                payment_ref: response.tx_ref,
+                                amount: response.amount,
+                                name: userInfo?.name,
+                                phoneNumber,
+                                location: selectedLocation,
+                                };
 
-                                        order.mutate(payload);
-                                    }
-                                }, 3000)
-                                closePaymentModal()
-                                
-                            },
-                            onClose: () => {
-                                console.log("Closed")
+                                order.mutate(payload);
                             }
-                        })
+                        }, 3000)
+                        closePaymentModal()
+                        
+                    },
+                    onClose: () => {
+                        console.log("Closed")
+                    }
+                })
             return;
         }
     };
@@ -247,8 +250,6 @@ const CartPage = ({ cartItems }: any) => {
         return localStorage.getItem(itemName)
     }
 
-    // delivery fee
-    let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
     // address
     const [address, setAddress] = useState('')
 
@@ -256,6 +257,8 @@ const CartPage = ({ cartItems }: any) => {
     const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
     // phone number
     const [phoneNumber, setPhoneNumber] = useState('')
+
+    
 
     return (
         <>
