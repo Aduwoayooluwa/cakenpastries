@@ -2,7 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 // pages/_app.js
-import { ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider } from '@chakra-ui/react'
 import localFont from 'next/font/local';
 import { theme } from '@/utils/theme';
 import BottomNavigation from '@/Layout/BottomNav';
@@ -16,6 +16,8 @@ import { Inter } from "next/font/google"
 import { useRouter } from 'next/router';
 import { CartProvider } from '@/context/CartContext';
 import Cookies from 'js-cookie';
+import Image from "next/image"
+import { Link } from '@chakra-ui/next-js';
 
 const queryClient = new QueryClient()
 const inter = Inter({ subsets: ['latin'] });
@@ -50,7 +52,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ChakraProvider theme={theme}>
           <Navbar />
           <Component {...pageProps} />
-          
+          <Box cursor={"pointer"} position={"fixed"} bottom={{base: "10%", md: "0%"}} right="5%">
+            <Link href="https://wa.me/" target='_blank' rel='noreferrer'>
+              <Image src={"/whatsappIcon.webp"} alt="whatsapp icon" width={100} height={100} />
+            </Link>
+            
+          </Box>
           <BottomNavigation />
           <Footer />
           <Toaster />
