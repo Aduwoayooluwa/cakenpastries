@@ -451,7 +451,7 @@ const CartPage = ({ cartItems }: any) => {
                 {
                     isSuccessModalOpen && (
                         <Box mx="20px">
-                            <SuccessModal isOpen={true} onClose={() => {
+                            <SuccessModal isOpen={isSuccessModalOpen} onClose={() => {
                                 setIsSuccessModalOpen(false)
                             }}/>
                         </Box>
