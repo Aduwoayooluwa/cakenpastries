@@ -4,10 +4,10 @@ type Props = {}
 
 const ErrorFallbackRender = () => {
     return (
-        <VStack justify={"center"} align="center" width="100%" padding={"20px"} height={"80vh"}>
+        <VStack bg="white" justify={"center"} align="center" width="100%" padding={"20px"} height={"100vh"}>
             <Box shadow={"md"} border={"1px solid grey"}>
-                <Box as="pre" textColor={"red"}>Something Went wrong</Box>
-                <Text fontSize={"sm"}>An Error occured</Text>
+                <Box as="pre" p={"20px"} textColor={"red"}>Something Went wrong</Box>
+                <Text textAlign={"center"} textColor={"black"} fontSize={"sm"}>An Error occured</Text>
             </Box>
         </VStack>
     )

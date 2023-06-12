@@ -153,7 +153,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
             {/* number of scoops */}
             <VStack align="left" my="20px">
-              <Text textColor="black">Number of Scoop/Wrap</Text>
+            <Text textColor="black">How many {itemMeasure}?</Text>
               <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
                 <Button
                   disabled={cartQuantity === 1}
@@ -276,7 +276,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           {/* number of scoops */}
           <VStack align="left" my="20px">
-            <Text textColor="black">How many of {itemMeasure}?</Text>
+            <Text textColor="black">How many {itemMeasure}?</Text>
             <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
                 <Btn
                   size="sm"
