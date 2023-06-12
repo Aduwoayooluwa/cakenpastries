@@ -23,7 +23,7 @@ const Navbar = (props: Props) => {
         userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
         cartItems = Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : null;
     }
-    console.log(isAuth)
+    //console.log(isAuth)
 
     
     const isMobile = useBreakpointValue({ base: true, md: false });

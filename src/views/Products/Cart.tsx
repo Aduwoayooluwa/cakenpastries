@@ -78,11 +78,11 @@ const CartPage = ({ cartItems }: any) => {
     const router = useRouter();
     // removing the category object from the items array
     const itemsWithoutCategory = items?.map(({ category, ...rest }) => rest);
-    console.log(itemsWithoutCategory)
+    //console.log(itemsWithoutCategory)
 
     // payment refrence 
     const date = new Date()
-    console.log(date.getTime())
+    //console.log(date.getTime())
     
 
     // Authentication
@@ -95,8 +95,8 @@ const CartPage = ({ cartItems }: any) => {
     }
 
     const payment_ref = `${date.getTime()} `
-    console.log(payment_ref)
-    console.log(isAuth);
+    //console.log(payment_ref)
+    //console.log(isAuth);
 
     const user_id = userInfo?.id;
 
@@ -155,7 +155,7 @@ const CartPage = ({ cartItems }: any) => {
                 }
                 return i;
             });
-            localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
+            localStorage.setItem(`${item?.name}_quantity`, updatedQuantity.toString());
             
             setItems(updatedItems);
             setSubtotal((prevSubtotal) => prevSubtotal - parseInt(getItemPrice(item?.name)!));
@@ -207,7 +207,7 @@ const CartPage = ({ cartItems }: any) => {
 
     const handleProceedToPayment = () => {
         const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
-        console.log(itemsWithoutCategory)
+        //(itemsWithoutCategory)
         if (address==="" || phoneNumber==="") {
             setIsPaymentDialogVisible(true)
             return;
@@ -226,10 +226,10 @@ const CartPage = ({ cartItems }: any) => {
                 return;
             }
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
-            console.log(itemsWithoutCategory)
+            //console.log(itemsWithoutCategory)
             handleFlutterPayment({
                     callback: (response) => {
-                        console.log(response);
+                        //console.log(response);
                         setTimeout(() => {
                             if (response?.status === 'successful') {
                                 
@@ -242,7 +242,7 @@ const CartPage = ({ cartItems }: any) => {
                         
                     },
                     onClose: () => {
-                        console.log("Closed")
+                        //console.log("Closed")
                     }
                 })
             return;
@@ -250,11 +250,11 @@ const CartPage = ({ cartItems }: any) => {
     };
 
     // function to handle getting quantuty
-    const getItemQuantity = (itemName: any) => {
+    const getItemQuantity = (itemName: string) => {
         return localStorage.getItem(itemName)
     }
 
-    const getItemPrice = (itemName: any) => {
+    const getItemPrice = (itemName: string) => {
         return localStorage.getItem(itemName)
     }
 

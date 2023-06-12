@@ -12,12 +12,12 @@ const Category = (props: Props) => {
 
     const currentCategory = router.query.category
 
-    console.log(router.query.category)
+    //console.log(router.query.category)
     const { data, error } = useGetData("https://backend.cakesandpastries.ng/api/menu/all")
     const [cat, setCat] = useState("")
 
     data.forEach((item: any)=> {
-        console.log(item.category.name)
+        //console.log(item.category.name)
     
     })
 

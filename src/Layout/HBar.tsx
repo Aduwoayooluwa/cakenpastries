@@ -7,10 +7,10 @@ type Props = {}
 
 const HBar = (props: Props) => {
     const { data } = useGetData("https://backend.cakesandpastries.ng/api/categories/all")
-    console.log(data)
+    //console.log(data)
     const [loading, setLoading] = useState(true);
     const router = useRouter()
-    console.log(router)
+    //console.log(router)
     useEffect(() => {
     // Simulating an API request delay
         const timer = setTimeout(() => {

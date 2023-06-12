@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
         // Simulating registration delay for demonstration purposes
         setTimeout(() => {
-        console.log('Registered successfully!', data);
+        //console.log('Registered successfully!', data);
         setIsSubmitting(false);
         }, 2000);
     };

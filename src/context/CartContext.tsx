@@ -8,7 +8,7 @@ interface ProviderProps {
 export const CartProvider: React.FC<ProviderProps> = ({ children }) => {
     const [_cartItems, setCartItems] = useState<any>([]);
     
-    console.log(_cartItems)
+    //console.log(_cartItems)
 
     return (
         <CartContext.Provider value={{ _cartItems, setCartItems }}>
