@@ -25,17 +25,16 @@ const CategoryPage = (props: Props) => {
     return (
         <>
             <Flex width="full" minH={"100vh"} py="100px" bg="whiteAlpha.800" align="center" justify="center">
-            <Box maxW="1200px" width="full" p="4">
+            <Box maxW="full" width="full" p="4">
                 <Text fontWeight={"bold"} fontSize={{base: "2xl", md:"4xl"}} my="10px" textAlign={"center"}>Categories</Text>
-                <SimpleGrid columns={[2, null, 3]} spacing="4" justifyItems="center">
+                <SimpleGrid  columns={[2, 2, 2, 3, 3, 4]} spacing={{base:"0", md:"4"}} width="full" justifyItems="center">
                     {
                         data?.map((category: any) => {
                             return (
                                 <Skeleton 
                                 isLoaded={!loading}
-                                bg='green.500'
+            
                                 color='white'
-                                fadeDuration={1}
                                 key={category.id}>
                                     <Box >
                                     <CategoryCard category={category} />
