@@ -433,9 +433,9 @@ const CartPage = ({ cartItems }: any) => {
                         handleProceedToPayment()
                     }}
                     disabled={selectedLocation.trim() === ""}
-                    bg={address && phoneNumber ? "#EAEAFF" : "#000093"}
-                    color={address && phoneNumber ? "#000093" : "#EAEAFF"}
-                    _hover={{ bg: "#000093", color: "#EAEAFF" }}
+                    bg={"#000093"}
+                    color={"#EAEAFF"}
+                    _hover={{ bg: "#EAEAFF", color: "#000093" }}
                     >
                         {address && phoneNumber ? "Proceed to Payment" : "Add Address"}
                     </Button>
