@@ -235,6 +235,7 @@ const CartPage = ({ cartItems }: any) => {
                                 setTimeout(() => {
                                     router.reload()
                                     localStorage?.clear()
+                                    router.push("/")
                                 }, 2000)
                                 
                             }
