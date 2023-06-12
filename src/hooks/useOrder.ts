@@ -3,9 +3,6 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useState } from "react"
-type payloadTypes = {
-
-}
 
 
 const successNotification = () => toast('You have successfully ordered...')

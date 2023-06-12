@@ -164,8 +164,8 @@ const CartPage = ({ cartItems }: any) => {
     // };
 
     const calculateTotalPrice = () => {
-            return items.reduce((total, item) => {
-            const itemPrice = item.quantity * parseInt(getItemPrice(`${item.name}_price`)!);
+            return items?.reduce((total, item) => {
+            const itemPrice = item?.quantity * parseInt(getItemPrice(`${item.name}_price`)!);
             return total + itemPrice;
             }, 0);
     };
@@ -232,6 +232,11 @@ const CartPage = ({ cartItems }: any) => {
                                 order.mutate();
                                 setIsSuccessModalOpen(true)
                                 Cookies.remove('cartItems')
+                                setTimeout(() => {
+                                    router.reload()
+                                    localStorage?.clear()
+                                }, 2000)
+                                
                             }
                         }, 3000)
                         closePaymentModal()
@@ -428,8 +433,8 @@ const CartPage = ({ cartItems }: any) => {
                         handleProceedToPayment()
                     }}
                     disabled={selectedLocation.trim() === ""}
-                    bg="#EAEAFF"
-                    color="#000093"
+                    bg={address && phoneNumber ? "#EAEAFF" : "#000093"}
+                    color={address && phoneNumber ? "#000093" : "#EAEAFF"}
                     _hover={{ bg: "#000093", color: "#EAEAFF" }}
                     >
                         {address && phoneNumber ? "Proceed to Payment" : "Add Address"}
