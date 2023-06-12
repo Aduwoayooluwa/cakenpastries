@@ -2,7 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 // pages/_app.js
-import { Box, ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider, Text } from '@chakra-ui/react'
 import localFont from 'next/font/local';
 import { theme } from '@/utils/theme';
 import BottomNavigation from '@/Layout/BottomNav';
@@ -18,6 +18,8 @@ import { CartProvider } from '@/context/CartContext';
 import Cookies from 'js-cookie';
 import Image from "next/image"
 import { Link } from '@chakra-ui/next-js';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallbackRender from '@/views/others/ErrorFallbackRender';
 
 const queryClient = new QueryClient()
 const inter = Inter({ subsets: ['latin'] });
@@ -47,23 +49,26 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}
     </style>
     <Provider>
-      <CartProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}>
-          <Navbar />
-          <Component {...pageProps} />
-          <Box cursor={"pointer"} position={"fixed"} bottom={{base: "10%", md: "0%"}} right="5%">
-            <Link href="https://wa.me/" target='_blank' rel='noreferrer'>
-              <Image src={"/whatsappIcon.webp"} alt="whatsapp icon" width={100} height={100} />
-            </Link>
-            
-          </Box>
-          <BottomNavigation />
-          <Footer />
-          <Toaster />
-        </ChakraProvider>
-      </QueryClientProvider>
-      </CartProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallbackRender}>
+          <CartProvider>
+        <QueryClientProvider client={queryClient}>
+          <ChakraProvider theme={theme}>
+            <Navbar />
+            <Component {...pageProps} />
+            <Box cursor={"pointer"} position={"fixed"} bottom={{base: "10%", md: "0%"}} right="5%">
+              <Link href="https://wa.me/" target='_blank' rel='noreferrer'>
+                <Image src={"/whatsappIcon.webp"} alt="whatsapp icon" width={100} height={100} />
+              </Link>
+              
+            </Box>
+            <BottomNavigation />
+            <Footer />
+            <Toaster />
+          </ChakraProvider>
+        </QueryClientProvider>
+        </CartProvider>
+      </ErrorBoundary>
+      
       
     </Provider>
     
