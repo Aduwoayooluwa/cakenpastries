@@ -11,13 +11,13 @@ type Props = {
 const CategoryCard = ({ category }: Props) => {
     return (
         <Box
-        minW={{base: "150px", md:"320px"}}
+        minW={{ base: "180px", md: "400px" }}
+        height={{ base: "250px", md: "full" }}
         w="full"
         p="4"
         borderWidth="1px"
         borderColor="gray.200"
         borderRadius="md"
-        bg="white"
         shadow="md"
         >
             <Center width={"full"} alignItems={"center"}>
@@ -25,7 +25,7 @@ const CategoryCard = ({ category }: Props) => {
                     <Box position="relative" w="full" h={{base:"100px", md:"150px"}}>
                     <object data="https://stackoverflow.com/does-not-exist.png" type="image/png">
                             <Image
-                            src={category?.image}
+                            src={category?.image || "/default.png"}
                             alt="Product Image"
                             layout="fill"
                             objectFit="cover"
