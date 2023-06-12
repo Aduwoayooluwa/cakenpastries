@@ -28,6 +28,7 @@ import { toast } from 'react-hot-toast';
 import usePayment from '@/hooks/usePayment';
 import { useRedirectAfterAuth } from './helper';
 import SuccessModal from './dialogs/SuccessModal';
+import { ModalContext } from '@/context/ModalContext';
 
 interface CartItem {
     id: string;
@@ -68,13 +69,16 @@ const CartPage = ({ cartItems }: any) => {
     const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
     // phone number
     const [phoneNumber, setPhoneNumber] = useState('')
-    // success modal 
-    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+   // bringing the success modal from the useContext
+    const { isSuccessModalOpen, setIsSuccessModalOpen } = useContext(ModalContext)
     // order success notification
     const [orderSuccess, setOrderSuccess] = useState(false)
 
     // Mounting the application
     const router = useRouter();
+    // removing the category object from the items array
+    const itemsWithoutCategory = items?.map(({ category, ...rest }) => rest);
+    console.log(itemsWithoutCategory)
 
     // payment refrence 
     const date = new Date()
@@ -196,7 +200,7 @@ const CartPage = ({ cartItems }: any) => {
 
      // hook to call order
 
-    const order = useOrder(address, items, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, setOrderSuccess)
+    const order = useOrder(address, itemsWithoutCategory, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, setOrderSuccess)
 
     // payment with flutterwave hook
     const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
@@ -230,13 +234,7 @@ const CartPage = ({ cartItems }: any) => {
                             if (response?.status === 'successful') {
                                 
                                 order.mutate();
-                                setIsSuccessModalOpen(true)
                                 Cookies.remove('cartItems')
-                                setTimeout(() => {
-                                    router.reload()
-                                    localStorage?.clear()
-                                    router.push("/")
-                                }, 2000)
                                 
                             }
                         }, 3000)
