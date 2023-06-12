@@ -108,15 +108,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   //     isAddToCartBtnClicked, setIsAddToCartBtnClicked
   // }  = useProtein(ProteinItemsArgument)
   
-  function cartCount() {
-    
-    if (scoopQuan <= 1) {
-      scoopQuan = 1;
-      console.log(scoopQuan, "scoopQuan");
-    }
-    console.log("clicked")
-  }
-  console.log(items)
+  //console.log(items)
 
   if (isMediumDevice) {
     return (

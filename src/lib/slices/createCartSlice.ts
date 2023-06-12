@@ -37,14 +37,12 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
 
         set({ cart });
         Cookie.set('cartItems', JSON.stringify(cart));
-        console.log(cart);
         },
         removeFromCart: (productId: string) => {
             const updatedCart = get().cart.filter((product) => product.id.toString() !== productId);
             set({ cart: updatedCart });
             Cookie.set('cartItems', JSON.stringify(updatedCart));
-            console.log(updatedCart);
-          },
+        },
         
         updateQuantity: (productId: string, action: 'increase' | 'decrease') => {
         const cart = get().cart;

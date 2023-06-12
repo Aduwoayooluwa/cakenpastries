@@ -33,7 +33,7 @@ const useRegister = () => {
         });
     }, {
         onSuccess: ({ data }) => {
-            console.log(data)
+            //console.log(data)
             successNotification()
             localStorage.setItem("token", data.token)
             localStorage.setItem("userDetails", JSON.stringify(data?.user))
@@ -48,7 +48,7 @@ const useRegister = () => {
             if (error.message === "Network Error") {
                 return
             }
-            console.log(error)
+            //console.log(error)
         }
     })
 

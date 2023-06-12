@@ -62,7 +62,7 @@ type payloadTypes = {
         setUserDetails(userDetails)
         setIsAuthenticated(true)
 
-        console.log(data)
+        //console.log(data)
         router.push("/")
         },
 
