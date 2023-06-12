@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ChakraProvider theme={theme}>
             <Navbar />
             <Component {...pageProps} />
-            <Box cursor={"pointer"} position={"fixed"} _hover={{bg: "green.800"}} bg="green" borderRadius={"100%"} padding={"20px"} bottom={{base: "10%", md: "5%"}} right="5%">
+            <Box cursor={"pointer"} position={"fixed"} _hover={{bg: "green.800"}} bg="green" borderRadius={"100%"} padding={{base: "10px", md:"20px"}} bottom={{base: "15%", md: "5%"}} right="5%">
               <Link href="https://wa.me/2348096176758" target='_blank' rel='noreferrer'>
                 <Icon color={"white"}  width="2rem" height="2rem" viewBox="0 0 24 24" 
                     className="w-full h-full">
