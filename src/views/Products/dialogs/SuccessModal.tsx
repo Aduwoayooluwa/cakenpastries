@@ -23,6 +23,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
             <Text mt={4} textAlign="center">
                 Thank you for your order!
             </Text>
+            <Text mt={5} textAlign="center" fontSize={"sm"}>This will automatically redirect</Text>
             </ModalBody>
         </ModalContent>
         </Modal>

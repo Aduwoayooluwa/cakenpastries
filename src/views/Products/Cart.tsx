@@ -232,6 +232,11 @@ const CartPage = ({ cartItems }: any) => {
                                 order.mutate();
                                 setIsSuccessModalOpen(true)
                                 Cookies.remove('cartItems')
+                                setTimeout(() => {
+                                    router.reload()
+                                    localStorage?.clear()
+                                }, 2000)
+                                
                             }
                         }, 3000)
                         closePaymentModal()
