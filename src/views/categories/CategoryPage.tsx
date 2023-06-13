@@ -31,15 +31,13 @@ const CategoryPage = (props: Props) => {
                     {
                         data?.map((category: any) => {
                             return (
-                                <Skeleton 
-                                isLoaded={!loading}
-            
+                                <Box 
                                 color='white'
                                 key={category.id}>
                                     <Box >
                                     <CategoryCard category={category} />
                                     </Box>
-                                </Skeleton>
+                                </Box>
                                 
                             )
                         })
