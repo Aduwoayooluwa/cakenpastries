@@ -153,8 +153,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             <Divider orientation="horizontal" width="full" my="20px" />
             <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
-              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, price.toString());
+              localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+              console.log(cartQuantity);
+              console.log(price)
+              localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -171,8 +173,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   setCartItemsMap
                 );
 
-                localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-                localStorage.setItem(`${itemName}_price`, price.toString());
+                localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
               }}>
                 Add To Cart
               </Btn>
@@ -286,7 +288,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
               localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, price.toString());
+              localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -303,8 +305,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   setCartItemsMap
                 );
 
-                localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-                localStorage.setItem(`${itemName}_price`, price.toString());
+                localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
                 
               }}>
                 Add To Cart
