@@ -27,7 +27,6 @@ import Button from '@/components/buttons/button.component';
 import { useAppStore } from '@/lib/store';
 import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
 import { CartContext } from '@/context/CartContext';
-import useProtein from '@/hooks/useProtein';
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp, itemMeasure }: any) => {
   const { data } = useGetData(`https://backend.cakesandpastries.ng/api/menu/protein`);
@@ -49,9 +48,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const { addToCart } = useAppStore();
   const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
 
-  // context
-  const { setCartItems } = useContext(CartContext);
-
   useEffect(() => {
     const isItemAddedToCart = localStorage.getItem(itemId);
     setIsAddToCartBtnClicked(!!isItemAddedToCart);
@@ -65,20 +61,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
     }
   }, []);
 
-  const handleIncrement = () => {
-    setCartQuantity((prevQuantity) => prevQuantity + 1);
-    setPrice((prevPrice) => prevPrice + parseInt(itemPrice));
-    setPlates((prevPlates) => prevPlates + parseInt(itemPrice));
-  };
-
-  const handleDecrement = () => {
-    if (cartQuantity > 0) {
-      setCartQuantity((prevQuantity) => prevQuantity - 1);
-      setPrice((prevPrice) => prevPrice - parseInt(itemPrice));
-      setPlates((prevPlates) => prevPlates - parseInt(itemPrice));
-    }
-  };
-
   useEffect(() => {
     const totalPrice = cartQuantity === 1 ? scoopPrice : plates + scoopPrice;
     setPrice(totalPrice);
@@ -91,24 +73,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [isMediumDevice] = useMediaQuery("(min-width: 768px)");
 
-  const ProteinItemsArgument= {
-    itemPrice,
-    itemId,
-  }
-
-  // const { 
-  //   price, setPrice,
-  //   selectedOption, setSelectedOption,
-  //     cartQuantity, setCartQuantity,
-  //     plates, setPlates,
-  //     cartItemsMap, setCartItemsMap,
-  //     scoopQuan, setScoopQuantity,
-  //     scoopPrice, setScoopPrice,
-  //     addToCart,
-  //     isAddToCartBtnClicked, setIsAddToCartBtnClicked
-  // }  = useProtein(ProteinItemsArgument)
-  
-  //console.log(items)
 
   if (isMediumDevice) {
     return (
