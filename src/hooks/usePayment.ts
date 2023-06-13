@@ -35,6 +35,7 @@ const usePayment = (amount: number) => {
     const { data } = useGetSubtotal(subtotalID)
 
     let subtotalToBePayed = data?.data?.message?.subtotal
+    console.log(subtotalToBePayed)
     const config = {
         public_key: publickey,
         tx_ref: Date.now().toString(),
