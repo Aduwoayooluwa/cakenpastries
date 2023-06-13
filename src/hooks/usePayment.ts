@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import Cookies from 'js-cookie';
+import useGetSubtotal from './useGetSubtotal';
 
 
 const usePayment = (amount: number) => {
@@ -11,7 +12,8 @@ const usePayment = (amount: number) => {
     const [address, setAddress] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
 
-
+    
+ 
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -21,16 +23,22 @@ const usePayment = (amount: number) => {
         }
     }, [])
 
+    let subtotalID;
+
     if (typeof window !== 'undefined') {
         userInfo = Cookies.get('userDetails') ? JSON.parse(Cookies.get('userDetails')!) : null;
-    
+         // getting the proce from the server
+        subtotalID = Cookies.get("subtotalId") ? JSON.parse(Cookies.get("subtotalId")!) : null
     }
 
+   
+    const { data } = useGetSubtotal(subtotalID)
 
+    let subtotalToBePayed = data?.data?.message?.subtotal
     const config = {
         public_key: publickey,
         tx_ref: Date.now().toString(),
-        amount:amount,
+        amount:subtotalToBePayed,
         address,
         currency: 'NGN',
         payment_options: 'card,mobilemoney,ussd',

@@ -29,6 +29,7 @@ import usePayment from '@/hooks/usePayment';
 import { useRedirectAfterAuth } from './helper';
 import SuccessModal from './dialogs/SuccessModal';
 import { ModalContext } from '@/context/ModalContext';
+import usePostSubtotal from '@/hooks/usePostSubtotal';
 
 interface CartItem {
     id: string;
@@ -179,6 +180,8 @@ const CartPage = ({ cartItems }: any) => {
     useEffect(() => {
         const total = calculateTotalPrice();
         setSubtotal(total);
+        handlePostSubtotal()
+
     }, [items]);
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,6 +208,8 @@ const CartPage = ({ cartItems }: any) => {
     // payment with flutterwave hook
     const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
 
+    // API TO SEND THE SUBTOTAL TO SERVER
+    const { handlePostSubtotal } = usePostSubtotal((subtotal+deliveryFeeAmount+takeaway))
     const handleProceedToPayment = () => {
         const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
         //(itemsWithoutCategory)
@@ -226,6 +231,7 @@ const CartPage = ({ cartItems }: any) => {
                 return;
             }
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
+
             //console.log(itemsWithoutCategory)
             handleFlutterPayment({
                     callback: (response) => {
@@ -428,7 +434,9 @@ const CartPage = ({ cartItems }: any) => {
                     <Button
                     mt={4}
                     onClick={() => {
-                        
+                        if (!address && !phoneNumber) {
+                            handlePostSubtotal()
+                        }
                         handleProceedToPayment()
                     }}
                     disabled={selectedLocation.trim() === ""}
