@@ -27,6 +27,9 @@ import Button from '@/components/buttons/button.component';
 import { useAppStore } from '@/lib/store';
 import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
 import { CartContext } from '@/context/CartContext';
+import { AES } from "crypto-js"
+import { service_key } from '@/utils/util';
+
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp, itemMeasure }: any) => {
   const { data } = useGetData(`https://backend.cakesandpastries.ng/api/menu/protein`);
@@ -154,9 +157,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
               localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-              console.log(cartQuantity);
-              console.log(price)
-              localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
+              localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -174,7 +175,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 );
 
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-                localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
+                localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
               }}>
                 Add To Cart
               </Btn>
@@ -288,7 +289,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
               localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
+              localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -306,7 +307,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 );
 
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-                localStorage.setItem(`${itemName}_price`, scoopPrice.toString());
+                localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
                 
               }}>
                 Add To Cart

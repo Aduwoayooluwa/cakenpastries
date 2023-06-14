@@ -30,6 +30,8 @@ import { useRedirectAfterAuth } from './helper';
 import SuccessModal from './dialogs/SuccessModal';
 import { ModalContext } from '@/context/ModalContext';
 import usePostSubtotal from '@/hooks/usePostSubtotal';
+import { AES, enc } from 'crypto-js';
+import { service_key } from '@/utils/util';
 
 interface CartItem {
     id: string;
@@ -170,7 +172,8 @@ const CartPage = ({ cartItems }: any) => {
 
     const calculateTotalPrice = () => {
             return items?.reduce((total, item) => {
-            const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(getItemPrice(`${item.name}_price`)!);
+            const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
+            console.log('hello', itemPrice, total)
             return total + itemPrice;
             }, 0);
     };
@@ -326,7 +329,7 @@ const CartPage = ({ cartItems }: any) => {
                             color='white'
                             textColor={"black"}
                             >
-                        <Text mt={2}>Price: NGN {parseInt(getItemQuantity(`${item?.name}_quantity`)!) * parseInt(getItemPrice(`${item?.name}_price`)!)}</Text>
+                        <Text mt={2}>Price: NGN {parseInt(getItemQuantity(`${item?.name}_quantity`)!) * parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
                         </Skeleton>
 
                         <Skeleton
