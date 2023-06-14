@@ -141,7 +141,6 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
                         </Text>
                 </Skeleton>
                 
-                {!isAddToCartBtnClicked ? (
                     <Skeleton
                     bg='white.500'
                     color='white'
@@ -152,14 +151,6 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
                     setProteinBarUp(true)
                 }}>Add to Cart</Button>
                 </Skeleton>
-                ) : (
-                <>
-
-                    <Button disabled={true} onClick={() => {
-                    
-                }}>Added</Button>
-                </>
-                )}
             </VStack>
             </Flex>
                 

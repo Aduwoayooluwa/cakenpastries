@@ -170,7 +170,7 @@ const CartPage = ({ cartItems }: any) => {
 
     const calculateTotalPrice = () => {
             return items?.reduce((total, item) => {
-            const itemPrice = item?.quantity * parseInt(getItemPrice(`${item.name}_price`)!);
+            const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(getItemPrice(`${item.name}_price`)!);
             return total + itemPrice;
             }, 0);
     };
@@ -326,7 +326,7 @@ const CartPage = ({ cartItems }: any) => {
                             color='white'
                             textColor={"black"}
                             >
-                        <Text mt={2}>Price: NGN {item?.quantity * parseInt(getItemPrice(`${item?.name}_price`)!)}</Text>
+                        <Text mt={2}>Price: NGN {parseInt(getItemQuantity(`${item?.name}_quantity`)!) * parseInt(getItemPrice(`${item?.name}_price`)!)}</Text>
                         </Skeleton>
 
                         <Skeleton
