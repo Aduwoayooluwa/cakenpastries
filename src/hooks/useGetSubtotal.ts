@@ -12,10 +12,10 @@ const useGetSubtotal = (id: number) => {
 
     const { data, isLoading, isError} = useQuery(["getSubtotal"], getSubtotal, {
         onSuccess: ({ data }) => {
-            console.log(data);
+            //console.log(data);
         },
         onError: ({ error }) => {
-            console.log(error)
+            //console.log(error)
         },
         cacheTime: 0
     })

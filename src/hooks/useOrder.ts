@@ -13,6 +13,7 @@ const useOrder = (address: string, items: any,
                 payment_ref: string, amount: number,
                 name: string, phoneNumber: string,
                 location: string, 
+                deliveryFee: number,
                 setOrderSuccess: React.Dispatch<React.SetStateAction<boolean>>) => {
     
     // bringing the success modal from the useContext
@@ -20,7 +21,7 @@ const useOrder = (address: string, items: any,
     
     const router = useRouter()
     // order url
-    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}`
+    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}&deliveryFee=${encodeURIComponent(deliveryFee)}`
     
     
     return useMutation(() => {

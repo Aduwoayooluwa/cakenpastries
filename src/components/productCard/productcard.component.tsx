@@ -122,9 +122,9 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
 
             <VStack align="start" justify="start" width="full" mt="4">
                 <Skeleton
-                 bg='white.500'
-                 color='white'
-                 isLoaded={!loading}
+                    bg='white.500'
+                    color='white'
+                    isLoaded={!loading}
                 >
                 <Text textColor={"black"} fontSize={{ base: "8px", md: "sm" }}>
                 Starting from
@@ -132,9 +132,9 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
                 </Skeleton>
 
                 <Skeleton
-                 bg='white.500'
-                 color='white'
-                 isLoaded={!loading}
+                    bg='white.500'
+                    color='white'
+                    isLoaded={!loading}
                 >
                     <Text fontWeight="extrabold" fontSize={{ base: "14px", md: "lg" }} textColor={"black"} lineHeight="none">
                         NGN {parseInt(item?.price)}
