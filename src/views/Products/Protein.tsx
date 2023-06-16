@@ -128,7 +128,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   +
                 </Button>
               </Flex>
-              <Text textColor="black">{scoopPrice}</Text>
+              {/* <Text textColor="black">{scoopPrice}</Text> */}
             </VStack>
             <VStack spacing={2} width="full" align="start">
               <FormControl>
@@ -252,7 +252,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 +
               </Button>
             </Flex>
-            <Text textColor="black">{scoopQuan * scoopPrice}</Text>
+            <Text textColor="black">{scoopPrice}</Text>
           </VStack>
           <VStack spacing={2} width="full" align="start">
       <FormControl>
