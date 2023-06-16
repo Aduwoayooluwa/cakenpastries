@@ -7,10 +7,8 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input,
     Text,
     Divider,
-    Stack,
     Center,
     Skeleton,
     Select
@@ -38,7 +36,7 @@ interface CartItem {
     name: string;
     quantity: number;
     price: number;
-    protein?: string
+    protein?: any
     category?: any
 }
 
@@ -173,7 +171,7 @@ const CartPage = ({ cartItems }: any) => {
     const calculateTotalPrice = () => {
             return items?.reduce((total, item) => {
             const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
-            console.log('hello', itemPrice, total)
+            //console.log('hello', itemPrice, total)
             return total + itemPrice;
             }, 0);
     };
@@ -206,7 +204,7 @@ const CartPage = ({ cartItems }: any) => {
 
      // hook to call order
 
-    const order = useOrder(address, itemsWithoutCategory, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, setOrderSuccess)
+    const order = useOrder(address, itemsWithoutCategory, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
 
     // payment with flutterwave hook
     const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
@@ -214,8 +212,6 @@ const CartPage = ({ cartItems }: any) => {
     // API TO SEND THE SUBTOTAL TO SERVER
     const { handlePostSubtotal } = usePostSubtotal((subtotal+deliveryFeeAmount+takeaway))
     const handleProceedToPayment = () => {
-        const itemsWithoutCategory = items.map(({ category, ...rest }) => rest);
-        //(itemsWithoutCategory)
         if (address==="" || phoneNumber==="") {
             setIsPaymentDialogVisible(true)
             return;

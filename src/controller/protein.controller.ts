@@ -41,10 +41,15 @@ export const handleSelectChange = (
     ) => {
         const selectedOption = event.target.value;
         setSelectedOption(selectedOption);
-        items.protein = selectedOption
-    
-        // Find the selected option from the data
+
+         // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
+        
+        items.protein = {
+            name: selectedOption,
+            quantity: 1,
+            price: selectedItem?.price
+        }
     
         if (selectedItem) {
         // Calculate the new scoop price
