@@ -34,7 +34,7 @@ const HBar = (props: Props) => {
                         </Text>
                     </Link>
             </Skeleton> 
-                      
+                
                 {
                         data?.map((category: any) => {
                             return (
