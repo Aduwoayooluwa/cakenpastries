@@ -33,7 +33,7 @@ const CategoryCard = ({ category }: Props) => {
                     </object>
                 
                     </Box>
-                    <Link href={``}>
+                    <Link href={`/category/${category?.name}`}>
                         <VStack align="start" spacing="2" mt="4" flex="1">
                             <Text textColor={"black"} fontSize={{baee:"sm", md:"lg" }}fontWeight="medium">
                                 {category?.name}
