@@ -41,6 +41,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   // number of plates
   const [plates, setPlates] = useState(parseInt(itemPrice) || 0);
 
+  // number of plates to be ordered is 1 by default here. to increase the number, user will get to the cart page
+  const [numberOfPlates, setNumberOfPlates] = useState(1)
   // cart
   const [cartItemsMap, setCartItemsMap] = useState(new Map());
 
@@ -136,7 +138,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   value={selectedOption}
                   onChange={(event) =>{
 
-                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart, cart) // Pass setScoopPrice as a prop
+                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart, cart, scoopQuan) // Pass setScoopPrice as a prop
                   
                     console.log(items)
                   }
@@ -159,7 +161,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             <Divider orientation="horizontal" width="full" my="20px" />
             <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
-              localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+              localStorage.setItem(`${itemName}_quantity`, numberOfPlates.toString());
               localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
@@ -177,7 +179,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   setCartItemsMap
                 );
 
-                localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                localStorage.setItem(`${itemName}_quantity`, numberOfPlates.toString());
                 localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
               }}>
                 Add To Cart
@@ -272,7 +274,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               setScoopPrice, // Pass setScoopPrice as a prop,
               items,
               proteinCart,
-              cart
+              cart,
+              scoopQuan
             )
           }
           placeholder="Select an option"
