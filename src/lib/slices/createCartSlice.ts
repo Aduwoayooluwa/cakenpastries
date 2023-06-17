@@ -6,7 +6,7 @@ import Cookie from "js-cookie";
 export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
 
     const existingCartItems = Cookie.get('cartItems');
-    const existingProteinItems = Cookie.get('proteinItems');
+    const existingProteinItems = Cookie.get('proteinCart');
     const initialState = {
         cart: existingCartItems ? JSON.parse(existingCartItems) : [],
         showCart: false,
@@ -31,6 +31,7 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         const cart = get().cart;
         const findProduct = cart.find((p) => p.id === product.id);
 
+        
         if (findProduct) {
             findProduct.quantity! += 1;
         } else {
@@ -44,12 +45,14 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
             const updatedCart = get().cart.filter((product) => product.id?.toString() !== productId);
             set({ cart: updatedCart });
             Cookie.set('cartItems', JSON.stringify(updatedCart));
+            
         },
 
         removeProteinfromCart: (proteinId: string) => {
             const updatedCart = get().proteinCart.filter((protein) =>protein?.id?.toString() !== proteinId);
+            console.log('dtf', proteinId)
             set({ proteinCart:updatedCart });
-            Cookie.set('cartItems', JSON.stringify(updatedCart))
+            Cookie.set('proteinCart', JSON.stringify(updatedCart))
         },
         
         updateQuantity: (productId: string, action: 'increase' | 'decrease') => {

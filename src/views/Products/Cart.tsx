@@ -59,7 +59,7 @@ const CartPage = ({ cartItems }: any) => {
     const [savedAddress, setSavedAddress] = useState('');
 
 
-    const { removeFromCart } = useAppStore()
+    const { removeFromCart, removeProteinfromCart } = useAppStore()
 
     //selected location
     const [selectedLocation, setSelectedLocation] = useState('');
@@ -199,6 +199,11 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_quantity`)
         localStorage.removeItem(`${itemName}_price`)
     };
+
+    const handleRemoveProteinFromCart = (itemId: string) => {
+        removeProteinfromCart(itemId.toString())
+        console.log('removed')
+    }
     
     // delivery fee
     let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
@@ -338,7 +343,10 @@ const CartPage = ({ cartItems }: any) => {
                             >
                         <Button
                         mt={4}
-                        onClick={() => handleRemoveFromCart(item?.id, item?.name)}
+                        onClick={() => {
+                            handleRemoveFromCart(item?.id, item?.name)
+                            handleRemoveProteinFromCart(item?.protein)
+                        }}
                         disabled={address.trim() === ''}
                         bg="red.600"
                         color="#EAEAFF"

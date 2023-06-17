@@ -6,7 +6,7 @@ import { ModalContext } from '@/context/ModalContext'
 import { useContext } from "react"
 import { useRouter } from 'next/router'
 import { useEffect } from "react"
-import Cookies from 'js-cookie'
+import Cookie from 'js-cookie'
 
 const successNotification = () => toast('You have successfully ordered...')
 const errorNotification = (error: string) => toast(error)
@@ -24,13 +24,13 @@ const useOrder = (address: string, items: any,
     let proteinCart: any
 
     if (typeof window !== 'undefined') {
-        proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!)
+        proteinCart = Cookie.get('proteinCart') && JSON.parse(Cookie.get('proteinCart')!)
     }   
         
     
     const router = useRouter()
     // order url
-    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}&deliveryFee=${encodeURIComponent(deliveryFee)}&protein=${encodeURIComponent(proteinCart)}}`
+    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}&deliveryFee=${encodeURIComponent(deliveryFee)}&protein=${encodeURIComponent(JSON.stringify(proteinCart))}}`
     
     
     return useMutation(() => {
@@ -47,9 +47,10 @@ const useOrder = (address: string, items: any,
                 router.push("/")
                 localStorage?.clear()
                 router.reload()
+                Cookie.remove("proteinCart")
             }, 1000)
             setTimeout(() => {
-                // router.push("/")
+                //router.push("/")
                 // console.log(router)
             }, 2000)
             

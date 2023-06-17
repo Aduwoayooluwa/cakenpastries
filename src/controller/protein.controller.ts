@@ -39,16 +39,20 @@ export const handleSelectChange = (
         setSelectedOption: React.Dispatch<React.SetStateAction<string>>,
         setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
         items: any,
-        proteinCart: any[]
+        proteinCart: any[],
+        cart: any[]
     ) => {
         const selectedOption = event.target.value;
         setSelectedOption(selectedOption);
 
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
-        
+        console.log(selectedItem)
 
-        proteinCart.push([{name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id}])
+        items.protein = selectedItem?.id
+
+
+        proteinCart.push({name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id})
         Cookies.set('proteinCart', JSON.stringify(proteinCart))
         console.log(proteinCart)
     

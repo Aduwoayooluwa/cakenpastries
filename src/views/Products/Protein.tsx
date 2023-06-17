@@ -48,7 +48,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   let [scoopQuan, setScoopQuantity] = useState(1);
   const [scoopPrice, setScoopPrice] = useState(parseInt(itemPrice) || 0);
 
-  const { addToCart, proteinCart } = useAppStore();
+  const { addToCart, proteinCart, cart } = useAppStore();
   const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   value={selectedOption}
                   onChange={(event) =>{
 
-                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart) // Pass setScoopPrice as a prop
+                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart, cart) // Pass setScoopPrice as a prop
                   
                     console.log(items)
                   }
@@ -271,7 +271,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               setSelectedOption,
               setScoopPrice, // Pass setScoopPrice as a prop,
               items,
-              proteinCart
+              proteinCart,
+              cart
             )
           }
           placeholder="Select an option"

@@ -51,7 +51,7 @@ const Category = (props: Props) => {
                 <Flex  width="full"  bg="whiteAlpha.800" align="start"  justify="start">
             
                 <Box maxW="full" width="full" p="4">
-                <SimpleGrid columns={[2, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
+                <SimpleGrid  columns={[2, 2, 2, 3, 3, 4]} spacing={{base:"0", md:"4"}} width="full">
                     {
                         data !== "undefined" && data?.map((item: any) => {
                             return (<>
