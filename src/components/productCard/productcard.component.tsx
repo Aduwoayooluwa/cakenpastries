@@ -32,7 +32,7 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
     const { addToCart } = useAppStore();
     const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
     const [quantity, setQuantity] = useState(1);
-
+                                                                                                                            
     useEffect(() => {
         const isItemAddedToCart = localStorage.getItem(item?.id);
         setIsAddToCartBtnClicked(!!isItemAddedToCart);
@@ -40,24 +40,6 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
 
     // toggle protin bar
     const [isProteinVisible, setIsProteinVisible] = useState(false)
-
-    const handleAddToCart = () => {
-        addToCart(item);
-        setIsAddToCartBtnClicked(true);
-        localStorage.setItem(item?.id, "true");
-    };
-
-    const handleIncrementQuantity = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
-        handleIncrement(item);
-    };
-
-    const handleDecrementQuantity = () => {
-        if (quantity > 1) {
-        setQuantity((prevQuantity) => prevQuantity - 1);
-        handleDecrement(item);
-        }
-    };
 
 
     return (

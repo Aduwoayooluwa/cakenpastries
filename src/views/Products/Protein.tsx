@@ -48,7 +48,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   let [scoopQuan, setScoopQuantity] = useState(1);
   const [scoopPrice, setScoopPrice] = useState(parseInt(itemPrice) || 0);
 
-  const { addToCart } = useAppStore();
+  const { addToCart, proteinCart, cart } = useAppStore();
   const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
 
   useEffect(() => {
@@ -75,7 +75,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   }, [cartItemsMap]);
 
   const [isMediumDevice] = useMediaQuery("(min-width: 768px)");
-
 
   if (isMediumDevice) {
     return (
@@ -135,8 +134,12 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 <FormLabel>Add Protein</FormLabel>
                 <Select
                   value={selectedOption}
-                  onChange={(event) =>
-                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items) // Pass setScoopPrice as a prop
+                  onChange={(event) =>{
+
+                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart, cart) // Pass setScoopPrice as a prop
+                  
+                    console.log(items)
+                  }
                   }
                   placeholder="Select an option"
                 >
@@ -267,7 +270,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               setPlates,
               setSelectedOption,
               setScoopPrice, // Pass setScoopPrice as a prop,
-              items
+              items,
+              proteinCart,
+              cart
             )
           }
           placeholder="Select an option"

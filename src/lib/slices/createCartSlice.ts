@@ -6,9 +6,11 @@ import Cookie from "js-cookie";
 export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
 
     const existingCartItems = Cookie.get('cartItems');
+    const existingProteinItems = Cookie.get('proteinCart');
     const initialState = {
         cart: existingCartItems ? JSON.parse(existingCartItems) : [],
         showCart: false,
+        proteinCart: existingProteinItems ? JSON.parse(existingProteinItems) :[]
     };
     const calculateSubtotal = () => {
         const cart = get().cart;
@@ -24,11 +26,12 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
     return {
         ...initialState,
     
-        
+
         addToCart: (product: Products) => {
         const cart = get().cart;
         const findProduct = cart.find((p) => p.id === product.id);
 
+        
         if (findProduct) {
             findProduct.quantity! += 1;
         } else {
@@ -39,9 +42,17 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         Cookie.set('cartItems', JSON.stringify(cart));
         },
         removeFromCart: (productId: string) => {
-            const updatedCart = get().cart.filter((product) => product.id.toString() !== productId);
+            const updatedCart = get().cart.filter((product) => product.id?.toString() !== productId);
             set({ cart: updatedCart });
             Cookie.set('cartItems', JSON.stringify(updatedCart));
+            
+        },
+
+        removeProteinfromCart: (proteinId: string) => {
+            const updatedCart = get().proteinCart.filter((protein) =>protein?.id?.toString() !== proteinId);
+            console.log('dtf', proteinId)
+            set({ proteinCart:updatedCart });
+            Cookie.set('proteinCart', JSON.stringify(updatedCart))
         },
         
         updateQuantity: (productId: string, action: 'increase' | 'decrease') => {
@@ -63,5 +74,6 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         set({ showCart: !get().showCart });
         },
         calculateSubtotal,
+        
     };
 };

@@ -22,7 +22,7 @@ const HBar = (props: Props) => {
     
 
         return (
-        <Flex align="center" px="5px" pt="80px">
+        <Flex align="center" overflowX={'scroll'} px="5px" pt="80px">
             <Skeleton
             isLoaded={!loading}
             color='white'
