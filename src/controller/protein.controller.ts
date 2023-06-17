@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { ChangeEvent } from 'react';
 
 export const handleScoopIncrementQuantity = (setScoopQuantity: any,
@@ -38,6 +39,7 @@ export const handleSelectChange = (
         setSelectedOption: React.Dispatch<React.SetStateAction<string>>,
         setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
         items: any,
+        proteinCart: any[]
     ) => {
         const selectedOption = event.target.value;
         setSelectedOption(selectedOption);
@@ -45,11 +47,10 @@ export const handleSelectChange = (
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
         
-        items.protein = {
-            name: selectedOption,
-            quantity: 1,
-            price: selectedItem?.price
-        }
+
+        proteinCart.push([{name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id}])
+        Cookies.set('proteinCart', JSON.stringify(proteinCart))
+        console.log(proteinCart)
     
         if (selectedItem) {
         // Calculate the new scoop price
@@ -66,6 +67,7 @@ export const handleSelectChange = (
         else {
             setScoopPrice(parseInt(itemPrice));
         }
+        
 };
 
 

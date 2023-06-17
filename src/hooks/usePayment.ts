@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import useGetSubtotal from './useGetSubtotal';
 
 
-const usePayment = (amount: number) => {
+const usePayment = (subtotalToBePayed: number) => {
     let userInfo;
     const publickey = "FLWPUBK_TEST-25a1368444a5e8a0519d88b11589f3dd-X"
 
@@ -34,7 +34,7 @@ const usePayment = (amount: number) => {
    
     const { data } = useGetSubtotal(subtotalID)
 
-    let subtotalToBePayed = data?.data?.message?.subtotal
+    //let subtotalToBePayed = data?.data?.message?.subtotal
     //console.log(subtotalToBePayed)
     const config = {
         public_key: publickey,

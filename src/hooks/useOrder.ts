@@ -5,6 +5,8 @@ import { toast } from 'react-hot-toast'
 import { ModalContext } from '@/context/ModalContext'
 import { useContext } from "react"
 import { useRouter } from 'next/router'
+import { useEffect } from "react"
+import Cookies from 'js-cookie'
 
 const successNotification = () => toast('You have successfully ordered...')
 const errorNotification = (error: string) => toast(error)
@@ -17,11 +19,18 @@ const useOrder = (address: string, items: any,
                 setOrderSuccess: React.Dispatch<React.SetStateAction<boolean>>) => {
     
     // bringing the success modal from the useContext
-    const { setIsSuccessModalOpen } = useContext(ModalContext)  
+    const { setIsSuccessModalOpen } = useContext(ModalContext) 
+    
+    let proteinCart: any
+
+    if (typeof window !== 'undefined') {
+        proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!)
+    }   
+        
     
     const router = useRouter()
     // order url
-    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}&deliveryFee=${encodeURIComponent(deliveryFee)}`
+    const ORDER_URL = `${BASE_URL}/create-order?address=${encodeURIComponent(address)}&user_id=4&items=${encodeURIComponent(JSON.stringify(items))}&payment_ref=${encodeURIComponent(payment_ref)}&amount=${amount}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phoneNumber)}&location=${encodeURIComponent(location)}&deliveryFee=${encodeURIComponent(deliveryFee)}&protein=${encodeURIComponent(proteinCart)}}`
     
     
     return useMutation(() => {
