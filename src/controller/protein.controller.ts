@@ -40,7 +40,8 @@ export const handleSelectChange = (
         setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
         items: any,
         proteinCart: any[],
-        cart: any[]
+        cart: any[],
+        scoopQuan: number
     ) => {
         const selectedOption = event.target.value;
         setSelectedOption(selectedOption);
@@ -58,7 +59,7 @@ export const handleSelectChange = (
     
         if (selectedItem) {
         // Calculate the new scoop price
-        let newScoopPrice = parseInt(itemPrice) + (selectedItem ? parseInt(selectedItem.price) : 0) ;
+        let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? parseInt(selectedItem.price) : 0) ;
         setScoopPrice(newScoopPrice);
         
 

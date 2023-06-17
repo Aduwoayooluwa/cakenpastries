@@ -101,6 +101,7 @@ const CartPage = ({ cartItems }: any) => {
 
     const user_id = userInfo?.id;
 
+    const [numberOfPlates, setNumberOfPlates] = useState(1)
     // Skeleton 
     const [loading, setLoading] = useState(true);
 
@@ -140,6 +141,7 @@ const CartPage = ({ cartItems }: any) => {
     
         // Update the state variables
         setItems(updatedItems);
+        
         setSubtotal((prevSubtotal) => prevSubtotal + parseInt(getItemPrice(item?.name)!));
     };
 
@@ -159,6 +161,7 @@ const CartPage = ({ cartItems }: any) => {
             localStorage.setItem(`${item?.name}_quantity`, updatedQuantity.toString());
             
             setItems(updatedItems);
+            
             setSubtotal((prevSubtotal) => prevSubtotal - parseInt(getItemPrice(item?.name)!));
         }
     };
@@ -318,6 +321,7 @@ const CartPage = ({ cartItems }: any) => {
                         >
                             -
                         </Button>
+                        {/* <Text>{numberOfPlates === 1 ? numberOfPlates : parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text> */}
                         <Text>{parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text>
                         <Button size="sm" onClick={() => {handleIncrement(item)
                             
@@ -333,7 +337,7 @@ const CartPage = ({ cartItems }: any) => {
                             color='white'
                             textColor={"black"}
                             >
-                        <Text mt={2}>Price: NGN {parseInt(getItemQuantity(`${item?.name}_quantity`)!) * parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
+                        <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
                         </Skeleton>
 
                         <Skeleton
