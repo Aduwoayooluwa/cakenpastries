@@ -18,7 +18,7 @@ const { REACT_APP_BASE_URI } = process.env
 
 const REGISTER_URL = `${BASE_URL}/auth/register`
 
-const successNotification = () => toast('Registration Successful')
+const successNotification = () => toast('Account creation Successful')
 const errorNotification = (message: string) => toast(message)
 
 const useRegister = () => {
