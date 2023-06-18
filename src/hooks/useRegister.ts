@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
+import { useQueryClient } from '@tanstack/react-query';
 
 type payloadTypes = {
     role: string,
@@ -14,13 +16,14 @@ type payloadTypes = {
 
 const { REACT_APP_BASE_URI } = process.env
 
-const REGISTER_URL = `${BASE_URL}/auth/register/`
+const REGISTER_URL = `${BASE_URL}/auth/register`
 
-const successNotification = () => toast('Log in Successful')
+const successNotification = () => toast('Registration Successful')
 const errorNotification = () => toast('Error while logging in')
 
 const useRegister = () => {
     const router =  useRouter()
+    const queryClient = useQueryClient()
 
     const { setUserDetails, setIsAuthenticated } = useAuthenticationStore()
 
@@ -34,13 +37,8 @@ const useRegister = () => {
     }, {
         onSuccess: ({ data }) => {
             //console.log(data)
-            successNotification()
-            localStorage.setItem("token", data.token)
-            localStorage.setItem("userDetails", JSON.stringify(data?.user))
-            localStorage.setItem("isAuth", 'true')
-            setUserDetails(data?.user)
-            setIsAuthenticated(true)
-            router.push("/")
+
+        router.push("/login")
         
         },
         onError: (error: any) => {
