@@ -19,7 +19,7 @@ const { REACT_APP_BASE_URI } = process.env
 const REGISTER_URL = `${BASE_URL}/auth/register`
 
 const successNotification = () => toast('Registration Successful')
-const errorNotification = () => toast('Error while logging in')
+const errorNotification = (message: string) => toast(message)
 
 const useRegister = () => {
     const router =  useRouter()
@@ -39,10 +39,10 @@ const useRegister = () => {
             //console.log(data)
 
         router.push("/login")
-        
+        successNotification()
         },
         onError: (error: any) => {
-            errorNotification()
+            errorNotification(error.message || "Error while registering...")
             if (error.message === "Network Error") {
                 return
             }
