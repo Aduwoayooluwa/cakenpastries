@@ -118,7 +118,7 @@ const CartPage = ({ cartItems }: any) => {
         setSavedAddress(localStorage.getItem('address')!);
     }, []);
 
-   
+
     // takeaway
     const takeaway = 200;
 
@@ -246,7 +246,7 @@ const CartPage = ({ cartItems }: any) => {
                     callback: (response) => {
                         //console.log(response);
                         setTimeout(() => {
-                            if (response?.status === 'successful') {
+                            if (response?.status === 'successful' || 'completed') {
                                 
                                 order.mutate();
                                 Cookies.remove('cartItems')
