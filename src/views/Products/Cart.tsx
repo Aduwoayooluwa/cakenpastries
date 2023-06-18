@@ -120,7 +120,7 @@ const CartPage = ({ cartItems }: any) => {
 
 
     // takeaway
-    const takeaway = 200;
+    const takeaway = 210;
 
     const handleIncrement = (item: CartItem) => {
         const updatedQuantity = item?.quantity + 1;
