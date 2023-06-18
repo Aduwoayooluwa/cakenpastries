@@ -12,8 +12,6 @@ const usePayment = (subtotalToBePayed: number) => {
     const [address, setAddress] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
 
-    
- 
 
     useEffect(() => {
         if (typeof window !== "undefined") {
