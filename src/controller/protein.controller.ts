@@ -51,6 +51,10 @@ export const handleSelectChange = (
         console.log(selectedItem)
 
         items.protein = selectedItem?.id
+        items.protein_select = {
+            name: selectedItem?.name,
+            price: selectedItem?.price
+        }
 
 
         proteinCart.push({name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id})
