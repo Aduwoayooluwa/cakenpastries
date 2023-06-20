@@ -164,21 +164,26 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             </VStack>
 
              {/* protein Quantity */}
-            <VStack align="left" my="20px">
-              <Text textColor="black">How many {selectedOption}?</Text>
+              {
+                selectedOption !== "" && (
+                  <VStack align="left" my="20px">
+                      <Text textColor="black">How many {selectedOption}?</Text>
 
-              <ItemQuantity 
-                scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
-                scoopPrice={selectedProteinProce}
-                setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
-                items={items}
-              />
-              <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
-            </VStack>
+                      <ItemQuantity 
+                        scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
+                        scoopPrice={selectedProteinProce}
+                        setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
+                        items={items}
+                      />
+                      <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
+                  </VStack>
 
+                )
+              }
+            
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
-              NGN {scoopPrice + selectedProteinProce}
+              NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)}
               </Text>
             </Box>
 
@@ -307,23 +312,28 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           </VStack>
 
           {/* protein Quantity */}
-          <VStack align="left" my="20px">
-            <Text textColor="black">How many {selectedOption}?</Text>
+          {
+            selectedOption !== "" &&(
+              <VStack align="left" my="20px">
+                <Text textColor="black">How many {selectedOption}?</Text>
 
-            <ItemQuantity 
-              scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
-              scoopPrice={selectedProteinProce}
-              setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
-              items={items}
-            />
-            <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
-          </VStack>
+                <ItemQuantity 
+                  scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
+                  scoopPrice={selectedProteinProce}
+                  setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
+                  items={items}
+                />
+                <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
+            </VStack>
+            )
+          }
+          
 
           
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
-              NGN {scoopPrice + selectedProteinProce}
+              NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)}
             </Text>
           </Box>
 

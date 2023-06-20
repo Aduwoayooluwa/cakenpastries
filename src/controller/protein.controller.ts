@@ -58,7 +58,7 @@ export const handleSelectChange = (
 
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
-        console.log(selectedItem)
+        //console.log(selectedItem)
         items.protein = selectedItem?.id
         items.protein_select = {
             name: selectedItem?.name,
@@ -69,7 +69,7 @@ export const handleSelectChange = (
 
         proteinCart.push({name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id})
         Cookies.set('proteinCart', JSON.stringify(proteinCart))
-        console.log(proteinCart)
+        //console.log(proteinCart)
     
         if (selectedItem) {
         // Calculate the new scoop price
@@ -114,7 +114,7 @@ export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClic
         
         // Save the cartItemsMap in local storage
         items.quantity = scoopQuan
-        console.log('items', items)
+        //console.log('items', items)
         localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
 };

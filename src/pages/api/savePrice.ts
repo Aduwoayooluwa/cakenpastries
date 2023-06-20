@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         else {
-            console.log(data)
+            //console.log(data)
             res.status(200).json({message: "Price saved successfully", })
         }
 
