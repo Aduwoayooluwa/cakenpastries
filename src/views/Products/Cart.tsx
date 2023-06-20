@@ -38,6 +38,7 @@ interface CartItem {
     price: number;
     protein?: any
     category?: any
+    protein_select?: any
 }
 
 const CartPage = ({ cartItems }: any) => {
@@ -58,7 +59,7 @@ const CartPage = ({ cartItems }: any) => {
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
 
-
+    console.log(items)
     const { removeFromCart, removeProteinfromCart } = useAppStore()
 
     //selected location
@@ -120,7 +121,7 @@ const CartPage = ({ cartItems }: any) => {
 
 
     // takeaway
-    const takeaway = 200;
+    const takeaway = 210;
 
     const handleIncrement = (item: CartItem) => {
         const updatedQuantity = item?.quantity + 1;
@@ -313,7 +314,7 @@ const CartPage = ({ cartItems }: any) => {
                         bg='white.500'
                         color='white'
                         >
-                        <HStack textColor={"purple.500"} mt={2}>
+                        {/* <HStack textColor={"purple.500"} mt={2}>
                         <Button
                             size="sm"
                             onClick={() => handleDecrement(item)}
@@ -321,14 +322,18 @@ const CartPage = ({ cartItems }: any) => {
                         >
                             -
                         </Button>
-                        {/* <Text>{numberOfPlates === 1 ? numberOfPlates : parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text> */}
+                        
                         <Text>{parseInt(getItemQuantity(`${item?.name}_quantity`)!)}</Text>
                         <Button size="sm" onClick={() => {handleIncrement(item)
                             
                         }}>
                             +
                         </Button>
-                        </HStack>
+                        </HStack> */}
+                        <VStack mt="2" align={"start"}>
+                            <Text textColor="black" fontSize={"sm"}>Protein: {item?.protein_select?.name}</Text>
+                            <Text textColor="black" fontSize={"xs"}>Protein Price: {item?.protein_select?.price}</Text>
+                        </VStack>
                         </Skeleton>
 
                         <Skeleton
@@ -434,7 +439,7 @@ const CartPage = ({ cartItems }: any) => {
                 isLoaded={!loading}
                 bg='white.500'
                 color='white'>
-                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Takeaway: NGN 200</Text>
+                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Takeaway: NGN {takeaway}</Text>
 
                     <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Delivery: NGN {deliveryFeeAmount}</Text>
                     
