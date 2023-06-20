@@ -119,13 +119,13 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   disabled={cartQuantity === 1}
                   colorScheme="blue"
                   onClick={() =>
-                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))
+                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
                   }
                 >
                   -
                 </Button>
                 <Text>{scoopQuan}</Text>
-                <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+                <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice), scoopQuan, items)}>
                   +
                 </Button>
               </Flex>
@@ -176,9 +176,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   itemId,
                   setCartQuantity,
                   cartItemsMap,
-                  setCartItemsMap
+                  setCartItemsMap,
+                  scoopQuan
                 );
-
                 localStorage.setItem(`${itemName}_quantity`, numberOfPlates.toString());
                 localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
               }}>
@@ -245,7 +245,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 <Btn
                   size="sm"
                   onClick={() => {
-                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice))
+                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
                     
                     }}
                   disabled={true}
@@ -253,7 +253,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 -
               </Btn>
               <Text>{scoopQuan}</Text>
-              <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice))}>
+              <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice), scoopQuan, items)}>
                 +
               </Button>
             </Flex>
@@ -311,9 +311,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   itemId,
                   setCartQuantity,
                   cartItemsMap,
-                  setCartItemsMap
+                  setCartItemsMap,
+                  scoopQuan
                 );
-
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
                 localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
                 

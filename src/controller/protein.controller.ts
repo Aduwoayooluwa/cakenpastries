@@ -2,19 +2,22 @@ import Cookies from 'js-cookie';
 import { ChangeEvent } from 'react';
 
 export const handleScoopIncrementQuantity = (setScoopQuantity: any,
-    setScoopPrice: any, itemPrice: number
+    setScoopPrice: any, itemPrice: number, scoopQuantity: number, items:any
 ) => {
+
     setScoopQuantity((prevQuantity: number) => prevQuantity + 1)
     setScoopPrice((prevPrice: number) => prevPrice + (itemPrice))
 }
 
 export const handleScoopDecrementQuantity = (
     scoopQuan: number, setScoopQuantity: any, setScoopPrice: any,
-    itemPrice: number
+    itemPrice: number, items:any
 ) => {
+
     if (scoopQuan > 1) {
         setScoopQuantity((prevQuantity: number) => prevQuantity - 1);
         setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
+        items['quantity'] = scoopQuan
     }
 }
 // export  const handleSelectChange = (event: any, itemPrice: string, 
@@ -49,7 +52,6 @@ export const handleSelectChange = (
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
         console.log(selectedItem)
-
         items.protein = selectedItem?.id
         items.protein_select = {
             name: selectedItem?.name,
@@ -81,9 +83,9 @@ export const handleSelectChange = (
 
 
 export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClicked: any, itemId:string, setCartQuantity: any,
-    cartItemsMap: Map<string, number>, setCartItemsMap: any
+    cartItemsMap: Map<string, number>, setCartItemsMap: any, scoopQuan: number
     ) => {
-        addToCart(items);
+        addToCart({...items, quantity: scoopQuan});
         setIsAddToCartBtnClicked(true);
         localStorage.setItem(itemId, "true");
         setCartQuantity((prevQuantity: any) => prevQuantity + 1);
@@ -96,6 +98,8 @@ export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClic
         
         
         // Save the cartItemsMap in local storage
+        items.quantity = scoopQuan
+        console.log('items', items)
         localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
 };

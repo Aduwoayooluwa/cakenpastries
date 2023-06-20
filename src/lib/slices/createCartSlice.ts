@@ -35,7 +35,7 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         if (findProduct) {
             findProduct.quantity! += 1;
         } else {
-            cart.push({ ...product, quantity: 1 });
+            cart.push({ ...product });
         }
 
         set({ cart });
