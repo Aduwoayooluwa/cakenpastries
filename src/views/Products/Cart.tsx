@@ -206,7 +206,7 @@ const CartPage = ({ cartItems }: any) => {
 
     const handleRemoveProteinFromCart = (itemId: string) => {
         removeProteinfromCart(itemId.toString())
-        console.log('removed')
+        //console.log('removed')
     }
     
     // delivery fee
@@ -251,6 +251,7 @@ const CartPage = ({ cartItems }: any) => {
                                 
                                 order.mutate();
                                 Cookies.remove('cartItems')
+                                Cookies.remove('proteinCart')
                                 
                             }
                         }, 3000)
@@ -355,6 +356,7 @@ const CartPage = ({ cartItems }: any) => {
                         onClick={() => {
                             handleRemoveFromCart(item?.id, item?.name)
                             handleRemoveProteinFromCart(item?.protein)
+                            router.reload()
                         }}
                         disabled={address.trim() === ''}
                         bg="red.600"

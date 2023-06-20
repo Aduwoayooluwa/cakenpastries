@@ -44,29 +44,41 @@ export const handleSelectChange = (
         items: any,
         proteinCart: any[],
         cart: any[],
-        scoopQuan: number
+        scoopQuan: number,
+        setProteinPrice?: any,
+        setInitialProteinPrice?: any,
+        setSelectedProteinQuantity?:any,
+        proteinQuantity?: number
     ) => {
         const selectedOption = event.target.value;
+        if (selectedOption !== items.protein_select?.name) {
+            setSelectedProteinQuantity(1)
+        }
         setSelectedOption(selectedOption);
 
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
-        console.log(selectedItem)
+        //console.log(selectedItem)
         items.protein = selectedItem?.id
         items.protein_select = {
             name: selectedItem?.name,
             price: selectedItem?.price
         }
+        
 
 
-        proteinCart.push({name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id})
+        proteinCart.push({name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id})
         Cookies.set('proteinCart', JSON.stringify(proteinCart))
-        console.log(proteinCart)
+        //console.log(proteinCart)
     
         if (selectedItem) {
         // Calculate the new scoop price
         let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? parseInt(selectedItem.price) : 0) ;
         setScoopPrice(newScoopPrice);
+        setProteinPrice(parseInt(selectedItem?.price))
+        setInitialProteinPrice(parseInt(selectedItem?.price))
+
+        
         
 
         //const a = parseInt(itemPrice) + 
@@ -77,6 +89,9 @@ export const handleSelectChange = (
         }
         else {
             setScoopPrice(parseInt(itemPrice));
+            setProteinPrice(0)
+            setInitialProteinPrice(0)
+            setSelectedProteinQuantity(1)
         }
         
 };
@@ -99,7 +114,7 @@ export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClic
         
         // Save the cartItemsMap in local storage
         items.quantity = scoopQuan
-        console.log('items', items)
+        //console.log('items', items)
         localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
 };
