@@ -29,6 +29,7 @@ import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelec
 import { CartContext } from '@/context/CartContext';
 import { AES } from "crypto-js"
 import { service_key } from '@/utils/util';
+import ItemQuantity from './components/ItemQuantity';
 
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp, itemMeasure }: any) => {
@@ -36,6 +37,12 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
+  // quantity of selected option or protein
+  const [selectedProteinQuantity, setSelectedProteinQuantity] = useState(1)
+  // selected protein price
+  const [selectedProteinProce, setslectedProteinPrice] = useState(1)
+  const [initialProteinPrice, setInitialProteinPrice] = useState(1)
+
   const [cartQuantity, setCartQuantity] = useState(0);
 
   // number of plates
@@ -114,21 +121,12 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             {/* number of scoops */}
             <VStack align="left" my="20px">
             <Text textColor="black">How many {itemMeasure}?</Text>
-              <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                <Button
-                  disabled={cartQuantity === 1}
-                  colorScheme="blue"
-                  onClick={() =>
-                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
-                  }
-                >
-                  -
-                </Button>
-                <Text>{scoopQuan}</Text>
-                <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice), scoopQuan, items)}>
-                  +
-                </Button>
-              </Flex>
+            <ItemQuantity 
+              scoopQuan={scoopQuan} setScoopQuantity={setScoopQuantity} 
+              setScoopPrice={setScoopPrice} itemPrice={itemPrice}
+              items={items}
+            />
+            <Text textColor="black">{scoopPrice}</Text>
               {/* <Text textColor="black">{scoopPrice}</Text> */}
             </VStack>
             <VStack spacing={2} width="full" align="start">
@@ -138,9 +136,22 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   value={selectedOption}
                   onChange={(event) =>{
 
-                    handleSelectChange(event, itemPrice, data, setPlates, setSelectedOption, setScoopPrice, items, proteinCart, cart, scoopQuan) // Pass setScoopPrice as a prop
-                  
-                    console.log(items)
+                    handleSelectChange(
+                      event,
+                      itemPrice,
+                      data,
+                      setPlates,
+                      setSelectedOption,
+                      setScoopPrice, // Pass setScoopPrice as a prop,
+                      items,
+                      proteinCart,
+                      cart,
+                      scoopQuan,
+                      setslectedProteinPrice,
+                      setInitialProteinPrice,
+                      setSelectedProteinQuantity,
+                      selectedProteinQuantity
+                    )
                   }
                   }
                   placeholder="Select an option"
@@ -152,20 +163,34 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               </FormControl>
             </VStack>
 
+             {/* protein Quantity */}
+            <VStack align="left" my="20px">
+              <Text textColor="black">How many {selectedOption}?</Text>
+
+              <ItemQuantity 
+                scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
+                scoopPrice={selectedProteinProce}
+                setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
+                items={items}
+              />
+              <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
+            </VStack>
+
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
-                NGN {scoopPrice}
+              NGN {scoopPrice + selectedProteinProce}
               </Text>
             </Box>
 
             <Divider orientation="horizontal" width="full" my="20px" />
             <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
-              localStorage.setItem(`${itemName}_quantity`, numberOfPlates.toString());
-              localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
+              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+              localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
+
 
             {!isAddToCartBtnClicked ? (
               <Btn _hover={{background: "#EAEAFF", textColor:"blue"}} width="30%" bg="blue" textColor="white" onClick={() => {
@@ -240,25 +265,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           {/* number of scoops */}
           <VStack align="left" my="20px">
-            <Text textColor="black">How many {itemMeasure}?</Text>
-            <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                <Btn
-                  size="sm"
-                  onClick={() => {
-                    handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
-                    
-                    }}
-                  disabled={true}
-                >
-                -
-              </Btn>
-              <Text>{scoopQuan}</Text>
-              <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(setScoopQuantity, setScoopPrice, parseInt(itemPrice), scoopQuan, items)}>
-                +
-              </Button>
-            </Flex>
+            <Text textColor="black">How many {itemMeasure || 'scoop'}?</Text>
+            <ItemQuantity 
+              scoopQuan={scoopQuan} setScoopQuantity={setScoopQuantity} 
+              setScoopPrice={setScoopPrice} itemPrice={itemPrice}
+              items={items}
+            />
             <Text textColor="black">{scoopPrice}</Text>
           </VStack>
+
           <VStack spacing={2} width="full" align="start">
       <FormControl>
         <FormLabel>Add Protein</FormLabel>
@@ -275,7 +290,11 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               items,
               proteinCart,
               cart,
-              scoopQuan
+              scoopQuan,
+              setslectedProteinPrice,
+              setInitialProteinPrice,
+              setSelectedProteinQuantity,
+              selectedProteinQuantity
             )
           }
           placeholder="Select an option"
@@ -287,9 +306,24 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       </FormControl>
           </VStack>
 
+          {/* protein Quantity */}
+          <VStack align="left" my="20px">
+            <Text textColor="black">How many {selectedOption}?</Text>
+
+            <ItemQuantity 
+              scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
+              scoopPrice={selectedProteinProce}
+              setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
+              items={items}
+            />
+            <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
+          </VStack>
+
+          
+
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
-              NGN {scoopPrice}
+              NGN {scoopPrice + selectedProteinProce}
             </Text>
           </Box>
 
@@ -297,7 +331,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
               localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
+              localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -315,7 +349,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   scoopQuan
                 );
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-                localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
+                localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
                 
               }}>
                 Add To Cart
