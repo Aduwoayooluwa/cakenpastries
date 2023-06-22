@@ -39,6 +39,7 @@ interface CartItem {
     protein?: any
     category?: any
     protein_select?: any
+    other_protein?: any
 }
 
 const CartPage = ({ cartItems }: any) => {
@@ -204,8 +205,9 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_price`)
     };
 
-    const handleRemoveProteinFromCart = (itemId: string) => {
-        removeProteinfromCart(itemId.toString())
+    const handleRemoveProteinFromCart = (itemId: string, otherProteinId:string) => {
+        removeProteinfromCart(itemId?.toString())
+        removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
         //console.log('removed')
     }
     
@@ -332,8 +334,8 @@ const CartPage = ({ cartItems }: any) => {
                         </Button>
                         </HStack> */}
                         <VStack mt="2" align={"start"}>
-                            <Text textColor="black" fontSize={"sm"}>Protein: {item?.protein_select?.name}</Text>
-                            <Text textColor="black" fontSize={"xs"}>Protein Price: {item?.protein_select?.price}</Text>
+                            <Text textColor="black" fontSize={"sm"}>Protein: {item?.protein_select?.name}, {item?.protein_select?.name1 || ''}</Text>
+                            <Text textColor="black" fontSize={"xs"}>Protein Price: {item?.protein_select?.price}, { item?.protein_select?.price1 || ''}</Text>
                         </VStack>
                         </Skeleton>
 
@@ -355,7 +357,7 @@ const CartPage = ({ cartItems }: any) => {
                         mt={4}
                         onClick={() => {
                             handleRemoveFromCart(item?.id, item?.name)
-                            handleRemoveProteinFromCart(item?.protein)
+                            handleRemoveProteinFromCart(item?.protein, item?.other_protein)
                             router.reload()
                         }}
                         disabled={address.trim() === ''}

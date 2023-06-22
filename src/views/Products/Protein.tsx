@@ -30,6 +30,7 @@ import { CartContext } from '@/context/CartContext';
 import { AES } from "crypto-js"
 import { service_key } from '@/utils/util';
 import ItemQuantity from './components/ItemQuantity';
+import AddProteinModal from './dialogs/AddProteinModal';
 
 
 const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, itemImage, itemPrice, itemId, items, setProteinBarUp, itemMeasure }: any) => {
@@ -37,11 +38,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
+  // additonal protein
+  const [selectedProteinChange, setselectedProteinChange] = useState('')
   // quantity of selected option or protein
   const [selectedProteinQuantity, setSelectedProteinQuantity] = useState(1)
   // selected protein price
   const [selectedProteinProce, setslectedProteinPrice] = useState(1)
   const [initialProteinPrice, setInitialProteinPrice] = useState(1)
+  // add more protein state
+  const [addMoreProteinDialog, setAddMoreProteinDialog] = useState<boolean>(false)
 
   const [cartQuantity, setCartQuantity] = useState(0);
 
@@ -161,6 +166,31 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   ))}
                 </Select>
               </FormControl>
+
+              {/* add more protein section */}
+              <Box mt={4}>
+                
+                {
+                  addMoreProteinDialog && (
+                      <AddProteinModal 
+                          data={data} selectedProteinChange={selectedProteinChange}
+                          itemPrice={itemPrice} setPlates={setPlates}
+                          setSelectedOption={setselectedProteinChange}
+                          setScoopPrice={setScoopPrice}
+                          items={items} proteinCart={proteinCart}
+                          cart={cart} scoopQuan={scoopQuan}
+                          setslectedProteinPrice={setslectedProteinPrice}
+                          setInitialProteinPrice={setInitialProteinPrice}
+                          setSelectedProteinQuantity={setSelectedProteinQuantity}
+                          selectedProteinQuantity={selectedProteinQuantity}
+                          setAddMoreProteinDialog={setAddMoreProteinDialog}
+                          addMoreProteinDialog={addMoreProteinDialog}
+                          prevProteinPrice={selectedProteinProce}
+                    />
+                  )
+                }
+                  
+              </Box>
             </VStack>
 
              {/* protein Quantity */}
@@ -176,6 +206,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                         items={items}
                       />
                       <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
+                      <Button onClick={() => {
+                        setAddMoreProteinDialog(true)
+                      }} mt={3}>Add Another One</Button>
                   </VStack>
 
                 )
@@ -286,25 +319,26 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           value={selectedOption}
           onChange={(event) =>
             handleSelectChange(
-              event,
-              itemPrice,
-              data,
-              setPlates,
-              setSelectedOption,
-              setScoopPrice, // Pass setScoopPrice as a prop,
-              items,
-              proteinCart,
-              cart,
-              scoopQuan,
-              setslectedProteinPrice,
-              setInitialProteinPrice,
-              setSelectedProteinQuantity,
-              selectedProteinQuantity
+                event,
+                itemPrice,
+                data,
+                setPlates,
+                setSelectedOption,
+                setScoopPrice, // Pass setScoopPrice as a prop,
+                items,
+                proteinCart,
+                cart,
+                scoopQuan,
+                setslectedProteinPrice,
+                setInitialProteinPrice,
+                setSelectedProteinQuantity,
+                selectedProteinQuantity
             )
           }
           placeholder="Select an option"
         >
-          {data?.map((item: any) => (
+          {
+            data?.map((item: any) => (
             <option key={item?.id}>{item?.name}</option>
           ))}
         </Select>
