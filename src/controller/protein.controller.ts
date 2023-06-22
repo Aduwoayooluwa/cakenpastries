@@ -48,9 +48,12 @@ export const handleSelectChange = (
         setProteinPrice?: any,
         setInitialProteinPrice?: any,
         setSelectedProteinQuantity?:any,
-        proteinQuantity?: number
+        proteinQuantity?: number,
+        addMoreProteinDialog?: boolean
     ) => {
         const selectedOption = event.target.value;
+
+
         if (selectedOption !== items.protein_select?.name) {
             setSelectedProteinQuantity(1)
         }
@@ -66,9 +69,10 @@ export const handleSelectChange = (
         }
         
 
-
-        proteinCart.push({name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id})
+        proteinCart[0] ={name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id}
         Cookies.set('proteinCart', JSON.stringify(proteinCart))
+
+        
         //console.log(proteinCart)
     
         if (selectedItem) {
@@ -88,14 +92,51 @@ export const handleSelectChange = (
         setPlates(newPlates);
         }
         else {
-            setScoopPrice(parseInt(itemPrice));
-            setProteinPrice(0)
-            setInitialProteinPrice(0)
-            setSelectedProteinQuantity(1)
+            if (!addMoreProteinDialog) {
+                setScoopPrice(parseInt(itemPrice) * scoopQuan);
+                setProteinPrice(0)
+                setInitialProteinPrice(0)
+                setSelectedProteinQuantity(1)
+                proteinCart.pop()
+            }
+            
         }
         
 };
 
+
+export const handleSelectAdditionalProteinChange = (event: React.ChangeEvent<HTMLSelectElement>,
+    data: any[], proteinCart: any[], setselectedProteinChange: any, scoopQuan: number,
+    itemPrice: string, setScoopPrice: React.Dispatch<React.SetStateAction<number>>,
+    prevProteinPrice: number, items: any
+    ) => {
+        const selectedAdditionalProtein = event.target.value
+
+        
+        setselectedProteinChange(selectedAdditionalProtein)
+        // remove the last item the user selects
+        const selectedItem  = data.find((item) => item.name === selectedAdditionalProtein);
+        
+        items.other_protein = selectedItem?.id
+        items.protein_select.name1 = selectedItem?.name
+        items.protein_select.price1 = selectedItem?.price
+        console.log(selectedItem)
+
+        proteinCart[1] = {name: selectedAdditionalProtein, quantity: 1, price: selectedItem?.price, id: selectedItem?.id}
+        Cookies.set('proteinCart', JSON.stringify(proteinCart))
+        console.log(proteinCart)
+
+        if (selectedAdditionalProtein) {
+            let newItemPrice = (scoopQuan * parseInt(itemPrice)) + (parseInt(selectedItem?.price) + prevProteinPrice) || 0
+            setScoopPrice(newItemPrice)
+        }
+        else {
+            setScoopPrice(parseInt(itemPrice) * scoopQuan)
+            proteinCart.pop()
+        }
+
+
+}
 
 export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClicked: any, itemId:string, setCartQuantity: any,
     cartItemsMap: Map<string, number>, setCartItemsMap: any, scoopQuan: number
@@ -117,4 +158,4 @@ export const handleAddToCart = (items:any, addToCart: any, setIsAddToCartBtnClic
         //console.log('items', items)
         localStorage.setItem('cartItems', JSON.stringify(Array.from(updatedCartItemsMap)));
         
-};
+}; 

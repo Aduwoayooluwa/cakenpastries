@@ -44,9 +44,9 @@ const useOrder = (address: string, items: any,
             setIsSuccessModalOpen(true)
             //console.log(data)
             setTimeout(() => {
-                router.push("/")
+                //router.push("/")
                 localStorage?.clear()
-                router.reload()
+                //router.reload()
                 Cookie.remove("proteinCart")
             }, 1000)
             setTimeout(() => {

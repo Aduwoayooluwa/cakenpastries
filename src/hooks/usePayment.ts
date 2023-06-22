@@ -37,7 +37,7 @@ const usePayment = (subtotalToBePayed: number) => {
     const config = {
         public_key: publickey,
         tx_ref: Date.now().toString(),
-        amount:subtotalToBePayed,
+        amount:20,
         address,
         currency: 'NGN',
         payment_options: 'card,mobilemoney,ussd',
