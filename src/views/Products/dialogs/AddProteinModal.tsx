@@ -1,6 +1,7 @@
 import Button from '@/components/buttons/button.component'
 import { handleSelectAdditionalProteinChange, handleSelectChange } from '@/controller/protein.controller'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, Select, Center } from '@chakra-ui/react'
+import Cookies from 'js-cookie'
 import React from 'react'
 
 type Props = {
@@ -20,14 +21,17 @@ type Props = {
     selectedProteinQuantity: any
     setAddMoreProteinDialog?: any
     addMoreProteinDialog: boolean
-    prevProteinPrice: number
+    prevProteinPrice: number,
+    setSelectedAdditionalProtein: any
+    selectedAdditionalProtein: any
 }
 
 const AddProteinModal = ({ data, selectedProteinChange,
     itemPrice, setPlates, setSelectedOption, setScoopPrice,
     items, proteinCart, cart, scoopQuan, setslectedProteinPrice,
     setInitialProteinPrice, setSelectedProteinQuantity, selectedProteinQuantity,
-    setAddMoreProteinDialog, addMoreProteinDialog, prevProteinPrice
+    setAddMoreProteinDialog, addMoreProteinDialog, prevProteinPrice,setSelectedAdditionalProtein,
+    selectedAdditionalProtein
 }: Props) => {
     return (
         <Modal isOpen={true} onClose={() => {
@@ -43,27 +47,9 @@ const AddProteinModal = ({ data, selectedProteinChange,
                     <FormControl>
                         <Select value={selectedProteinChange}
                         onChange={(event) => {
-                            // handleSelectChange(
-                            //     event,
-                            //     itemPrice,
-                            //     data,
-                            //     setPlates,
-                            //     setSelectedOption,
-                            //     setScoopPrice,
-                            //     items,
-                            //     proteinCart,
-                            //     cart,
-                            //     scoopQuan,
-                            //     setslectedProteinPrice,
-                            //     setInitialProteinPrice,
-                            //     setSelectedProteinQuantity,
-                            //     selectedProteinQuantity,
-                            //     addMoreProteinDialog
-                            //)
-
                             handleSelectAdditionalProteinChange(event, data, proteinCart, 
                                 setSelectedOption, scoopQuan, 
-                                itemPrice, setScoopPrice, prevProteinPrice, items)
+                                itemPrice, setScoopPrice, prevProteinPrice, items, setSelectedAdditionalProtein)
                         }}
                         placeholder='Select an Option'
                         >
@@ -73,6 +59,8 @@ const AddProteinModal = ({ data, selectedProteinChange,
                         </Select>
                         <Center mt={4}>
                             <Button onClick={() => {
+                                proteinCart.push({name: selectedProteinChange, quantity: 1, price: selectedAdditionalProtein?.price, id: selectedAdditionalProtein?.id})
+                                Cookies.set('proteinCart', JSON.stringify(proteinCart))
                                 setAddMoreProteinDialog(false)
                             }}>Add Protein</Button>
                         </Center>
