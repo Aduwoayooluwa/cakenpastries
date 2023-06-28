@@ -42,7 +42,6 @@ const AddProteinModal = ({ data, selectedProteinChange,
                 <ModalHeader>Add Another Protein</ModalHeader>
 
                 <ModalCloseButton />
-                <center>Hello</center>
                 <ModalBody>
                     <FormControl>
                         <Select value={selectedProteinChange}

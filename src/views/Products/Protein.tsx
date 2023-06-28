@@ -137,7 +137,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               setScoopPrice={setScoopPrice} itemPrice={itemPrice}
               items={items}
             />
-            <Text textColor="black">{scoopPrice}</Text>
+            {/* <Text textColor="black">{scoopPrice}</Text> */}
               {/* <Text textColor="black">{scoopPrice}</Text> */}
             </VStack>
             <VStack spacing={2} width="full" align="start">
@@ -322,7 +322,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               setScoopPrice={setScoopPrice} itemPrice={itemPrice}
               items={items}
             />
-            <Text textColor="black">{scoopPrice}</Text>
+            {/* <Text textColor="black">{scoopPrice}</Text> */}
           </VStack>
 
           <VStack spacing={2} width="full" align="start">
