@@ -9,10 +9,10 @@ import ProteinBottomUp from "@/views/Products/Protein";
 
 type Props = {
     item: any;
-    subtotal: any
-    items: any
-    setSubtotal: any
-    setItems: any
+    subtotal?: any
+    items?: any
+    setSubtotal?: any
+    setItems?: any
     setProteinBarUp?: any
     proteinBarUp?: boolean
 };
