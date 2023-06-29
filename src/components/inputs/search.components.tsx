@@ -1,4 +1,5 @@
 import { Input, InputGroup, InputRightElement, IconButton } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { FaSearch } from "react-icons/fa";
 
 const SearchBar = ({ onSearch }: any) => {
@@ -6,6 +7,7 @@ const SearchBar = ({ onSearch }: any) => {
         const searchTerm = event.target.value;
         onSearch(searchTerm);
     };
+    const router = useRouter()
 
     return (
         <InputGroup>
@@ -22,6 +24,9 @@ const SearchBar = ({ onSearch }: any) => {
             icon={<FaSearch />}
             bg="transparent"
             _hover={{ bg: "transparent" }}
+            onClick={() =>{
+                router.push(`/search?name=${'beef'}`)
+            }}
             />
         </InputRightElement>
         </InputGroup>
