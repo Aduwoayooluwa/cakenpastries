@@ -121,6 +121,15 @@ export const handleSelectChange = (
         
 };
 
+export const handleRemoveProtein = (proteinId: string, proteinsCart: any[], setProteinsCart: any) => {
+    const updatedCart = proteinsCart.filter((protein) => {
+        return protein?.id.toString() !== proteinId.toString()
+    })
+    //console.log(proteinId)
+    setProteinsCart(updatedCart)
+    console.log(updatedCart)
+}
+
 
 export const handleSelectAdditionalProteinChange = (event: React.ChangeEvent<HTMLSelectElement>,
     data: any[], proteinCart: any[], setselectedProteinChange: any, scoopQuan: number,

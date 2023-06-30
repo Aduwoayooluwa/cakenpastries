@@ -26,7 +26,7 @@ import useGetData from '@/hooks/useGetData';
 import Link from 'next/link';
 import Button from '@/components/buttons/button.component';
 import { useAppStore } from '@/lib/store';
-import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart } from '@/controller/protein.controller';
+import { handleScoopDecrementQuantity, handleScoopIncrementQuantity, handleSelectChange, handleAddToCart, handleRemoveProtein } from '@/controller/protein.controller';
 import { CartContext } from '@/context/CartContext';
 import { AES } from "crypto-js"
 import { service_key } from '@/utils/util';
@@ -197,7 +197,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                       />
 
                           <Flex>
-                            <Btn colorScheme="red">X</Btn>
+                            <Btn onClick={() => {
+                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray)
+                            }} colorScheme="red">X</Btn>
                           </Flex>
 
                           
