@@ -70,6 +70,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   // handling scooping
   let [scoopQuan, setScoopQuantity] = useState(1);
   const [scoopPrice, setScoopPrice] = useState(parseInt(itemPrice) || 0);
+  // total protein Price 
+  const [totalProteinPrice, setTotalProteinPrice] = useState(0)
 
   let { addToCart, proteinCart, cart } = useAppStore();
   const [isAddToCartBtnClicked, setIsAddToCartBtnClicked] = useState(false);
@@ -198,7 +200,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
                           <Flex>
                             <Btn onClick={() => {
-                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray)
+                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopQuan, itemPrice, setTotalProteinPrice)
                             }} colorScheme="red">X</Btn>
                           </Flex>
 
@@ -264,8 +266,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
-              NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)}
+              NGN {totalProteinPrice === 0 ? scoopPrice : totalProteinPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce) }
+              
               </Text>
+              <Text>{totalProteinPrice}</Text>
             </Box>
 
             <Divider orientation="horizontal" width="full" my="20px" />
