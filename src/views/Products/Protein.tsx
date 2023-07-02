@@ -192,7 +192,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                           <Text w="full">{protein?.name}</Text>
 
                           <ItemQuantity 
-                        scoopQuan={protein?.quantity} setScoopQuantity={setSelectedProteinQuantity} 
+                        scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
                         scoopPrice={parseFloat(protein?.price)}
                         setScoopPrice={setslectedProteinPrice} itemPrice={parseFloat(protein?.price)}
                         items={protein} selectedProteinArray={selectedProteinArray}
@@ -200,7 +200,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
                           <Flex>
                             <Btn onClick={() => {
-                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopQuan, itemPrice, setTotalProteinPrice)
+                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopPrice, itemPrice, setslectedProteinPrice)
                             }} colorScheme="red">X</Btn>
                           </Flex>
 
@@ -218,10 +218,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             </VStack>
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
-              NGN {totalProteinPrice === 0 ? scoopPrice : totalProteinPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce) }
+              NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce) }
               
               </Text>
-              <Text>{totalProteinPrice}</Text>
+            {/* <Text>{totalProteinPrice}</Text> */}
             </Box>
 
             <Divider orientation="horizontal" width="full" my="20px" />

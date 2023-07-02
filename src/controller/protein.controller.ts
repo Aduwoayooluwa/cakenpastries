@@ -64,8 +64,11 @@ export const handleSelectChange = (
         const selectedOption = event.target.value;
 
 
-        if (selectedOption !== items.protein_select?.name) {
+        if (selectedOption !== selectedProteinArray![selectedProteinArray?.length! - 1]?.name) {
+            console.log(selectedProteinArray![selectedProteinArray?.length! - 1]?.name)
+            console.log('current', selectedOption)
             setSelectedProteinQuantity(1)
+            console.log(proteinQuantity)
         }
         setSelectedOption(selectedOption);
 
@@ -81,7 +84,35 @@ export const handleSelectChange = (
         const chosenProteinObj = selectedProteinArray?.find((prt) => prt.id === selectedItem?.id)
         if (selectedOption !== "" && !chosenProteinObj) {
             //console.log(selectedProteinArray)
-            setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id, foodId: items?.id}])
+            setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id, foodId: items?.id}])
+            
+            const newP = selectedProteinArray?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
+            //console.log(newP)
+            
+            if (selectedItem) {
+            // Calculate the new scoop price
+            setProteinDetails(selectedItem)
+            let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? newP : 0) ;
+            setScoopPrice(newScoopPrice);
+            setProteinPrice(parseInt(selectedItem?.price))
+            setInitialProteinPrice(parseInt(selectedItem?.price))
+
+            //const a = parseInt(itemPrice) + 
+        
+            // Update the plates (if needed)
+            const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price) || 0;
+            setPlates(newPlates);
+            }
+            else {
+                if (!addMoreProteinDialog) {
+                    setScoopPrice(parseInt(itemPrice) * scoopQuan);
+                    setProteinPrice(0)
+                    setInitialProteinPrice(0)
+                    setSelectedProteinQuantity(1)
+                    proteinCart.pop()
+                }
+                
+            }
         }
         
         
@@ -90,36 +121,7 @@ export const handleSelectChange = (
 
         
         //console.log(proteinCart)
-        const newP = selectedProteinArray?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
-        console.log(newP)
-        
-        if (selectedItem) {
-        // Calculate the new scoop price
-        setProteinDetails(selectedItem)
-        let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? newP : 0) ;
-        setScoopPrice(newScoopPrice);
-        setProteinPrice(parseInt(selectedItem?.price))
-        setInitialProteinPrice(parseInt(selectedItem?.price))
-
-        
-        
-
-        //const a = parseInt(itemPrice) + 
     
-        // Update the plates (if needed)
-        const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price) || 0;
-        setPlates(newPlates);
-        }
-        else {
-            if (!addMoreProteinDialog) {
-                setScoopPrice(parseInt(itemPrice) * scoopQuan);
-                setProteinPrice(0)
-                setInitialProteinPrice(0)
-                setSelectedProteinQuantity(1)
-                proteinCart.pop()
-            }
-            
-        }
         
 };
 
@@ -131,11 +133,11 @@ export const handleRemoveProtein = (proteinId: string, proteinsCart: any[], setP
     setProteinsCart(updatedCart)
     ///console.log(updatedCart?.reduce((accumulator, item) => parseInt(accumulator) + parseInt(item?.price)*parseInt(item?.quantity)), 0)
     const newPriceForProtein = updatedCart?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
-    console.log(newPriceForProtein)
+    console.log('new price', newPriceForProtein, scoopPrice, (newPriceForProtein + scoopPrice))
 
     // total item/food price
     let newFoodPrice = (parseInt(scoopPrice)*parseInt(scoopQuantity)) + newPriceForProtein || 0
-    console.log(newFoodPrice)
+    //console.log(newFoodPrice)
     setTotalProteinPrice(newPriceForProtein)
 }
 
