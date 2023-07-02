@@ -371,7 +371,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
                           <Flex>
                             <Btn onClick={() => {
-                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopQuan, itemPrice, setTotalProteinPrice)
+                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopQuan, itemPrice, setslectedProteinPrice)
                             }} colorScheme="red">X</Btn>
                           </Flex>
 
