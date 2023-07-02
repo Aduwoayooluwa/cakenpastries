@@ -49,7 +49,10 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
         },
 
         removeProteinfromCart: (proteinId: string) => {
-            const updatedCart = get().proteinCart.filter((protein) =>protein?.id?.toString() !== proteinId);
+            const updatedCart = get().proteinCart.filter((protein) =>{
+                //console.log('pId', protein[0].foodId)
+                return protein[0]?.foodId?.toString() !== proteinId
+            });
             //console.log('dtf', proteinId)
             set({ proteinCart:updatedCart });
             Cookie.set('proteinCart', JSON.stringify(updatedCart))

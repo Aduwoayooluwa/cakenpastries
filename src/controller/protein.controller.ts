@@ -80,7 +80,8 @@ export const handleSelectChange = (
 
         const chosenProteinObj = selectedProteinArray?.find((prt) => prt.id === selectedItem?.id)
         if (selectedOption !== "" && !chosenProteinObj) {
-            setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id}])
+            //console.log(selectedProteinArray)
+            setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id, foodId: items?.id}])
         }
         
         

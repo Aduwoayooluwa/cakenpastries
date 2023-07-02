@@ -375,10 +375,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                             }} colorScheme="red">X</Btn>
                           </Flex>
 
-                          
                         </HStack>
-
-                        
                       </VStack>
                     )
                   })
@@ -388,9 +385,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           </VStack>
 
           {/* protein Quantity */}
-
-
-          
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
