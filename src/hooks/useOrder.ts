@@ -21,7 +21,7 @@ const useOrder = (address: string, items: any,
     // bringing the success modal from the useContext
     const { setIsSuccessModalOpen } = useContext(ModalContext) 
     
-    let proteinCart: any
+    let proteinCart: any[]  = []
 
     if (typeof window !== 'undefined') {
         proteinCart = Cookie.get('proteinCart') && JSON.parse(Cookie.get('proteinCart')!)
