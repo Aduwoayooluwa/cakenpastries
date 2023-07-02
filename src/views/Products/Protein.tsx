@@ -215,55 +215,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               </Stack>
 
               {/* add more protein section */}
-              <Box mt={4}>
-                
-                {
-                  addMoreProteinDialog && (
-                      <AddProteinModal 
-                          data={data} selectedProteinChange={selectedProteinChange}
-                          itemPrice={itemPrice} setPlates={setPlates}
-                          setSelectedOption={setselectedProteinChange}
-                          setScoopPrice={setScoopPrice}
-                          items={items} proteinCart={proteinCart}
-                          cart={cart} scoopQuan={scoopQuan}
-                          setslectedProteinPrice={setslectedProteinPrice}
-                          setInitialProteinPrice={setInitialProteinPrice}
-                          setSelectedProteinQuantity={setSelectedProteinQuantity}
-                          selectedProteinQuantity={selectedProteinQuantity}
-                          setAddMoreProteinDialog={setAddMoreProteinDialog}
-                          addMoreProteinDialog={addMoreProteinDialog}
-                          prevProteinPrice={selectedProteinProce}
-                          setSelectedAdditionalProtein={setSelectedAdditionalProtein}
-                          selectedAdditionalProtein={selectedAdditionalProtein}
-                    />
-                  )
-                }
-                  
-              </Box>
             </VStack>
-
-             {/* protein Quantity */}
-              {/* {
-                selectedOption !== "" && (
-                  <VStack align="left" my="20px">
-                      <Text textColor="black">How many {selectedOption}?</Text>
-
-                      <ItemQuantity 
-                        scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
-                        scoopPrice={selectedProteinProce}
-                        setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
-                        items={items}
-                      />
-                      <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
-                      <Button onClick={() => {
-                        
-                        setAddMoreProteinDialog(true)
-                      }} mt={3}>Add Another Protein</Button>
-                  </VStack>
-
-                )
-              } */}
-            
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
               NGN {totalProteinPrice === 0 ? scoopPrice : totalProteinPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce) }
@@ -373,21 +325,23 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           value={selectedOption}
           onChange={(event) =>
             handleSelectChange(
-                event,
-                itemPrice,
-                data,
-                setPlates,
-                setSelectedOption,
-                setScoopPrice, // Pass setScoopPrice as a prop,
-                items,
-                proteinCart,
-                cart,
-                scoopQuan,
-                setProteinDetails,
-                setslectedProteinPrice,
-                setInitialProteinPrice,
-                setSelectedProteinQuantity,
-                selectedProteinQuantity,
+              event,
+              itemPrice,
+              data,
+              setPlates,
+              setSelectedOption,
+              setScoopPrice, // Pass setScoopPrice as a prop,
+              items,
+              proteinCart,
+              cart,
+              scoopQuan,
+              setProteinDetails,
+              setslectedProteinPrice,
+              setInitialProteinPrice,
+              setSelectedProteinQuantity,
+              selectedProteinQuantity,
+              setSelectedProteinArray,
+              selectedProteinArray
             )
           }
           placeholder="Select an option"
@@ -398,59 +352,39 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
           ))}
         </Select>
       </FormControl>
-
-              {/* add more protein section */}
-              <Box mt={4}>
-                
+          
+          {/* display proteins */}
+          <Stack w="full" p="4" maxH="200px" overflowY={"scroll"}>
                 {
-                  addMoreProteinDialog && (
-                      <AddProteinModal 
-                          data={data} selectedProteinChange={selectedProteinChange}
-                          itemPrice={itemPrice} setPlates={setPlates}
-                          setSelectedOption={setselectedProteinChange}
-                          setScoopPrice={setScoopPrice}
-                          items={items} proteinCart={proteinCart}
-                          cart={cart} scoopQuan={scoopQuan}
-                          setslectedProteinPrice={setslectedProteinPrice}
-                          setInitialProteinPrice={setInitialProteinPrice}
-                          setSelectedProteinQuantity={setSelectedProteinQuantity}
-                          selectedProteinQuantity={selectedProteinQuantity}
-                          setAddMoreProteinDialog={setAddMoreProteinDialog}
-                          addMoreProteinDialog={addMoreProteinDialog}
-                          prevProteinPrice={selectedProteinProce}
-                          setSelectedAdditionalProtein={setSelectedAdditionalProtein}
-                          selectedAdditionalProtein={selectedAdditionalProtein}
-                    />
-                  )
+                  selectedProteinArray?.map((protein, index) => {
+                    return (
+                      <VStack w="full" key={index}>
+                        <HStack  w="full" justify={"space-between"}>
+                          <Text w="full">{protein?.name}</Text>
+
+                          <ItemQuantity 
+                        scoopQuan={protein?.quantity} setScoopQuantity={setSelectedProteinQuantity} 
+                        scoopPrice={parseFloat(protein?.price)}
+                        setScoopPrice={setslectedProteinPrice} itemPrice={parseFloat(protein?.price)}
+                        items={protein} selectedProteinArray={selectedProteinArray}
+                      />
+
+                          <Flex>
+                            <Btn onClick={() => {
+                              handleRemoveProtein(protein?.id, selectedProteinArray, setSelectedProteinArray, scoopQuan, itemPrice, setTotalProteinPrice)
+                            }} colorScheme="red">X</Btn>
+                          </Flex>
+
+                        </HStack>
+                      </VStack>
+                    )
+                  })
                 }
-                  
-              </Box>
+              </Stack>
+
           </VStack>
 
           {/* protein Quantity */}
-          {
-            selectedOption !== "" &&(
-              <VStack align="left" my="20px">
-                <Text textColor="black">How many {selectedOption}?</Text>
-
-                <ItemQuantity 
-                  scoopQuan={selectedProteinQuantity} setScoopQuantity={setSelectedProteinQuantity} 
-                  scoopPrice={selectedProteinProce}
-                  setScoopPrice={setslectedProteinPrice} itemPrice={initialProteinPrice}
-                  items={items}
-                />
-                <Text textColor="black">Price of {selectedOption} : NGN {selectedProteinProce}</Text>
-            
-                <Button onClick={() => {
-                        
-                        setAddMoreProteinDialog(true)
-                      }} mt={3}>Add Another Protein</Button>
-            </VStack>
-            )
-          }
-          
-
-          
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">

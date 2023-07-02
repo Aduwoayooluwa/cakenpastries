@@ -205,9 +205,10 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_price`)
     };
 
-    const handleRemoveProteinFromCart = (itemId: string, otherProteinId:string) => {
+    const handleRemoveProteinFromCart = (itemId: string) => {
         removeProteinfromCart(itemId?.toString())
-        removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
+        console.log(itemId)
+        //removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
         //console.log('removed')
     }
     
@@ -357,8 +358,8 @@ const CartPage = ({ cartItems }: any) => {
                         mt={4}
                         onClick={() => {
                             handleRemoveFromCart(item?.id, item?.name)
-                            handleRemoveProteinFromCart(item?.protein, item?.other_protein)
-                            router.reload()
+                            handleRemoveProteinFromCart(item?.id)
+                            //router.reload()
                         }}
                         disabled={address.trim() === ''}
                         bg="red.600"
