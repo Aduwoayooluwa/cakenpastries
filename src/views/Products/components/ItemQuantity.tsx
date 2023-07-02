@@ -37,8 +37,8 @@ const ItemQuantity = ({scoopQuan, setScoopQuantity, setScoopPrice, scoopPrice, i
                     }
                 
             </HStack>
-        
-                <Text textColor="black">{scoopPrice}</Text>
+{/*         
+                <Text textColor="black">{scoopPrice}</Text> */}
         </VStack>
     )
     }

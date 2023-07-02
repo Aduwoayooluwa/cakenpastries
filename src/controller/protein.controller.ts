@@ -77,18 +77,19 @@ export const handleSelectChange = (
             name: selectedItem?.name,
             price: selectedItem?.price
         }
-        
-        if (selectedOption !== "" && !selectedProteinArray?.includes(selectedItem)) {
+
+        const chosenProteinObj = selectedProteinArray?.find((prt) => prt.id === selectedItem?.id)
+        if (selectedOption !== "" && !chosenProteinObj) {
             setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id}])
         }
         
-        console.log(selectedProteinArray)
+        
         // proteinCart.push({name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id})
         // Cookies.set('proteinCart', JSON.stringify(proteinCart))
 
         
         //console.log(proteinCart)
-        const newP = selectedProteinArray?.reduce((accumulator, item) => accumulator + parseInt(item?.price), 0)
+        const newP = selectedProteinArray?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
         console.log(newP)
         
         if (selectedItem) {
@@ -120,6 +121,22 @@ export const handleSelectChange = (
         }
         
 };
+
+export const handleRemoveProtein = (proteinId: string, proteinsCart: any[], setProteinsCart: any, scoopPrice: any, scoopQuantity: any, setTotalProteinPrice: any) => {
+    const updatedCart = proteinsCart.filter((protein) => {
+        return protein?.id.toString() !== proteinId.toString()
+    })
+    //console.log(proteinId)
+    setProteinsCart(updatedCart)
+    ///console.log(updatedCart?.reduce((accumulator, item) => parseInt(accumulator) + parseInt(item?.price)*parseInt(item?.quantity)), 0)
+    const newPriceForProtein = updatedCart?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
+    console.log(newPriceForProtein)
+
+    // total item/food price
+    let newFoodPrice = (parseInt(scoopPrice)*parseInt(scoopQuantity)) + newPriceForProtein || 0
+    console.log(newFoodPrice)
+    setTotalProteinPrice(newPriceForProtein)
+}
 
 
 export const handleSelectAdditionalProteinChange = (event: React.ChangeEvent<HTMLSelectElement>,
