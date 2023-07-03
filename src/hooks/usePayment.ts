@@ -6,7 +6,8 @@ import useGetSubtotal from './useGetSubtotal';
 
 const usePayment = (subtotalToBePayed: number) => {
     let userInfo;
-    const publickey = "FLWPUBK-64c75350874e4ff079114051bc423779-X"
+    const real_publickey = "FLWPUBK-64c75350874e4ff079114051bc423779-X"
+    const publickey = "FLWPUBK_TEST-25a1368444a5e8a0519d88b11589f3dd-X"
 
     const [amountToBePaid, setAmountToBePaid] = useState(0)
     const [address, setAddress] = useState('')
@@ -29,7 +30,6 @@ const usePayment = (subtotalToBePayed: number) => {
         subtotalID = Cookies.get("subtotalId") ? JSON.parse(Cookies.get("subtotalId")!) : null
     }
 
-   
     const { data } = useGetSubtotal(subtotalID)
 
     //let subtotalToBePayed = data?.data?.message?.subtotal
