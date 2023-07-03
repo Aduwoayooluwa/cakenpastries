@@ -7,7 +7,7 @@ import SearchDisplayPage from './SearchDisplayPage';
 import { useRouter } from 'next/router';
 
 
-const SearchBar = ({ handleSearch, handleOnChange }: any) => {
+const SearchBar = ({ handleSearch, handleOnChange, handleOnKeyPress }: any) => {
     const router = useRouter()
     
     return (
@@ -19,6 +19,7 @@ const SearchBar = ({ handleSearch, handleOnChange }: any) => {
                 borderRadius="full"
                 bg="white"
                 onChange={handleOnChange}
+                onKeyDown={handleOnKeyPress}
                 />
                 <InputRightElement>
                 <IconButton
