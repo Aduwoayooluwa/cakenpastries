@@ -92,9 +92,14 @@ const CartPage = ({ cartItems }: any) => {
     let isAuth: any;
     let userInfo: any;
 
+    // bringing proteinCart
+    let proteinCart: any[] = []
+
+
     if (typeof window !== 'undefined') {
         isAuth = Cookies.get('isAuth') && JSON.parse(Cookies.get('isAuth')!);
         userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!);
+        proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
     const payment_ref = `${date.getTime()} `
@@ -180,7 +185,8 @@ const CartPage = ({ cartItems }: any) => {
             return total + itemPrice;
             }, 0);
     };
-        
+    
+
 
 
     useEffect(() => {
@@ -334,10 +340,17 @@ const CartPage = ({ cartItems }: any) => {
                             +
                         </Button>
                         </HStack> */}
-                        <VStack mt="2" align={"start"}>
-                            <Text textColor="black" fontSize={"sm"}>Protein: {item?.protein_select?.name}, {item?.protein_select?.name1 || ''}</Text>
-                            <Text textColor="black" fontSize={"xs"}>Protein Price: {item?.protein_select?.price}, { item?.protein_select?.price1 || ''}</Text>
-                        </VStack>
+                        <HStack mt="3" w="full" overflowX={"scroll"}>
+                            {
+                                proteinCart[0]?.map((protein: any) => {
+                                    return(
+                                        <Text textColor={"black"} fontSize={"xs"} key={protein?.id}>
+                                            { protein?.foodId === item?.id && protein?.name }
+                                        </Text>
+                                    )
+                                })
+                            }
+                        </ HStack>
                         </Skeleton>
 
                         <Skeleton
