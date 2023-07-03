@@ -33,12 +33,23 @@ const Navbar = (props: Props) => {
     // search
     const [searchQuery, setSearchQuery] = useState<any>('');
 
-    const handleSearch = () => {
+    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.preventDefault()
         if (searchQuery.trim() !== "") {
             router.push(`/search?name=${searchQuery.trim()}`);
         }
     };
     
+    const handleonKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            if (searchQuery.trim() !== "") {
+                router.push(`/search?name=${searchQuery.trim()}`);
+                return;
+            }
+        }
+
+    };
+
     const handleNavigation = (route: string) => {
         router.push(route);
     };
@@ -64,7 +75,7 @@ const Navbar = (props: Props) => {
         {isMobile ? (
             <Box>
 
-            <SearchBar handleSearch={handleSearch} handleOnChange={(e: any) => {
+            <SearchBar handleOnKeyPress={handleonKeyPress} handleSearch={handleSearch} handleOnChange={(e: any) => {
                 setSearchQuery(e.target.value)
             }} />
 
