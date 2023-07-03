@@ -92,9 +92,10 @@ export const handleSelectChange = (
             if (selectedItem) {
             // Calculate the new scoop price
             setProteinDetails(selectedItem)
-            let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? newP : 0) ;
+            //let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? newP : 0) ;
+            let newScoopPrice = (scoopQuan * parseInt(itemPrice)) ;
             setScoopPrice(newScoopPrice);
-            setProteinPrice(parseInt(selectedItem?.price))
+            setProteinPrice(newP)
             setInitialProteinPrice(parseInt(selectedItem?.price))
 
             //const a = parseInt(itemPrice) + 
@@ -133,12 +134,13 @@ export const handleRemoveProtein = (proteinId: string, proteinsCart: any[], setP
     setProteinsCart(updatedCart)
     ///console.log(updatedCart?.reduce((accumulator, item) => parseInt(accumulator) + parseInt(item?.price)*parseInt(item?.quantity)), 0)
     const newPriceForProtein = updatedCart?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
-    console.log('new price', newPriceForProtein, scoopPrice, (newPriceForProtein + scoopPrice))
-
+    console.log('new price', newPriceForProtein)
     // total item/food price
     let newFoodPrice = (parseInt(scoopPrice)*parseInt(scoopQuantity)) + newPriceForProtein || 0
-    //console.log(newFoodPrice)
+    console.log('new food price',newFoodPrice)
     setTotalProteinPrice(newPriceForProtein)
+    console.log(scoopPrice)
+    console.log('cart', updatedCart)
 }
 
 
