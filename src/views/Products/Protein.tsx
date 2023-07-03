@@ -219,6 +219,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             <Box mt="20px">
               <Text fontSize="xl" fontWeight="extrabold">
               NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce) }
+              {/* {scoopPrice} */}
               
               </Text>
             {/* <Text>{totalProteinPrice}</Text> */}
@@ -227,8 +228,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             <Divider orientation="horizontal" width="full" my="20px" />
             <HStack width="full" justifyContent="space-between">
             <Button onClick={() => {
-              localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
-              localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
+              // localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
+              // localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)).toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button>
@@ -246,10 +247,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   setCartItemsMap,
                   scoopQuan
                 );
-                localStorage.setItem(`${itemName}_quantity`, numberOfPlates.toString());
-                localStorage.setItem(`${itemName}_price`, AES.encrypt(scoopPrice.toString(), service_key).toString());
-                // proteinCart.push({name: selectedOption, price: selectedProteinProce, quantity: selectedProteinQuantity, id: proteinDetails?.id})
-                // Cookies.set('proteinCart', JSON.stringify(proteinCart))
+                  localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                  localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)).toString(), service_key).toString());
+                  proteinCart.push(selectedProteinArray)
+                  Cookies.set('proteinCart', JSON.stringify(proteinCart))
               }}>
                 Add To Cart
               </Btn>
@@ -414,7 +415,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   scoopQuan
                 );
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-                localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
+                localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)).toString(), service_key).toString());
                 proteinCart.push(selectedProteinArray)
                 Cookies.set('proteinCart', JSON.stringify(proteinCart))
               }}>
