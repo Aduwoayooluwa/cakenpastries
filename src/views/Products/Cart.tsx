@@ -30,6 +30,7 @@ import { ModalContext } from '@/context/ModalContext';
 import usePostSubtotal from '@/hooks/usePostSubtotal';
 import { AES, enc } from 'crypto-js';
 import { service_key } from '@/utils/util';
+import useConfirmOrder from '@/hooks/useConfirmOrder';
 
 interface CartItem {
     id: string;
@@ -102,9 +103,14 @@ const CartPage = ({ cartItems }: any) => {
         proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
-    const payment_ref = `${date.getTime()} `
+    let payment_ref: string;
+
     //console.log(payment_ref)
     //console.log(isAuth);
+    const getPaymentRef = () => {
+        const tx_ref = `${date.getTime()}`
+        payment_ref = tx_ref
+    }
 
     const user_id = userInfo?.id;
 
@@ -222,11 +228,18 @@ const CartPage = ({ cartItems }: any) => {
     let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
 
      // hook to call order
+    getPaymentRef()
+    const order = useOrder(address, itemsWithoutCategory, payment_ref!, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
 
-    const order = useOrder(address, itemsWithoutCategory, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
-
+    // confirm order hook
+    const confirmOrder = useConfirmOrder(payment_ref!)
     // payment with flutterwave hook
     const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
+
+    // success notification
+    const successNotification = () => toast('You have successfully ordered...')
+    // error notification
+    const errorNotification = (error: string) => toast(error)
 
     // API TO SEND THE SUBTOTAL TO SERVER
     const { handlePostSubtotal } = usePostSubtotal((subtotal+deliveryFeeAmount+takeaway))
@@ -249,7 +262,7 @@ const CartPage = ({ cartItems }: any) => {
                 return;
             }
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
-
+            order.mutate();
             //console.log(itemsWithoutCategory)
             
                 handleFlutterPayment({
@@ -257,11 +270,22 @@ const CartPage = ({ cartItems }: any) => {
                         //console.log(response);
                         setTimeout(() => {
                             if (response?.status === 'successful' || 'completed') {
+                                confirmOrder.mutate();
+                                    successNotification()
+                                    setOrderSuccess(true)
+                                    setIsSuccessModalOpen(true)
+                                setTimeout(() => {
+                                    Cookies.remove('cartItems')
+                                    Cookies.remove('proteinCart')
+                                    localStorage.clear()
+                                    router.reload()
+                                    router.push('/')
+                                }, 2000)
+                            
                                 
-                                order.mutate();
-                                Cookies.remove('cartItems')
-                                Cookies.remove('proteinCart')
-                                
+                            }
+                            else {
+                                errorNotification('error')
                             }
                         }, 3000)
                         closePaymentModal()
@@ -340,7 +364,7 @@ const CartPage = ({ cartItems }: any) => {
                             +
                         </Button>
                         </HStack> */}
-                        <HStack mt="3" w="full" overflowX={"scroll"}>
+                        {/* <HStack mt="3" w="full" overflowX={"scroll"}>
                             {
                                 proteinCart[0]?.map((protein: any) => {
                                     return(
@@ -350,7 +374,7 @@ const CartPage = ({ cartItems }: any) => {
                                     )
                                 })
                             }
-                        </ HStack>
+                        </ HStack> */}
                         </Skeleton>
 
                         <Skeleton

@@ -8,8 +8,8 @@ import { useRouter } from 'next/router'
 import { useEffect } from "react"
 import Cookie from 'js-cookie'
 
-const successNotification = () => toast('You have successfully ordered...')
-const errorNotification = (error: string) => toast(error)
+
+
 
 const useOrder = (address: string, items: any, 
                 payment_ref: string, amount: number,
@@ -18,8 +18,7 @@ const useOrder = (address: string, items: any,
                 deliveryFee: number,
                 setOrderSuccess: React.Dispatch<React.SetStateAction<boolean>>) => {
     
-    // bringing the success modal from the useContext
-    const { setIsSuccessModalOpen } = useContext(ModalContext) 
+
     
     let proteinCart: any;
 
@@ -38,16 +37,7 @@ const useOrder = (address: string, items: any,
         })
     }, {
         onSuccess: ({ data }) => {
-            successNotification()
-            setOrderSuccess(true)
-            setIsSuccessModalOpen(true)
-            //console.log(data)
-            setTimeout(() => {
-                router.push("/")
-                localStorage?.clear()
-                router.reload()
-                Cookie.remove("proteinCart")
-            }, 1000)
+
             setTimeout(() => {
                 //router.push("/")
                 // console.log(router)
@@ -55,8 +45,8 @@ const useOrder = (address: string, items: any,
             
         },
         onError: (error: any) => {
-            errorNotification('error')
-            errorNotification(error?.response.data?.message)
+            
+            //errorNotification(error?.response.data?.message)
         }
     })
 
