@@ -85,7 +85,7 @@ const CartPage = ({ cartItems }: any) => {
     //console.log(itemsWithoutCategory)
 
     // payment refrence 
-    const date = new Date()
+    const staticId = Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000)
     //console.log(date.getTime())
     
 
@@ -103,14 +103,14 @@ const CartPage = ({ cartItems }: any) => {
         proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
-    let payment_ref: string;
+    let payment_ref = staticId;
 
     //console.log(payment_ref)
     //console.log(isAuth);
-    const getPaymentRef = () => {
-        const tx_ref = `${date.getTime()}`
-        payment_ref = tx_ref
-    }
+    // const getPaymentRef = () => {
+    //     const tx_ref = `${date.getTime()}`
+    //     payment_ref = tx_ref
+    // }
 
     const user_id = userInfo?.id;
 
@@ -228,13 +228,13 @@ const CartPage = ({ cartItems }: any) => {
     let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
 
      // hook to call order
-    getPaymentRef()
-    const order = useOrder(address, itemsWithoutCategory, payment_ref!, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
+
+    const order = useOrder(address, itemsWithoutCategory, payment_ref.toString(), (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
 
     // confirm order hook
-    const confirmOrder = useConfirmOrder(payment_ref!)
+    const confirmOrder = useConfirmOrder(payment_ref.toString())
     // payment with flutterwave hook
-    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
+    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount), payment_ref.toString())
 
     // success notification
     const successNotification = () => toast('You have successfully ordered...')
