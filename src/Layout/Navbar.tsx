@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Button from '@/components/buttons/button.component';
+import SearchBar from '@/components/search/Search';
 
 type Props = {};
 
@@ -28,7 +29,27 @@ const Navbar = (props: Props) => {
     
     const isMobile = useBreakpointValue({ base: true, md: false });
     const router = useRouter()
+
+    // search
+    const [searchQuery, setSearchQuery] = useState<any>('');
+
+    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.preventDefault()
+        if (searchQuery.trim() !== "") {
+            router.push(`/search?name=${searchQuery.trim()}`);
+        }
+    };
     
+    const handleonKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            if (searchQuery.trim() !== "") {
+                router.push(`/search?name=${searchQuery.trim()}`);
+                return;
+            }
+        }
+
+    };
+
     const handleNavigation = (route: string) => {
         router.push(route);
     };
@@ -53,56 +74,18 @@ const Navbar = (props: Props) => {
 
         {isMobile ? (
             <Box>
-            {/* Search bar component */}
-            <Input
-                type="text"
-                placeholder="Search..."
-                size="md"
-                bg="white"
-                color="gray.800"
-                borderRadius="md"
-                display={{base: "none", md:"inherit"}}
-                px={4}
-                py={2}
-                _placeholder={{ color: 'gray.400' }}
-                _focus={{ outline: 'none', boxShadow: 'outline' }}
-            />
-            <HStack>
-                <IconButton
-                        aria-label="Info"
-                        icon={<FiSearch />}
-                        size="lg"
-                        display={{base: "inherit", md:"none"}}
-                        variant="ghost"
-                        colorScheme="gray.800"
-                    />
 
-                <IconButton
-                        aria-label="Info"
-                        icon={<FiInfo />}
-                        size="lg"
-                        display={{base: "inherit", md:"none"}}
-                        variant="ghost"
-                />
-            </HStack>
-            
+            <SearchBar handleOnKeyPress={handleonKeyPress} handleSearch={handleSearch} handleOnChange={(e: any) => {
+                setSearchQuery(e.target.value)
+            }} />
 
             </Box>
         ) : (
             <HStack spacing={4}>
             {/* Search bar component */}
-            <Input
-                type="text"
-                placeholder="Search..."
-                bg="white"
-                color="gray.800"
-                borderRadius="md"
-                px={4}
-                
-                py={2}
-                _placeholder={{ color: 'gray.400' }}
-                _focus={{ outline: 'none', boxShadow: 'outline' }}
-            />
+            <SearchBar handleSearch={handleSearch} handleOnChange={(e: any) => {
+                setSearchQuery(e.target.value)
+            }}/>
             {/* Menu items */}
             <HStack spacing={2}>
                 <Link href="/categories">

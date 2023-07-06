@@ -4,7 +4,8 @@ import { ChangeEvent } from 'react';
 export const handleScoopIncrementQuantity = (setScoopQuantity: any,
     setScoopPrice: any, itemPrice: number, scoopQuantity: number, items:any
 ) => {
-
+    
+    items.quantity += 1
     setScoopQuantity((prevQuantity: number) => prevQuantity + 1)
     setScoopPrice((prevPrice: number) => prevPrice + (itemPrice))
 }
@@ -13,11 +14,16 @@ export const handleScoopDecrementQuantity = (
     scoopQuan: number, setScoopQuantity: any, setScoopPrice: any,
     itemPrice: number, items:any
 ) => {
-
+    
+    
     if (scoopQuan > 1) {
-        setScoopQuantity((prevQuantity: number) => prevQuantity - 1);
-        setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
-        items['quantity'] = scoopQuan
+        items.quantity -= 1
+        setScoopQuantity((prevQuantity: number) => prevQuantity - 1)
+        setScoopPrice((prevPrice: number) => prevPrice - (itemPrice))
+        // setScoopQuantity((prevQuantity: number) => prevQuantity - 1);
+        // setScoopPrice((prevPrice: number) => prevPrice - itemPrice);
+        // items['quantity'] = scoopQuan
+        // console.log(items['quantity'])
     }
 }
 // export  const handleSelectChange = (event: any, itemPrice: string, 
@@ -50,62 +56,92 @@ export const handleSelectChange = (
         setInitialProteinPrice?: any,
         setSelectedProteinQuantity?:any,
         proteinQuantity?: number,
+        setSelectedProteinArray?: any,
+        selectedProteinArray?: any[],
         addMoreProteinDialog?: boolean,
         
     ) => {
         const selectedOption = event.target.value;
 
 
-        if (selectedOption !== items.protein_select?.name) {
+        if (selectedOption !== selectedProteinArray![selectedProteinArray?.length! - 1]?.name) {
+            console.log(selectedProteinArray![selectedProteinArray?.length! - 1]?.name)
+            console.log('current', selectedOption)
             setSelectedProteinQuantity(1)
+            console.log(proteinQuantity)
         }
         setSelectedOption(selectedOption);
 
          // Find the selected option from the data
         const selectedItem = data.find(item => item.name === selectedOption);
-        //console.log(selectedItem)
+
         items.protein = selectedItem?.id
         items.protein_select = {
             name: selectedItem?.name,
             price: selectedItem?.price
         }
-        
 
-        // proteinCart[0] ={name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id}
+        const chosenProteinObj = selectedProteinArray?.find((prt) => prt.id === selectedItem?.id)
+        if (selectedOption !== "" && !chosenProteinObj) {
+            //console.log(selectedProteinArray)
+            setSelectedProteinArray([...selectedProteinArray!, {name: selectedOption, quantity: 1, price: selectedItem?.price, id: selectedItem?.id, foodId: items?.id}])
+            
+            const newP = selectedProteinArray?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
+            //console.log(newP)
+            
+            if (selectedItem) {
+            // Calculate the new scoop price
+            setProteinDetails(selectedItem)
+            //let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? newP : 0) ;
+            let newScoopPrice = (scoopQuan * parseInt(itemPrice)) ;
+            setScoopPrice(newScoopPrice);
+            setProteinPrice(newP)
+            setInitialProteinPrice(parseInt(selectedItem?.price))
+
+            //const a = parseInt(itemPrice) + 
+        
+            // Update the plates (if needed)
+            const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price) || 0;
+            setPlates(newPlates);
+            }
+            else {
+                if (!addMoreProteinDialog) {
+                    setScoopPrice(parseInt(itemPrice) * scoopQuan);
+                    setProteinPrice(0)
+                    setInitialProteinPrice(0)
+                    setSelectedProteinQuantity(1)
+                    proteinCart.pop()
+                }
+                
+            }
+        }
+        
+        
+        // proteinCart.push({name: selectedOption, quantity: proteinQuantity, price: selectedItem?.price, id: selectedItem?.id})
         // Cookies.set('proteinCart', JSON.stringify(proteinCart))
 
         
         //console.log(proteinCart)
     
-        if (selectedItem) {
-        // Calculate the new scoop price
-        setProteinDetails(selectedItem)
-        let newScoopPrice = (scoopQuan * parseInt(itemPrice)) + (selectedItem ? parseInt(selectedItem.price) : 0) ;
-        setScoopPrice(newScoopPrice);
-        setProteinPrice(parseInt(selectedItem?.price))
-        setInitialProteinPrice(parseInt(selectedItem?.price))
-
-        
-        
-
-        //const a = parseInt(itemPrice) + 
-    
-        // Update the plates (if needed)
-        const newPlates = parseInt(itemPrice) + parseInt(selectedItem.price) || 0;
-        setPlates(newPlates);
-        }
-        else {
-            if (!addMoreProteinDialog) {
-                setScoopPrice(parseInt(itemPrice) * scoopQuan);
-                setProteinPrice(0)
-                setInitialProteinPrice(0)
-                setSelectedProteinQuantity(1)
-                proteinCart.pop()
-            }
-            
-        }
         
 };
+
+export const handleRemoveProtein = (proteinId: string, proteinsCart: any[], setProteinsCart: any, scoopPrice: any, scoopQuantity: any, setTotalProteinPrice: any) => {
+    const updatedCart = proteinsCart.filter((protein) => {
+        return protein?.id.toString() !== proteinId.toString()
+    })
+    //console.log(proteinId)
+    setProteinsCart(updatedCart)
+    ///console.log(updatedCart?.reduce((accumulator, item) => parseInt(accumulator) + parseInt(item?.price)*parseInt(item?.quantity)), 0)
+    const newPriceForProtein = updatedCart?.reduce((accumulator, item) => accumulator + (parseInt(item?.price) * parseInt(item?.quantity)), 0)
+    console.log('new price', newPriceForProtein)
+    // total item/food price
+    let newFoodPrice = (parseInt(scoopPrice)*parseInt(scoopQuantity)) + newPriceForProtein || 0
+    console.log('new food price',newFoodPrice)
+    setTotalProteinPrice(newPriceForProtein)
+    console.log(scoopPrice)
+    console.log('cart', updatedCart)
+}
 
 
 export const handleSelectAdditionalProteinChange = (event: React.ChangeEvent<HTMLSelectElement>,

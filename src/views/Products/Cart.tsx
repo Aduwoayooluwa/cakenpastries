@@ -30,6 +30,7 @@ import { ModalContext } from '@/context/ModalContext';
 import usePostSubtotal from '@/hooks/usePostSubtotal';
 import { AES, enc } from 'crypto-js';
 import { service_key } from '@/utils/util';
+import useConfirmOrder from '@/hooks/useConfirmOrder';
 
 interface CartItem {
     id: string;
@@ -84,7 +85,7 @@ const CartPage = ({ cartItems }: any) => {
     //console.log(itemsWithoutCategory)
 
     // payment refrence 
-    const date = new Date()
+    const staticId = Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000)
     //console.log(date.getTime())
     
 
@@ -92,14 +93,24 @@ const CartPage = ({ cartItems }: any) => {
     let isAuth: any;
     let userInfo: any;
 
+    // bringing proteinCart
+    let proteinCart: any[] = []
+
+
     if (typeof window !== 'undefined') {
         isAuth = Cookies.get('isAuth') && JSON.parse(Cookies.get('isAuth')!);
         userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!);
+        proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
-    const payment_ref = `${date.getTime()} `
+    let payment_ref = staticId;
+
     //console.log(payment_ref)
     //console.log(isAuth);
+    // const getPaymentRef = () => {
+    //     const tx_ref = `${date.getTime()}`
+    //     payment_ref = tx_ref
+    // }
 
     const user_id = userInfo?.id;
 
@@ -180,7 +191,8 @@ const CartPage = ({ cartItems }: any) => {
             return total + itemPrice;
             }, 0);
     };
-        
+    
+
 
 
     useEffect(() => {
@@ -205,9 +217,10 @@ const CartPage = ({ cartItems }: any) => {
         localStorage.removeItem(`${itemName}_price`)
     };
 
-    const handleRemoveProteinFromCart = (itemId: string, otherProteinId:string) => {
+    const handleRemoveProteinFromCart = (itemId: string) => {
         removeProteinfromCart(itemId?.toString())
-        removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
+        console.log(itemId)
+        //removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
         //console.log('removed')
     }
     
@@ -216,10 +229,17 @@ const CartPage = ({ cartItems }: any) => {
 
      // hook to call order
 
-    const order = useOrder(address, itemsWithoutCategory, payment_ref, (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
+    const order = useOrder(address, itemsWithoutCategory, payment_ref.toString(), (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
 
+    // confirm order hook
+    const confirmOrder = useConfirmOrder(payment_ref.toString())
     // payment with flutterwave hook
-    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount))
+    const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount), payment_ref.toString())
+
+    // success notification
+    const successNotification = () => toast('You have successfully ordered...')
+    // error notification
+    const errorNotification = (error: string) => toast(error)
 
     // API TO SEND THE SUBTOTAL TO SERVER
     const { handlePostSubtotal } = usePostSubtotal((subtotal+deliveryFeeAmount+takeaway))
@@ -242,7 +262,7 @@ const CartPage = ({ cartItems }: any) => {
                 return;
             }
             sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
-
+            order.mutate();
             //console.log(itemsWithoutCategory)
             
                 handleFlutterPayment({
@@ -250,11 +270,22 @@ const CartPage = ({ cartItems }: any) => {
                         //console.log(response);
                         setTimeout(() => {
                             if (response?.status === 'successful' || 'completed') {
+                                confirmOrder.mutate();
+                                    successNotification()
+                                    setOrderSuccess(true)
+                                    setIsSuccessModalOpen(true)
+                                setTimeout(() => {
+                                    Cookies.remove('cartItems')
+                                    Cookies.remove('proteinCart')
+                                    localStorage.clear()
+                                    router.reload()
+                                    router.push('/')
+                                }, 2000)
+                            
                                 
-                                order.mutate();
-                                Cookies.remove('cartItems')
-                                Cookies.remove('proteinCart')
-                                
+                            }
+                            else {
+                                errorNotification('error')
                             }
                         }, 3000)
                         closePaymentModal()
@@ -333,10 +364,17 @@ const CartPage = ({ cartItems }: any) => {
                             +
                         </Button>
                         </HStack> */}
-                        <VStack mt="2" align={"start"}>
-                            <Text textColor="black" fontSize={"sm"}>Protein: {item?.protein_select?.name}, {item?.protein_select?.name1 || ''}</Text>
-                            <Text textColor="black" fontSize={"xs"}>Protein Price: {item?.protein_select?.price}, { item?.protein_select?.price1 || ''}</Text>
-                        </VStack>
+                        {/* <HStack mt="3" w="full" overflowX={"scroll"}>
+                            {
+                                proteinCart[0]?.map((protein: any) => {
+                                    return(
+                                        <Text textColor={"black"} fontSize={"xs"} key={protein?.id}>
+                                            { protein?.foodId === item?.id && protein?.name }
+                                        </Text>
+                                    )
+                                })
+                            }
+                        </ HStack> */}
                         </Skeleton>
 
                         <Skeleton
@@ -357,8 +395,8 @@ const CartPage = ({ cartItems }: any) => {
                         mt={4}
                         onClick={() => {
                             handleRemoveFromCart(item?.id, item?.name)
-                            handleRemoveProteinFromCart(item?.protein, item?.other_protein)
-                            router.reload()
+                            handleRemoveProteinFromCart(item?.id)
+                            //router.reload()
                         }}
                         disabled={address.trim() === ''}
                         bg="red.600"
