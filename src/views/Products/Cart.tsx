@@ -189,9 +189,13 @@ console.log(Cookies.get("proteinCart"),'itemsx')
 
     const calculateTotalPrice = () => {
             return items?.reduce((total, item) => {
-            const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
+
+            const itemPrice = parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
+
+            // const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
             //console.log('hello', itemPrice, total)
-            return total + itemPrice;
+            return itemPrice;
+            // return total + itemPrice;
             }, 0);
     };
     
@@ -386,7 +390,8 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                             color='white'
                             textColor={"black"}
                             >
-                        <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
+                        <Text mt={2}>Price: NGN {parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
+                        {/* <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text> */}
                         </Skeleton>
 
                         <Skeleton
