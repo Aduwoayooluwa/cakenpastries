@@ -4,25 +4,27 @@ import React from 'react'
 import Button from '@/components/buttons/button.component'
 type Props = {}
 
-const ItemQuantity = ({scoopQuan, setScoopQuantity, setScoopPrice, scoopPrice, itemPrice, items, selectedProtein, selectedProteinArray, ...props}: any) => {
+const ItemQuantity = ({scoopQuan, proteinItemsState,setProteinItemsState,setScoopQuantity, setScoopPrice, scoopPrice, itemPrice, items, selectedProtein, selectedProteinArray, ...props}: any) => {
     selectedProtein = false
-    //console.log(items)
+
+    
     return (
-        <VStack w="full" align="left" my="20px">
+        <VStack w="full" align="left" my="10px">
             <HStack w="full" justify={"space-between"}>
-                <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                    <Btn
-                    size="sm"
+                <Flex  justifyContent="space-between" alignItems="center" width="40%">
+                    <Button
                     onClick={() => {
-                        handleScoopDecrementQuantity(scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
+                        handleScoopDecrementQuantity(proteinItemsState,setProteinItemsState,scoopQuan, setScoopQuantity, setScoopPrice, parseInt(itemPrice), items)
                         
                         }}
                     disabled={true}
                     >
+
                     -
-                </Btn>
-                <Text mx="3">{scoopQuan}</Text>
+                    </Button>
+                <Text>{scoopQuan}</Text>
                 <Button colorScheme="blue" onClick={() => handleScoopIncrementQuantity(
+                    proteinItemsState,setProteinItemsState,
                     setScoopQuantity, 
                     setScoopPrice, parseInt(itemPrice), scoopQuan, items)}>
                     +

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext,useMemo } from 'react';
 import {
     Box,
     Heading,
@@ -45,6 +45,7 @@ interface CartItem {
 
 const CartPage = ({ cartItems }: any) => {
     //  location of delivery
+    console.log(cartItems,'cartItems')
     const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
 
     const [subtotal, setSubtotal] = useState(0);
@@ -61,7 +62,7 @@ const CartPage = ({ cartItems }: any) => {
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
 
-    console.log(items)
+    console.log(items,'items')
     const { removeFromCart, removeProteinfromCart } = useAppStore()
 
     //selected location
@@ -82,8 +83,8 @@ const CartPage = ({ cartItems }: any) => {
     const router = useRouter();
     // removing the category object from the items array
     const itemsWithoutCategory = items?.map(({ category, ...rest }) => rest);
-    //console.log(itemsWithoutCategory)
-
+    console.log(itemsWithoutCategory,'items category')
+console.log(Cookies.get("proteinCart"),'itemsx')
     // payment refrence 
     const staticId = Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000)
     //console.log(date.getTime())
@@ -103,7 +104,9 @@ const CartPage = ({ cartItems }: any) => {
         proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
-    let payment_ref = staticId;
+    let payment_ref = useMemo(() => Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000), [])
+    
+    // let payment_ref = staticId;
 
     //console.log(payment_ref)
     //console.log(isAuth);

@@ -25,8 +25,6 @@ export const createCartSlice: StateCreator<cartSlice> = (set, get) => {
 
     return {
         ...initialState,
-    
-
         addToCart: (product: Products) => {
         const cart = get().cart;
         const findProduct = cart.find((p) => p.id === product.id);
