@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext,useMemo } from 'react';
+import { useEffect, useState, useContext, useMemo } from 'react';
 import {
     Box,
     Heading,
@@ -45,36 +45,36 @@ interface CartItem {
 
 const CartPage = ({ cartItems }: any) => {
     //  location of delivery
-    console.log(cartItems,'cartItems')
+    console.log(cartItems, 'cartItems')
     const { data } = useGetData(`https://backend.cakesandpastries.ng/api/locations/all`);
 
     const [subtotal, setSubtotal] = useState(0);
-    
+
     // custom hook to redirect
     const { setOriginalUrl } = useRedirectAfterAuth()
 
-    const removeItemId = (itemId:string) => {
+    const removeItemId = (itemId: string) => {
         localStorage.removeItem(itemId)
     }
-    
+
     const { _cartItems }: any = useContext(CartContext)
 
     const [items, setItems] = useState<CartItem[]>(cartItems);
     const [savedAddress, setSavedAddress] = useState('');
 
-    console.log(items,'items')
+    console.log(items, 'items')
     const { removeFromCart, removeProteinfromCart } = useAppStore()
 
     //selected location
     const [selectedLocation, setSelectedLocation] = useState('');
-        // address
+    // address
     const [address, setAddress] = useState('')
 
     // dialog open and close
     const [isDialogVisible, setIsPaymentDialogVisible] = useState(false)
     // phone number
     const [phoneNumber, setPhoneNumber] = useState('')
-   // bringing the success modal from the useContext
+    // bringing the success modal from the useContext
     const { isSuccessModalOpen, setIsSuccessModalOpen } = useContext(ModalContext)
     // order success notification
     const [orderSuccess, setOrderSuccess] = useState(false)
@@ -83,12 +83,12 @@ const CartPage = ({ cartItems }: any) => {
     const router = useRouter();
     // removing the category object from the items array
     const itemsWithoutCategory = items?.map(({ category, ...rest }) => rest);
-    console.log(itemsWithoutCategory,'items category')
-console.log(Cookies.get("proteinCart"),'itemsx')
+    console.log(itemsWithoutCategory, 'items category')
+    console.log(Cookies.get("proteinCart"), 'itemsx')
     // payment refrence 
-    const staticId = Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000)
+    const staticId = Math.floor(Math.random() * 10000000000000) + Math.floor(Math.random() * 10000)
     //console.log(date.getTime())
-    
+
 
     // Authentication
     let isAuth: any;
@@ -104,8 +104,8 @@ console.log(Cookies.get("proteinCart"),'itemsx')
         proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
     }
 
-    let payment_ref = useMemo(() => Math.floor(Math.random()*10000000000000) + Math.floor(Math.random()*10000), [])
-    
+    let payment_ref = useMemo(() => Math.floor(Math.random() * 10000000000000) + Math.floor(Math.random() * 10000), [])
+
     // let payment_ref = staticId;
 
     //console.log(payment_ref)
@@ -124,7 +124,7 @@ console.log(Cookies.get("proteinCart"),'itemsx')
     useEffect(() => {
         // Simulating an API request delay
         const timer = setTimeout(() => {
-        setLoading(false);
+            setLoading(false);
         }, 2000);
 
         return () => clearTimeout(timer);
@@ -140,24 +140,24 @@ console.log(Cookies.get("proteinCart"),'itemsx')
 
     const handleIncrement = (item: CartItem) => {
         const updatedQuantity = item?.quantity + 1;
-        
+
         // Update the quantity in the items array
         const updatedItems = items.map((i) => {
-        if (i.id === item.id) {
-            return {
-            ...i,
-            quantity: updatedQuantity
-            };
-        }
-        return i;
+            if (i.id === item.id) {
+                return {
+                    ...i,
+                    quantity: updatedQuantity
+                };
+            }
+            return i;
         });
-    
+
         // Update the quantity in localStorage
         localStorage.setItem(`${item.name}_quantity`, updatedQuantity.toString());
-    
+
         // Update the state variables
         setItems(updatedItems);
-        
+        console.log(getItemPrice(item?.name), 'getItemPrice(item?.name)')
         setSubtotal((prevSubtotal) => prevSubtotal + parseInt(getItemPrice(item?.name)!));
     };
 
@@ -175,30 +175,34 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                 return i;
             });
             localStorage.setItem(`${item?.name}_quantity`, updatedQuantity.toString());
-            
+
             setItems(updatedItems);
-            
+
             setSubtotal((prevSubtotal) => prevSubtotal - parseInt(getItemPrice(item?.name)!));
         }
     };
-    
+
 
     // const calculateTotalPrice = () => {
     //     return items?.reduce((total, item) => total + item?.price * item?.quantity, 0);
     // };
 
     const calculateTotalPrice = () => {
-            return items?.reduce((total, item) => {
+        let totalPrice=0
+        return items?.reduce((total, item) => {
 
             const itemPrice = parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
-
+            totalPrice+=itemPrice
             // const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
             //console.log('hello', itemPrice, total)
-            return itemPrice;
+            
+            console.log(totalPrice, 'itemPrice')
+            return totalPrice;
+            // return itemPrice;
             // return total + itemPrice;
-            }, 0);
+        }, 0);
     };
-    
+
 
 
 
@@ -215,10 +219,10 @@ console.log(Cookies.get("proteinCart"),'itemsx')
 
 
 
-    const handleRemoveFromCart = (itemId: string, itemName?:string) => {
+    const handleRemoveFromCart = (itemId: string, itemName?: string) => {
         setItems((prevItems) => prevItems.filter((item) => item?.id !== itemId));
         removeFromCart(itemId.toString());
-    
+
         removeItemId(itemId)
         localStorage.removeItem(`${itemName}_quantity`)
         localStorage.removeItem(`${itemName}_price`)
@@ -230,13 +234,13 @@ console.log(Cookies.get("proteinCart"),'itemsx')
         //removeProteinfromCart(otherProteinId?.toString() || itemId.toString())
         //console.log('removed')
     }
-    
+
     // delivery fee
     let [deliveryFeeAmount, setDeliveryFeeAmount] = useState(0)
 
-     // hook to call order
+    // hook to call order
 
-    const order = useOrder(address, itemsWithoutCategory, payment_ref.toString(), (subtotal+takeaway+deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
+    const order = useOrder(address, itemsWithoutCategory, payment_ref.toString(), (subtotal + takeaway + deliveryFeeAmount), userInfo?.name, phoneNumber, selectedLocation, deliveryFeeAmount, setOrderSuccess)
 
     // confirm order hook
     const confirmOrder = useConfirmOrder(payment_ref.toString())
@@ -249,13 +253,13 @@ console.log(Cookies.get("proteinCart"),'itemsx')
     const errorNotification = (error: string) => toast(error)
 
     // API TO SEND THE SUBTOTAL TO SERVER
-    const { handlePostSubtotal } = usePostSubtotal((subtotal+deliveryFeeAmount+takeaway))
+    const { handlePostSubtotal } = usePostSubtotal((subtotal + deliveryFeeAmount + takeaway))
     const handleProceedToPayment = () => {
-        if (address==="" || phoneNumber==="") {
+        if (address === "" || phoneNumber === "") {
             setIsPaymentDialogVisible(true)
             return;
         }
-        else if (selectedLocation==="") {
+        else if (selectedLocation === "") {
             toast("Please Select location", {
                 style: {
                     color: "red"
@@ -268,42 +272,42 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                 router.push('/login')
                 return;
             }
-            sessionStorage.setItem('subtotal', JSON.stringify(subtotal+deliveryFeeAmount+takeaway));
+            sessionStorage.setItem('subtotal', JSON.stringify(subtotal + deliveryFeeAmount + takeaway));
             order.mutate();
             //console.log(itemsWithoutCategory)
-            
-                handleFlutterPayment({
-                    callback: (response) => {
-                        //console.log(response);
-                        setTimeout(() => {
-                            if (response?.status === 'successful' || 'completed') {
-                                confirmOrder.mutate();
-                                    successNotification()
-                                    setOrderSuccess(true)
-                                    setIsSuccessModalOpen(true)
-                                setTimeout(() => {
-                                    Cookies.remove('cartItems')
-                                    Cookies.remove('proteinCart')
-                                    localStorage.clear()
-                                    router.reload()
-                                    router.push('/')
-                                }, 2000)
-                            
-                                
-                            }
-                            else {
-                                errorNotification('error')
-                            }
-                        }, 3000)
-                        closePaymentModal()
-                        
-                    },
-                    onClose: () => {
-                        //console.log("Closed")
-                    }
-                })
-                return;
-            
+
+            handleFlutterPayment({
+                callback: (response) => {
+                    //console.log(response);
+                    setTimeout(() => {
+                        if (response?.status === 'successful' || 'completed') {
+                            confirmOrder.mutate();
+                            successNotification()
+                            setOrderSuccess(true)
+                            setIsSuccessModalOpen(true)
+                            setTimeout(() => {
+                                Cookies.remove('cartItems')
+                                Cookies.remove('proteinCart')
+                                localStorage.clear()
+                                router.reload()
+                                router.push('/')
+                            }, 2000)
+
+
+                        }
+                        else {
+                            errorNotification('error')
+                        }
+                    }, 3000)
+                    closePaymentModal()
+
+                },
+                onClose: () => {
+                    //console.log("Closed")
+                }
+            })
+            return;
+
         }
     };
 
@@ -318,44 +322,44 @@ console.log(Cookies.get("proteinCart"),'itemsx')
 
 
 
-    
+
 
     return (
         <>
-            
-            <Center width={"full"}>
-            <Box textColor="black" p={4}>
-                <Heading mb={4}>Cart</Heading>
-                <VStack spacing={4} align="start">
-                {items?.map((item: CartItem) => (
-                    <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    >
-                    <Box
-                        p={4}
-                        borderWidth={1}
-                        borderRadius="md"
-                        boxShadow="md"
-                        width={{ base: "300px", md: "500px" }}
-                        textColor={"black"}
-                    >
-                        <Skeleton
-                        isLoaded={!loading}
-                        bg='white.500'
-                        color='white'
-                        >
-                        <Heading textColor={"black"} size="md">{item?.name}</Heading>
-                        </Skeleton>
 
-                        <Skeleton
-                        isLoaded={!loading}
-                        bg='white.500'
-                        color='white'
-                        >
-                        {/* <HStack textColor={"purple.500"} mt={2}>
+            <Center width={"full"}>
+                <Box textColor="black" p={4}>
+                    <Heading mb={4}>Cart</Heading>
+                    <VStack spacing={4} align="start">
+                        {items?.map((item: CartItem) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <Box
+                                    p={4}
+                                    borderWidth={1}
+                                    borderRadius="md"
+                                    boxShadow="md"
+                                    width={{ base: "300px", md: "500px" }}
+                                    textColor={"black"}
+                                >
+                                    <Skeleton
+                                        isLoaded={!loading}
+                                        bg='white.500'
+                                        color='white'
+                                    >
+                                        <Heading textColor={"black"} size="md">{item?.name}</Heading>
+                                    </Skeleton>
+
+                                    <Skeleton
+                                        isLoaded={!loading}
+                                        bg='white.500'
+                                        color='white'
+                                    >
+                                        {/* <HStack textColor={"purple.500"} mt={2}>
                         <Button
                             size="sm"
                             onClick={() => handleDecrement(item)}
@@ -371,7 +375,7 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                             +
                         </Button>
                         </HStack> */}
-                        {/* <HStack mt="3" w="full" overflowX={"scroll"}>
+                                        {/* <HStack mt="3" w="full" overflowX={"scroll"}>
                             {
                                 proteinCart[0]?.map((protein: any) => {
                                     return(
@@ -382,44 +386,44 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                                 })
                             }
                         </ HStack> */}
-                        </Skeleton>
+                                    </Skeleton>
 
-                        <Skeleton
-                            isLoaded={!loading}
-                            bg='white.500'
-                            color='white'
-                            textColor={"black"}
-                            >
-                        <Text mt={2}>Price: NGN {parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
-                        {/* <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text> */}
-                        </Skeleton>
+                                    <Skeleton
+                                        isLoaded={!loading}
+                                        bg='white.500'
+                                        color='white'
+                                        textColor={"black"}
+                                    >
+                                        <Text mt={2}>Price: NGN {parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
+                                        {/* <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text> */}
+                                    </Skeleton>
 
-                        <Skeleton
-                            isLoaded={!loading}
-                            bg='white.500'
-                            color='white'
-                            >
-                        <Button
-                        mt={4}
-                        onClick={() => {
-                            handleRemoveFromCart(item?.id, item?.name)
-                            handleRemoveProteinFromCart(item?.id)
-                            //router.reload()
-                        }}
-                        disabled={address.trim() === ''}
-                        bg="red.600"
-                        color="#EAEAFF"
-                        _hover={{ bg: "red.700", color: "#EAEAFF" }}
-                        >
-                        Remove
-                        </Button>
-                        </Skeleton>
-                    </Box>
-                    </motion.div>
-                ))}
-                </VStack>
-                <Divider my={4} />
-                {/* <Stack direction="column" spacing={4} align="start">
+                                    <Skeleton
+                                        isLoaded={!loading}
+                                        bg='white.500'
+                                        color='white'
+                                    >
+                                        <Button
+                                            mt={4}
+                                            onClick={() => {
+                                                handleRemoveFromCart(item?.id, item?.name)
+                                                handleRemoveProteinFromCart(item?.id)
+                                                //router.reload()
+                                            }}
+                                            disabled={address.trim() === ''}
+                                            bg="red.600"
+                                            color="#EAEAFF"
+                                            _hover={{ bg: "red.700", color: "#EAEAFF" }}
+                                        >
+                                            Remove
+                                        </Button>
+                                    </Skeleton>
+                                </Box>
+                            </motion.div>
+                        ))}
+                    </VStack>
+                    <Divider my={4} />
+                    {/* <Stack direction="column" spacing={4} align="start">
                 <Skeleton
                 isLoaded={!loading}
                 bg='white.500'
@@ -452,95 +456,95 @@ console.log(Cookies.get("proteinCart"),'itemsx')
                 </Skeleton>
                 </Stack> */}
 
-                <Divider my={4} />
-                <Box>
+                    <Divider my={4} />
+                    <Box>
 
-                <Skeleton
-                    isLoaded={!loading}
-                    bg='white.500'
-                    color='white'
-                >
-                <VStack mt="20px" spacing={2} textColor={"black"} width="full" align="start">
-                    <FormControl>
-                        <FormLabel>Choose Location</FormLabel>
-                        <Select
-                        value={selectedLocation}
-                        onChange={(event) =>
-                            handleSelectLocationChange(
-                            event,
-                            subtotal,
-                            setSubtotal,
-                            data,
-                            setSelectedLocation,
-                            setDeliveryFeeAmount
-                            )
-                        }
-                        placeholder="Select your location"
+                        <Skeleton
+                            isLoaded={!loading}
+                            bg='white.500'
+                            color='white'
                         >
-                        {data?.map((item: any) => (
-                            <option key={item?.id}>{item?.name}</option>
-                        ))}
-                        </Select>
-                    </FormControl>
-                </VStack>
-                </Skeleton>
+                            <VStack mt="20px" spacing={2} textColor={"black"} width="full" align="start">
+                                <FormControl>
+                                    <FormLabel>Choose Location</FormLabel>
+                                    <Select
+                                        value={selectedLocation}
+                                        onChange={(event) =>
+                                            handleSelectLocationChange(
+                                                event,
+                                                subtotal,
+                                                setSubtotal,
+                                                data,
+                                                setSelectedLocation,
+                                                setDeliveryFeeAmount
+                                            )
+                                        }
+                                        placeholder="Select your location"
+                                    >
+                                        {data?.map((item: any) => (
+                                            <option key={item?.id}>{item?.name}</option>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </VStack>
+                        </Skeleton>
 
-                <Skeleton
-                isLoaded={!loading}
-                bg='white.500'
-                color='white'>
-                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Takeaway: NGN {takeaway}</Text>
+                        <Skeleton
+                            isLoaded={!loading}
+                            bg='white.500'
+                            color='white'>
+                            <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Takeaway: NGN {takeaway}</Text>
 
-                    <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Delivery: NGN {deliveryFeeAmount}</Text>
-                    
-                    <Text textColor="black" mt="20px" fontWeight="bold">Subtotal: NGN {subtotal + takeaway + deliveryFeeAmount}</Text>
-                </Skeleton>
-                
-                <Skeleton
-                isLoaded={!loading}
-                bg='white.500'
-                color='white'>
-                    <Button
-                    mt={4}
-                    onClick={() => {
-                        if (!address && !phoneNumber) {
-                            
-                        }
-                        handlePostSubtotal()
-                        handleProceedToPayment()
+                            <Text textColor="black" mt="20px" fontSize={"sm"} fontWeight="medium">Delivery: NGN {deliveryFeeAmount}</Text>
 
-                    
-                    }}
-                    disabled={selectedLocation.trim() === ""}
-                    bg={"#000093"}
-                    color={"#EAEAFF"}
-                    _hover={{ bg: "#EAEAFF", color: "#000093" }}
-                    >
-                        {address && phoneNumber ? "Proceed to Payment" : "Add Address"}
-                    </Button>
-                </Skeleton>
+                            <Text textColor="black" mt="20px" fontWeight="bold">Subtotal: NGN {subtotal + takeaway + deliveryFeeAmount}</Text>
+                        </Skeleton>
 
+                        <Skeleton
+                            isLoaded={!loading}
+                            bg='white.500'
+                            color='white'>
+                            <Button
+                                mt={4}
+                                onClick={() => {
+                                    if (!address && !phoneNumber) {
+
+                                    }
+                                    handlePostSubtotal()
+                                    handleProceedToPayment()
+
+
+                                }}
+                                disabled={selectedLocation.trim() === ""}
+                                bg={"#000093"}
+                                color={"#EAEAFF"}
+                                _hover={{ bg: "#EAEAFF", color: "#000093" }}
+                            >
+                                {address && phoneNumber ? "Proceed to Payment" : "Add Address"}
+                            </Button>
+                        </Skeleton>
+
+                    </Box>
                 </Box>
-            </Box>
             </Center>
-            
+
             {
                 isDialogVisible && (
                     <Box mx="20px">
-                        <PaymentModal phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} setAddress={setAddress} address={address} setIsPaymentDialogVisible={setIsPaymentDialogVisible} 
-                        isDialogVisible={isDialogVisible}/>
+                        <PaymentModal phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} setAddress={setAddress} address={address} setIsPaymentDialogVisible={setIsPaymentDialogVisible}
+                            isDialogVisible={isDialogVisible} />
                     </Box>
-                )            }
+                )}
 
-                {
-                    isSuccessModalOpen && (
-                        <Box mx="20px">
-                            <SuccessModal isOpen={isSuccessModalOpen} onClose={() => {
-                                setIsSuccessModalOpen(false)
-                            }}/>
-                        </Box>
-                    )
-                }
+            {
+                isSuccessModalOpen && (
+                    <Box mx="20px">
+                        <SuccessModal isOpen={isSuccessModalOpen} onClose={() => {
+                            setIsSuccessModalOpen(false)
+                        }} />
+                    </Box>
+                )
+            }
         </>
     );
 };
