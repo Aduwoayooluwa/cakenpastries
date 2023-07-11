@@ -111,10 +111,14 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [singleOrderData, setSingleOrderData] = useState<any>()
 
- 
+
   const handleSaveProtein = (event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    console.log(event, 'event dodf')
+
     const selectedItemName = event.target.value
+
+    console.log(selectedItemName, 'selectedItemName')
     const filteredData = data.filter((item: any) => item.name == selectedItemName)
     const itemIsPresent = proteinItems.filter((item: any) => item.name == selectedItemName)
 
@@ -126,6 +130,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       quantity: 1
     }
 
+    console.log(proteinData, 'proteinData')
+
     if (itemIsPresent.length == 0) {
       setProteinItems((prev: any) => [...prev, proteinData])
     }
@@ -136,7 +142,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const handleSetRemoveProtein = (item: any) => {
 
     const filteredData = proteinItems.filter((data: any) => data?.name !== item?.name)
-    filteredData.sort((a:any, b:any) => a.vid - b.vid);
+    filteredData.sort((a: any, b: any) => a.vid - b.vid);
     setProteinItems(filteredData)
   }
 
@@ -158,7 +164,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       selectedItem[0].price -= Math.abs(parseInt(selectedPrice))
 
       const finalData = [...filteredItem, selectedItem[0]]
-      finalData.sort((a:any, b:any) => a.vid - b.vid);
+      finalData.sort((a: any, b: any) => a.vid - b.vid);
 
       setProteinItems(finalData)
     }
@@ -180,7 +186,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       (data: any) => data?.name != item.name
     );
     const finalData = [...filteredItem, selectedItem[0]]
-    finalData.sort((a:any, b:any) => a.vid - b.vid);
+    finalData.sort((a: any, b: any) => a.vid - b.vid);
 
     setProteinItems(finalData)
   }
@@ -188,7 +194,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const calculatePrices = () => {
     const copyProteinItems = proteinItems.filter((item: any) => item.name !== '')
-    return copyProteinItems.map((data: any) => parseInt(data.price)).reduce(function (a:any, b:any) { return a + b; }, 0)
+    return copyProteinItems.map((data: any) => parseInt(data.price)).reduce(function (a: any, b: any) { return a + b; }, 0)
   }
 
   if (isMediumDevice) {
@@ -381,11 +387,11 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               ) : (
                 <Flex justifyContent="space-between" alignItems="center" >
                   <Link href="/cart_items">
-                  <Btn onClick={() => {
-                  }} colorScheme="green">
-                    Go to Cart
-                  </Btn>
-                    </Link>
+                    <Btn onClick={() => {
+                    }} colorScheme="green">
+                      Go to Cart
+                    </Btn>
+                  </Link>
 
 
                 </Flex>
@@ -442,13 +448,15 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             />
             {/* <Text textColor="black">{scoopPrice}</Text> */}
           </VStack>
-
+          {/* mobile */}
           <VStack spacing={2} width="full" align="start">
             <FormControl>
-              <FormLabel>Add Protein</FormLabel>
+              <FormLabel>Add Proteins</FormLabel>
               <Select
                 value={selectedOption}
-                onChange={(event) =>
+                onChange={(event) => {
+                  console.log('event', event)
+                  handleSaveProtein(event)
                   handleSelectChange(
                     event,
                     itemPrice,
@@ -469,6 +477,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                     selectedProteinArray
                   )
                 }
+                }
                 placeholder="Select an option"
               >
                 {
@@ -479,7 +488,37 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             </FormControl>
             {/* display proteins */}
             <Stack w="full" p="4" maxH="200px" overflowY={"scroll"}>
-              {
+              {proteinItems.map((item: any, index: number) => (
+                <>
+                  {item.name.length > 0 &&
+
+
+                    <VStack w="full" key={index}>
+
+                      <HStack w="full" justify={"space-between"}>
+
+                        <Text w="full">{item?.name && item?.name}</Text>
+                        <Flex my="3px" justifyContent="space-between" alignItems="center" width="40%">
+                          <Button onClick={() => decrementSingleProtein(item)}>
+                            -
+                          </Button>
+                          <Text mx="3">{item?.quantity}</Text>
+                          <Button onClick={() => incrementSingleProtein(item)}>
+                            +
+                          </Button>
+                        </Flex>
+                        <Flex>
+                          <Btn onClick={() => {
+                            handleSetRemoveProtein(item)
+                          }} colorScheme="red">X</Btn>
+                        </Flex>
+                      </HStack>
+                    </VStack>
+                  }
+
+                </>
+              ))}
+              {/* {
                 selectedProteinArray?.map((protein, index) => {
                   return (
                     <VStack w="full" key={index}>
@@ -503,7 +542,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                     </VStack>
                   )
                 })
-              }
+              } */}
             </Stack>
 
           </VStack>
@@ -512,20 +551,52 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
-              NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)}
+              NGN: {calculatePrices() + scoopPrice}    
+                        {/* NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)} */}
             </Text>
           </Box>
 
           <Divider orientation="horizontal" width="full" my="20px" />
-          <HStack width="full" justifyContent="space-between">
-            <Button onClick={() => {
+          <HStack width="full" justifyContent="flex-end">
+            {/* <Button onClick={() => {
               // localStorage.setItem(`${itemName}_quantity`, cartQuantity.toString());
               // localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + selectedProteinProce).toString(), service_key).toString());
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
-            </Button>
-
+            </Button> */}
             {!isAddToCartBtnClicked ? (
+              <Btn _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
+                handleAddToCart(
+                  items,
+                  addToCart,
+                  setIsAddToCartBtnClicked,
+                  itemId,
+                  setCartQuantity,
+                  cartItemsMap,
+                  setCartItemsMap,
+                  scoopQuan,
+                  proteinItems
+                );
+                localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
+                proteinCart.push(selectedProteinArray)
+                Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+              }}>
+                Add To Cart
+              </Btn>
+            ) : (
+              <Flex justifyContent="space-between" alignItems="center" >
+                <Link href="/cart_items">
+                  <Btn onClick={() => {
+                  }} colorScheme="green">
+                    Go to Cart
+                  </Btn>
+                </Link>
+
+
+              </Flex>
+            )}
+            {/* {!isAddToCartBtnClicked ? (
               <Btn width="30%" bg="blue" textColor="white" onClick={() => {
                 handleAddToCart(
                   items,
@@ -546,16 +617,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               </Btn>
             ) : (
               <Flex my="10px" justifyContent="space-between" alignItems="center" width="40%">
-                {/* <Button disabled={cartQuantity === 1} colorScheme="blue" onClick={handleDecrement}>
-                  -
-                </Button>
-                <Text>{cartQuantity}</Text>
-                <Button colorScheme="blue" onClick={handleIncrement}>
-                  +
-                </Button> */}
-                {/* <Button  disabled={true} width="full" p={"3px"}>Added</Button> */}
+               
               </Flex>
-            )}
+            )} */}
           </HStack>
         </Box>
       </Slide>
