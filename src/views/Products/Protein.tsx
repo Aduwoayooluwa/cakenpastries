@@ -136,7 +136,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const handleSetRemoveProtein = (item: any) => {
 
     const filteredData = proteinItems.filter((data: any) => data?.name !== item?.name)
-    filteredData.sort((a, b) => a.vid - b.vid);
+    filteredData.sort((a:any, b:any) => a.vid - b.vid);
     setProteinItems(filteredData)
   }
 
@@ -158,7 +158,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       selectedItem[0].price -= Math.abs(parseInt(selectedPrice))
 
       const finalData = [...filteredItem, selectedItem[0]]
-      finalData.sort((a, b) => a.vid - b.vid);
+      finalData.sort((a:any, b:any) => a.vid - b.vid);
 
       setProteinItems(finalData)
     }
@@ -180,7 +180,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       (data: any) => data?.name != item.name
     );
     const finalData = [...filteredItem, selectedItem[0]]
-    finalData.sort((a, b) => a.vid - b.vid);
+    finalData.sort((a:any, b:any) => a.vid - b.vid);
 
     setProteinItems(finalData)
   }
@@ -188,7 +188,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const calculatePrices = () => {
     const copyProteinItems = proteinItems.filter((item: any) => item.name !== '')
-    return copyProteinItems.map((data: any) => parseInt(data.price)).reduce(function (a, b) { return a + b; }, 0)
+    return copyProteinItems.map((data: any) => parseInt(data.price)).reduce(function (a:any, b:any) { return a + b; }, 0)
   }
 
   if (isMediumDevice) {

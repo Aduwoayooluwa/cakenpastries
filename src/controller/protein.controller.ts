@@ -223,8 +223,8 @@ export const handleAddToCart = (
   setCartQuantity: any,
   cartItemsMap: Map<string, number>,
   setCartItemsMap: any,
-  proteinItems: any,
-  scoopQuan: number
+  proteinItems?: any,
+  scoopQuan?: number
 ) => {
 //   items.protein_select = proteinItems;
   addToCart({ ...items, quantity: scoopQuan });
