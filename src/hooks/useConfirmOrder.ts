@@ -13,7 +13,8 @@ const useConfirmOrder = (tx_ref:string) => {
         {
             onSuccess: ({ data }) => {
                 
-                //console.log(data)
+                console.log(data,'confirmed order')
+                
                 setTimeout(() => {
     
                     localStorage?.clear()

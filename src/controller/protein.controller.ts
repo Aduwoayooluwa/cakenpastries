@@ -226,7 +226,12 @@ export const handleAddToCart = (
   proteinItems?: any,
   scoopQuan?: number
 ) => {
-//   items.protein_select = proteinItems;
+  // console.log(  Cookies.get('proteinCart'),'proteinItems items of life')
+  //   items.protein_select = proteinItems;
+  console.log(items.quantity, "quantity items of life");
+  console.log(items.protein_select, "protein_select items of life");
+  // items.protein_select = items.quantity;
+  console.log(items, "items of life");
   addToCart({ ...items, quantity: scoopQuan });
   setIsAddToCartBtnClicked(true);
   localStorage.setItem(itemId, "true");
