@@ -3,7 +3,8 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
 const useConfirmOrder = (tx_ref:string) => {
-    const ORDER_URL = `${BASE_URL}/confirm_order?payment_ref=${parseInt(tx_ref)}`
+    const ORDER_URL = `${BASE_URL}/complete-order?payment_ref=${parseInt(tx_ref)}`
+    // const ORDER_URL = `${BASE_URL}/confirm_order?payment_ref=${parseInt(tx_ref)}`
     
     return useMutation(() => {
         return axios.post(ORDER_URL, {
@@ -14,7 +15,7 @@ const useConfirmOrder = (tx_ref:string) => {
             onSuccess: ({ data }) => {
                 
                 console.log(data,'confirmed order')
-                
+
                 setTimeout(() => {
     
                     localStorage?.clear()
