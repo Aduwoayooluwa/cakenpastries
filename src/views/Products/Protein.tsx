@@ -40,6 +40,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
+
+
   // additonal protein
   const [selectedProteinChange, setselectedProteinChange] = useState('')
   // quantity of selected option or protein
@@ -114,11 +116,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const handleSaveProtein = (event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(event, 'event dodf')
 
     const selectedItemName = event.target.value
 
-    console.log(selectedItemName, 'selectedItemName')
     const filteredData = data.filter((item: any) => item.name == selectedItemName)
     const itemIsPresent = proteinItems.filter((item: any) => item.name == selectedItemName)
 
@@ -127,10 +127,10 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       id: filteredData[0]?.id,
       name: filteredData[0]?.name,
       price: filteredData[0]?.price,
-      quantity: 1
+      quantity: 1,
+      food:items.name
     }
 
-    console.log(proteinData, 'proteinData')
 
     if (itemIsPresent.length == 0) {
       setProteinItems((prev: any) => [...prev, proteinData])
@@ -229,6 +229,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               </Box>
               <Text>{itemName}</Text>
             </HStack>
+            {/* {console.log(items,'scoopQuan')} */}
 
             {/* number of scoops */}
             <VStack align="left" >
@@ -362,7 +363,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               }} width="30%" colorScheme="green">
                 <Link href="/cart_items">Go to Cart</Link>
               </Button> */}
-
+              {/* {console.log(proteinItems, 'proteinItems fjd')} */}
 
               {!isAddToCartBtnClicked ? (
                 <Btn _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
@@ -377,10 +378,14 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                     scoopQuan,
                     proteinItems
                   );
+                  console.log(scoopQuan.toString(),'scoopQuan.toString()')
+                  console.log(scoopQuan,'scoopQuan')
                   localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
                   localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
                   proteinCart.push(selectedProteinArray)
                   Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+                  setIsAddToCartBtnClicked(!isAddToCartBtnClicked);
+
                 }}>
                   Add To Cart
                 </Btn>
@@ -455,7 +460,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               <Select
                 value={selectedOption}
                 onChange={(event) => {
-                  console.log('event', event)
                   handleSaveProtein(event)
                   handleSelectChange(
                     event,
@@ -551,8 +555,8 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
           <Box mt="20px">
             <Text fontSize="xl" fontWeight="extrabold">
-              NGN: {calculatePrices() + scoopPrice}    
-                        {/* NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)} */}
+              NGN: {calculatePrices() + scoopPrice}
+              {/* NGN {scoopPrice + (selectedProteinProce === 1 ? 0 : selectedProteinProce)} */}
             </Text>
           </Box>
 
@@ -566,6 +570,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             </Button> */}
             {!isAddToCartBtnClicked ? (
               <Btn _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
+
                 handleAddToCart(
                   items,
                   addToCart,
@@ -577,10 +582,16 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                   scoopQuan,
                   proteinItems
                 );
+
                 localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+
                 localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
+
                 proteinCart.push(selectedProteinArray)
+                setIsAddToCartBtnClicked(isAddToCartBtnClicked)
+
                 Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+
               }}>
                 Add To Cart
               </Btn>

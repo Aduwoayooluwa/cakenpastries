@@ -137,6 +137,7 @@ const ProductCard = ({ item, setProteinBarUp, proteinBarUp }: Props) => {
             </Flex>
                 
             <Box opacity={1} bg="white" h="full">
+              
                 {
                 isProteinVisible && (<>
                     <ProteinBottomUp itemMeasure={item?.measure} setProteinBarUp={setProteinBarUp} items={item} itemId={item?.id} itemPrice={item?.price} itemImage={item?.image} itemName={item?.name} isProteinVisible={isProteinVisible} setIsProteinVisible={setIsProteinVisible}/>
