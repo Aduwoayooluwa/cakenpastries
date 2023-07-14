@@ -41,7 +41,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
   const [price, setPrice] = useState(parseInt(itemPrice) || 0);
   const [selectedOption, setSelectedOption] = useState('');
 
-  console.log(items, 'many items')
 
   // additonal protein
   const [selectedProteinChange, setselectedProteinChange] = useState('')
@@ -117,11 +116,9 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
 
   const handleSaveProtein = (event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(event, 'event dodf')
 
     const selectedItemName = event.target.value
 
-    console.log(selectedItemName, 'selectedItemName')
     const filteredData = data.filter((item: any) => item.name == selectedItemName)
     const itemIsPresent = proteinItems.filter((item: any) => item.name == selectedItemName)
 
@@ -134,7 +131,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       food:items.name
     }
 
-    console.log(proteinData, 'proteinData')
 
     if (itemIsPresent.length == 0) {
       setProteinItems((prev: any) => [...prev, proteinData])
@@ -382,10 +378,14 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                     scoopQuan,
                     proteinItems
                   );
+                  console.log(scoopQuan.toString(),'scoopQuan.toString()')
+                  console.log(scoopQuan,'scoopQuan')
                   localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
                   localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
                   proteinCart.push(selectedProteinArray)
                   Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+                  setIsAddToCartBtnClicked(!isAddToCartBtnClicked);
+
                 }}>
                   Add To Cart
                 </Btn>
@@ -460,7 +460,6 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               <Select
                 value={selectedOption}
                 onChange={(event) => {
-                  console.log('event', event)
                   handleSaveProtein(event)
                   handleSelectChange(
                     event,
@@ -589,6 +588,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
                 localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
 
                 proteinCart.push(selectedProteinArray)
+                setIsAddToCartBtnClicked(isAddToCartBtnClicked)
 
                 Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
 

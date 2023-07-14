@@ -86,11 +86,11 @@ export const handleSelectChange = (
 
   console.log(Cookies.get("proteinCart"), "selectedItem for");
 
-  items.protein = selectedItem?.id;
-  items.protein_select = {
-    name: selectedItem?.name,
-    price: selectedItem?.price,
-  };
+  // items.protein = selectedItem?.id;
+  // items.protein_select = {
+  //   name: selectedItem?.name,
+  //   price: selectedItem?.price,
+  // };
 
   const chosenProteinObj = selectedProteinArray?.find(
     (prt) => prt.id === selectedItem?.id
@@ -195,8 +195,8 @@ export const handleSelectAdditionalProteinChange = (
   );
 
   items.other_protein = selectedItem?.id;
-  items.protein_select.name1 = selectedItem?.name;
-  items.protein_select.price1 = selectedItem?.price;
+  // items.protein_select.name1 = selectedItem?.name;
+  // items.protein_select.price1 = selectedItem?.price;
   console.log(selectedItem);
   setSelectedAdditionalProtein(selectedItem);
 
@@ -228,18 +228,24 @@ export const handleAddToCart = (
 ) => {
   // console.log(  Cookies.get('proteinCart'),'proteinItems items of life')
   //   items.protein_select = proteinItems;
-  console.log(items.quantity, "quantity items of life");
-  console.log(items.protein_select, "protein_select items of life");
+
+  // console.log(items.quantity, "quantity items of life");
+  // console.log(items.protein_select, "protein_select items of life");
   // items.protein_select = items.quantity;
-  console.log(items, "items of life");
-  addToCart({ ...items, quantity: scoopQuan });
+  // console.log(items, "items of life");
+
+  addToCart({ ...items, protein: scoopQuan, quantity: proteinItems });
+
+  // console.log(scoopQuan,'quantity of cart')
+  // console.log(items.quantity,'items quantity of cart')
+
   setIsAddToCartBtnClicked(true);
   localStorage.setItem(itemId, "true");
   setCartQuantity((prevQuantity: any) => prevQuantity + 1);
 
   // Add the quantity to the cartItemsMap
 
-  console.log(proteinItems, "cartItemsMaps");
+  // console.log(proteinItems, "cartItemsMaps");
 
   const updatedCartItemsMap = new Map(cartItemsMap);
   const quantity = updatedCartItemsMap.get(itemId) || 0;
@@ -247,9 +253,15 @@ export const handleAddToCart = (
   setCartItemsMap(updatedCartItemsMap);
 
   // Save the cartItemsMap in local storage
-  items.quantity = scoopQuan;
-  //console.log('items', items)
-  console.log(updatedCartItemsMap, "updatedCartItemsMap");
+  // items.protein = scoopQuan;
+  // items.quantity = proteinItems;
+
+  // console.log(localStorage.getItem(`${items.name}_quantity`),'numbers')
+  // console.log(items.name,'numbers')
+  // console.log('items', items)
+  // console.log(scoopQuan?.toString(),'quantity of cart 2')
+
+  // console.log(updatedCartItemsMap, "updatedCartItemsMap");
   localStorage.setItem(
     "cartItems",
     JSON.stringify(Array.from(updatedCartItemsMap))

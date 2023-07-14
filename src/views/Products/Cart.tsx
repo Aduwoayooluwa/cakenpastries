@@ -187,11 +187,20 @@ const CartPage = ({ cartItems }: any) => {
     // };
 
     const calculateTotalPrice = () => {
+
         let totalPrice = 0
+
         return items?.reduce((total, item) => {
 
-            const itemPrice: number = getItemPrice(`${item.name}_price`) && parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
-            totalPrice += itemPrice
+            let itemPrice = getItemPrice(`${item?.name}_price`) && parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key)?.toString(enc.Utf8)) as number;
+            //
+            console.log(typeof itemPrice,'typeof itemPrice')
+            if (typeof itemPrice=="number") {
+
+                totalPrice += itemPrice
+            }
+            // 
+            // 
             // const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
             //console.log('hello', itemPrice, total)
 
@@ -278,7 +287,7 @@ const CartPage = ({ cartItems }: any) => {
 
             handleFlutterPayment({
                 callback: (response) => {
-                    console.log(response,'flutterwave response');
+                    console.log(response, 'flutterwave response');
                     setTimeout(() => {
                         if (response?.status === 'successful' || 'completed') {
                             confirmOrder.mutate();
@@ -351,7 +360,11 @@ const CartPage = ({ cartItems }: any) => {
                                         bg='white.500'
                                         color='white'
                                     >
-                                        <Heading textColor={"black"} size="md">{item?.name}</Heading>
+
+                                        <Heading textColor={"black"} size="md">{item?.name} </Heading>
+
+
+
                                     </Skeleton>
 
                                     <Skeleton
@@ -395,9 +408,13 @@ const CartPage = ({ cartItems }: any) => {
                                         textColor={"black"}
                                     >
                                         <Flex mt={4} direction="column" align="start">
-                                            {(item.quantity?.map((item: any) => <>
+                                            {console.log(item, 'item')}
+                                            {(item.protein?.map((item: any) => <>
                                                 <Text mt={2}>
-                                                    {item.name}: NGN {item.price} QTY {item.quantity}
+                                                    <b>
+                                                        {item.name}:&#9;
+                                                    </b>
+                                                    NGN {item.price} QTY {item.quantity}
                                                 </Text>
                                             </>))}
                                         </Flex>
