@@ -63,7 +63,7 @@ type payloadTypes = {
         setIsAuthenticated(true)
 
         //console.log(data)
-        router.push("/")
+        router.push("/cart_items")
         },
 
         onError: (error: any) => {
