@@ -11,7 +11,9 @@ import {
     Divider,
     Center,
     Skeleton,
-    Select
+    Select,
+    Stack,
+    Flex
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import useOrder from '@/hooks/useOrder';
@@ -83,12 +85,9 @@ const CartPage = ({ cartItems }: any) => {
     const router = useRouter();
     // removing the category object from the items array
     const itemsWithoutCategory = items?.map(({ category, ...rest }) => rest);
-    console.log(itemsWithoutCategory, 'items category')
-    console.log(Cookies.get("proteinCart"), 'itemsx')
     // payment refrence 
     const staticId = Math.floor(Math.random() * 10000000000000) + Math.floor(Math.random() * 10000)
     //console.log(date.getTime())
-
 
     // Authentication
     let isAuth: any;
@@ -99,9 +98,9 @@ const CartPage = ({ cartItems }: any) => {
 
 
     if (typeof window !== 'undefined') {
-        isAuth = Cookies.get('isAuth') && JSON.parse(Cookies.get('isAuth')!);
-        userInfo = Cookies.get('userDetails') && JSON.parse(Cookies.get('userDetails')!);
-        proteinCart = Cookies.get('proteinCart') && JSON.parse(Cookies.get('proteinCart')!);
+        isAuth = Cookies.get('isAuth') && JSON?.parse(Cookies.get('isAuth')!);
+        userInfo = Cookies.get('userDetails') && JSON?.parse(Cookies.get('userDetails')!);
+        proteinCart = Cookies.get('proteinCart') && JSON?.parse(Cookies.get('proteinCart')!);
     }
 
     let payment_ref = useMemo(() => Math.floor(Math.random() * 10000000000000) + Math.floor(Math.random() * 10000), [])
@@ -188,14 +187,23 @@ const CartPage = ({ cartItems }: any) => {
     // };
 
     const calculateTotalPrice = () => {
-        let totalPrice=0
+
+        let totalPrice = 0
+
         return items?.reduce((total, item) => {
 
-            const itemPrice = parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
-            totalPrice+=itemPrice
-            // const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
+            let itemPrice = getItemPrice(`${item?.name}_price`) && parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key)?.toString(enc.Utf8)) as number;
+            //
+            console.log(typeof itemPrice,'typeof itemPrice')
+            if (typeof itemPrice=="number") {
+
+                totalPrice += itemPrice
+            }
+            // 
+            // 
+            // const itemPrice = parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8));
             //console.log('hello', itemPrice, total)
-            
+
             console.log(totalPrice, 'itemPrice')
             return totalPrice;
             // return itemPrice;
@@ -244,6 +252,7 @@ const CartPage = ({ cartItems }: any) => {
 
     // confirm order hook
     const confirmOrder = useConfirmOrder(payment_ref.toString())
+
     // payment with flutterwave hook
     const { closePaymentModal, handleFlutterPayment } = usePayment((subtotal + takeaway + deliveryFeeAmount), payment_ref.toString())
 
@@ -278,7 +287,7 @@ const CartPage = ({ cartItems }: any) => {
 
             handleFlutterPayment({
                 callback: (response) => {
-                    //console.log(response);
+                    console.log(response, 'flutterwave response');
                     setTimeout(() => {
                         if (response?.status === 'successful' || 'completed') {
                             confirmOrder.mutate();
@@ -351,7 +360,11 @@ const CartPage = ({ cartItems }: any) => {
                                         bg='white.500'
                                         color='white'
                                     >
-                                        <Heading textColor={"black"} size="md">{item?.name}</Heading>
+
+                                        <Heading textColor={"black"} size="md">{item?.name} </Heading>
+
+
+
                                     </Skeleton>
 
                                     <Skeleton
@@ -394,8 +407,26 @@ const CartPage = ({ cartItems }: any) => {
                                         color='white'
                                         textColor={"black"}
                                     >
-                                        <Text mt={2}>Price: NGN {parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text>
-                                        {/* <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text> */}
+                                        <Flex mt={4} direction="column" align="start">
+                                            {console.log(item, 'item')}
+                                            {(item.protein?.map((item: any) => <>
+                                                <Text mt={2}>
+                                                    <b>
+                                                        {item.name}:&#9;
+                                                    </b>
+                                                    NGN {item.price} QTY {item.quantity}
+                                                </Text>
+                                            </>))}
+                                        </Flex>
+
+                                        <Text mt={6}><b>
+                                            {/* {console.log(item,'this is cart item')} */}
+                                            Price: NGN {getItemPrice(`${item.name}_price`) && parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}
+                                        </b>
+                                        </Text>
+
+
+                                        {/* <Text mt={2}>Price: NGN {parseInt(getItemPrice(`${item.name}_quantity`)!) * parseInt(AES?.decrypt(getItemPrice(`${item.name}_price`)!, service_key).toString(enc.Utf8))}</Text> */}
                                     </Skeleton>
 
                                     <Skeleton
@@ -526,7 +557,7 @@ const CartPage = ({ cartItems }: any) => {
 
                     </Box>
                 </Box>
-            </Center>
+            </Center >
 
             {
                 isDialogVisible && (
@@ -534,7 +565,8 @@ const CartPage = ({ cartItems }: any) => {
                         <PaymentModal phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} setAddress={setAddress} address={address} setIsPaymentDialogVisible={setIsPaymentDialogVisible}
                             isDialogVisible={isDialogVisible} />
                     </Box>
-                )}
+                )
+            }
 
             {
                 isSuccessModalOpen && (
