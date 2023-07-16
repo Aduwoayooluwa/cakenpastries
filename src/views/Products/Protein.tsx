@@ -128,7 +128,7 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
       name: filteredData[0]?.name,
       price: filteredData[0]?.price,
       quantity: 1,
-      food:items.name
+      food: items.name
     }
 
 
@@ -366,27 +366,29 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
               {/* {console.log(proteinItems, 'proteinItems fjd')} */}
 
               {!isAddToCartBtnClicked ? (
-                <Btn _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
-                  handleAddToCart(
-                    items,
-                    addToCart,
-                    setIsAddToCartBtnClicked,
-                    itemId,
-                    setCartQuantity,
-                    cartItemsMap,
-                    setCartItemsMap,
-                    scoopQuan,
-                    proteinItems
-                  );
-                  console.log(scoopQuan.toString(),'scoopQuan.toString()')
-                  console.log(scoopQuan,'scoopQuan')
-                  localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
-                  localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
-                  proteinCart.push(selectedProteinArray)
-                  Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
-                  setIsAddToCartBtnClicked(!isAddToCartBtnClicked);
+                <Btn 
+                disabled={isAddToCartBtnClicked}
+                  _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
+                    handleAddToCart(
+                      items,
+                      addToCart,
+                      setIsAddToCartBtnClicked,
+                      itemId,
+                      setCartQuantity,
+                      cartItemsMap,
+                      setCartItemsMap,
+                      scoopQuan,
+                      proteinItems
+                    );
+                    console.log(scoopQuan.toString(), 'scoopQuan.toString()')
+                    console.log(scoopQuan, 'scoopQuan')
+                    localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                    localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
+                    proteinCart.push(selectedProteinArray)
+                    Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+                    setIsAddToCartBtnClicked(!isAddToCartBtnClicked);
 
-                }}>
+                  }}>
                   Add To Cart
                 </Btn>
               ) : (
@@ -568,31 +570,35 @@ const ProteinBottomUp = ({ isProteinVisible, setIsProteinVisible, itemName, item
             }} width="30%" colorScheme="green">
               <Link href="/cart_items">Go to Cart</Link>
             </Button> */}
+
+            {/* mobile */}
             {!isAddToCartBtnClicked ? (
-              <Btn _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
+              <Btn
+                disabled={isAddToCartBtnClicked}
+                _hover={{ background: "#EAEAFF", textColor: "blue" }} width="30%" bg="blue" textColor="white" onClick={() => {
 
-                handleAddToCart(
-                  items,
-                  addToCart,
-                  setIsAddToCartBtnClicked,
-                  itemId,
-                  setCartQuantity,
-                  cartItemsMap,
-                  setCartItemsMap,
-                  scoopQuan,
-                  proteinItems
-                );
+                  handleAddToCart(
+                    items,
+                    addToCart,
+                    setIsAddToCartBtnClicked,
+                    itemId,
+                    setCartQuantity,
+                    cartItemsMap,
+                    setCartItemsMap,
+                    scoopQuan,
+                    proteinItems
+                  );
 
-                localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
+                  localStorage.setItem(`${itemName}_quantity`, scoopQuan.toString());
 
-                localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
+                  localStorage.setItem(`${itemName}_price`, AES.encrypt((scoopPrice + calculatePrices()).toString(), service_key).toString());
 
-                proteinCart.push(selectedProteinArray)
-                setIsAddToCartBtnClicked(isAddToCartBtnClicked)
+                  proteinCart.push(selectedProteinArray)
+                  setIsAddToCartBtnClicked(!isAddToCartBtnClicked);
 
-                Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
+                  Cookies.set('proteinCart', JSON.stringify(proteinItems.filter((item: any) => item.name != "")))
 
-              }}>
+                }}>
                 Add To Cart
               </Btn>
             ) : (
