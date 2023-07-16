@@ -41,7 +41,7 @@ const useOrder = (address: string, items: any,
             setTimeout(() => {
                 //router.push("/")
                 // console.log(router)
-            }, 2000)
+            }, 5000)
             
         },
         onError: (error: any) => {
