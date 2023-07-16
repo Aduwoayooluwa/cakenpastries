@@ -35,7 +35,7 @@ const usePayment = (subtotalToBePayed: number, payment_ref: string) => {
     //let subtotalToBePayed = data?.data?.message?.subtotal
     //console.log(subtotalToBePayed)
     const config = {
-        public_key: test_publickey,
+        public_key: real_publickey,
         tx_ref: payment_ref,
         amount:subtotalToBePayed,
         address,
